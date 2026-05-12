@@ -278,4 +278,6 @@ sudo cscli decisions list 2>/dev/null | head
 
 ---
 
+**Ver também:** índice de todos os scripts opcionais (health-check, systemd, sync no PC) em [../scripts/README.md](../scripts/README.md).
+
 *Documento complementar ao repositório Fortaleza Proxmox — operações e observabilidade leve.*
