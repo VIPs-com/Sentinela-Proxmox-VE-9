@@ -1,0 +1,15 @@
+# Segredos e artefactos locais — nunca versionar
+.env
+.env.*
+*.pem
+*_rsa
+*_ed25519
+authorized_keys
+**/etc-pve*.tar.gz
+fortaleza-backups/
+
+# SO / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
