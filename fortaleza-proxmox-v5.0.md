@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–5): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–6): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -1764,6 +1764,13 @@ echo "- CT 200 lab-irmao-gpg com Docker + ShellHub agent" >> ~/fortaleza-lab/dia
 
 🎯 **OBJETIVO:** Atualizações de segurança automáticas + observabilidade.
 
+### 📸 Snapshot (recomendado)
+
+```bash
+# No host Proxmox — dataset conforme §0.8; renato com sudo
+sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase9
+```
+
 ### 9.1 Atualizações automáticas (Proxmox host)
 
 ```bash
@@ -1775,13 +1782,14 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
 Verifique o que será atualizado:
 
 ```bash
-cat /etc/apt/apt.conf.d/50unattended-upgrades | grep -A 5 "Allowed origins"
-# Procure por "Debian-Security" - deve estar ativo
+grep -A 12 'Unattended-Upgrade::Allowed-Origins' /etc/apt/apt.conf.d/50unattended-upgrades
+# Procure por origens de segurança (ex.: ...-security ou Debian-Security) sem estar comentadas.
+# Em algumas instalações o ficheiro usa sobretudo Origins-Pattern — veja a wiki Debian UnattendedUpgrades se este grep não mostrar o esperado.
 ```
 
 ### 9.1b `needrestart` e desconexão SSH (leia antes de reclamar do `unattended-upgrades`)
 
-O pacote **needrestart** (instalado na secção anterior) detecta daemons que precisam de reinício após atualização de bibliotecas. No ficheiro de exemplo [upstream](https://github.com/liske/needrestart/blob/master/ex/needrestart.conf), o modo de reinício é: **`l`** = só listar, **`i`** = interactivo, **`a`** = **reinício automático**. Em ambientes **não interactivos** (como o hook do `unattended-upgrades`), o modo interactivo pode fazer **fallback** para “só listar” — ou seja, **não** confundas “passar tudo para automático (`a`)" com “evitar surpresas”: o modo **`a`** pode **reiniciar serviços sem perguntar**, o que em acesso remoto pode ser **pior** se não souberes o que vai ser tocado.
+O pacote **needrestart** (instalado na secção anterior) detecta daemons que precisam de reinício após atualização de bibliotecas. No ficheiro de exemplo [upstream](https://github.com/liske/needrestart/blob/master/ex/needrestart.conf), o modo de reinício é: **`l`** = só listar, **`i`** = interactivo, **`a`** = **reinício automático**. Em ambientes **não interactivos** (como o hook do `unattended-upgrades`), o modo interactivo pode fazer **fallback** para “só listar” — ou seja, **não** confundas definir o modo **a** (automático) com “evitar surpresas”: o modo **a** pode **reiniciar serviços sem perguntar**, o que em acesso remoto pode ser **pior** se não souberes o que vai ser tocado.
 
 **Recomendações práticas (homelab com SSH remoto):**
 
@@ -1808,7 +1816,7 @@ sudo apt install htop iotop iftop ncdu tree -y
 Os CTs 100, 200 (e os que você criar depois) também precisam de:
 
 ```bash
-# Dentro de cada CT
+# Dentro de cada CT (consola como root no Proxmox; se estiveres como utilizador normal: sudo -i e depois estes comandos)
 apt update && apt install unattended-upgrades -y
 dpkg-reconfigure --priority=low unattended-upgrades
 ```
@@ -1830,6 +1838,13 @@ echo "- unattended-upgrades + ferramentas instaladas" >> ~/fortaleza-lab/diario.
 1. **README local** — visão geral atualizada do estado do lab
 2. **Diário de mudanças** — histórico do que você fez
 3. **Plano de recuperação** — passos para reconstruir do zero
+
+### 📸 Snapshot (recomendado)
+
+```bash
+# No host Proxmox — dataset conforme §0.8; renato com sudo
+sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase10
+```
 
 > **Laboratório descartável (filosofia):** aprender inclui quebrar, reinstalar e documentar. No Proxmox isso traduz-se em **snapshots** antes de mudanças grandes, **`vzdump`** e cópias de `/etc/pve` para disco externo — separar o que é **configuração do nó** do que são **dados das VMs**. Podes ainda manter pastas tipo `~/scripts` e `~/notes` dentro de `~/fortaleza-lab/` ou nas VMs de estudo (ver [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md)).
 
@@ -1967,6 +1982,7 @@ nano ~/sync-fortaleza-backups.sh
 ```bash
 #!/bin/bash
 # Sincroniza backups do Proxmox para o PC
+# Ajuste o destino SSH: use o Host do §2.4 (ex.: fortaleza) ou renato@IP_DO_PVE
 rsync -avz --delete \
   fortaleza:/root/backups/ \
   ~/fortaleza-backups/
@@ -1994,7 +2010,8 @@ cat > ~/fortaleza-lab/recuperacao.md << 'EOF'
 3. Verifique:
    - `systemctl status ssh`
    - `cat /etc/ssh/sshd_config.d/99-hardening.conf`
-4. Se config quebrada: comente as linhas problemáticas, restart ssh.
+4. Se config quebrada: comente as linhas problemáticas e reinicie o SSH (Debian 13: unidade `ssh`, não `sshd`):
+   - `sudo systemctl restart ssh`
 
 ## Cenário 2: Perdi o celular do 2FA
 
@@ -2008,8 +2025,8 @@ cat > ~/fortaleza-lab/recuperacao.md << 'EOF'
 1. Compre/recupere hardware
 2. Reinstale Proxmox VE 9.x (ISO atual da série 9)
 3. Configure rede igual: IP 192.168.1.100/24
-4. Restaure `/etc/pve` do último backup:
-   - `tar xzf etc-pve-DATE.tar.gz -C /`
+4. Restaure `/etc/pve` do último backup (como **root** no novo nó; ajuste o nome do ficheiro):
+   - `sudo tar xzf etc-pve-DATE.tar.gz -C /`
 5. **TLS / certificado do painel:** após restaurar numa máquina nova ou com hostname/IP diferentes, o browser pode alertar certificado não confiável até alinhares certificados com o nó atual. Consulte a wiki [Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management) e `man pvenode` na tua versão — **não** forces comandos de cluster (`pvecm`) copiados da internet sem ler a doc (contexto *single node* vs *cluster*).
 6. Restaure containers (templates + backups VM)
 7. Reconfigure Tailscale (re-autenticar device)
@@ -2023,10 +2040,10 @@ cat > ~/fortaleza-lab/recuperacao.md << 'EOF'
 ## Cenário 5: Firewall me trancou fora
 
 1. Console físico do Mini PC
-2. `pve-firewall stop`
-3. `systemctl stop proxmox-firewall`
-4. Editar `/etc/pve/firewall/cluster.fw` → `enable: 0`
-5. Corrigir as regras, depois `enable: 1` e restart
+2. `sudo pve-firewall stop`
+3. `sudo systemctl stop proxmox-firewall`
+4. Editar como root (ex.: `sudo nano /etc/pve/firewall/cluster.fw`) → `enable: 0`
+5. Corrigir as regras, depois `enable: 1` e reinicie os serviços de firewall conforme a [wiki Firewall](https://pve.proxmox.com/wiki/Firewall)
 
 ## Senhas e Segredos Críticos
 - TODOS no Bitwarden, pasta "Fortaleza Proxmox"
@@ -2122,10 +2139,12 @@ echo "- Backup automático via cron 03:00" >> ~/fortaleza-lab/diario.md
 - [ ] Irmão consegue conectar
 
 ## FASE 9 — Manutenção
+- [ ] Snapshot ZFS `snap-pre-fase9` (recomendado antes de automatizar upgrades)
 - [ ] unattended-upgrades ativo no PVE e nos CTs
 - [ ] htop/iotop/iftop instalados
 
 ## FASE 10 — Documentação
+- [ ] Snapshot ZFS `snap-pre-fase10` (recomendado antes de cron de backups em massa)
 - [ ] README.md em ~/fortaleza-lab/
 - [ ] diario.md com histórico
 - [ ] recuperacao.md (runbook)

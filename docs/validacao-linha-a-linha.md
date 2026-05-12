@@ -161,15 +161,37 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 6 — Linhas 1763–2062 (Fases 9 e 10 — manutenção automática e documentação viva)
+## Parte 6 — Linhas 1763–2079 (Fases 9 e 10 — manutenção automática e documentação viva)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
 
 > **Nota:** termina no `---` imediatamente antes do **Apêndice A**.
 
+### Verificações feitas
+
+- **Fase 9** — `unattended-upgrades`, `needrestart`, `apt-listchanges`; secção 9.1b (modos `l`/`i`/`a`, aviso contra `sed` cego); ferramentas `htop`/`iotop`/etc.; repetição nos CTs 100/200.
+- **Fase 10** — README heredoc, diário, script `backup-fortaleza.sh`, `tar tzf`, `crontab`, `rsync` off-site, runbook `recuperacao.md`, Git opcional.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| §9.1 | `grep "Allowed origins"` não bate com a chave real `Unattended-Upgrade::Allowed-Origins` do `50unattended-upgrades`. | `grep -A 12 'Unattended-Upgrade::Allowed-Origins'` + nota sobre `Origins-Pattern` / wiki. |
+| §9.1b | Frase com `` `a` `` e aspas misturadas — risco de renderização confusa. | Reformulação sem crases aninhadas no modo **a**. |
+| Fases 9–10 | Sem snapshot ZFS antes de automatizar upgrades / cron de backups — desalinhado das fases 4–8. | Blocos **📸 Snapshot** `snap-pre-fase9` e `snap-pre-fase10` + itens no Apêndice A. |
+| §9.3 | Quem entra no CT sem `root` pode não perceber o contexto. | Comentário: consola como root ou `sudo -i`. |
+| §10.4 | `rsync fortaleza:` assume `Host fortaleza` no PC sem o dizer. | Comentário no script: Host §2.4 ou `renato@IP`. |
+| Runbook §10.5 | «restart ssh» genérico; cenário 3 sem `sudo` no `tar`; cenário 5 sem `sudo` / editor. | `systemctl restart ssh` + unidade `ssh`; `sudo tar`; `sudo` nos stops e `sudo nano` + remissão wiki Firewall. |
+
+### Observações P2
+
+- O `grep` das origens ainda pode variar entre versões Debian/Proxmox — o aluno pode precisar de abrir o ficheiro à mão.
+- Mistura **você** / **tu** / **arquivo** — harmonização editorial futura.
+
 ---
 
-## Parte 7 — Linhas 2064–fim (Apêndices A–I, FAQ, fontes, rodapé)
+## Parte 7 — Linhas 2081–fim (Apêndices A–I, FAQ, fontes, rodapé)
 
 **Estado:** Pendente
 
@@ -186,4 +208,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização: Partes 1 a 5 — 2026-05-12.*
+*Última actualização: Partes 1 a 6 — 2026-05-12.*
