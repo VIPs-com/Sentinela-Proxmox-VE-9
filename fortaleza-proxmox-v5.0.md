@@ -377,7 +377,7 @@ ping -c 1 pve
 
 📚 **FUNDAMENTO:** Por padrão, o Proxmox vem configurado para usar o repositório **Enterprise**, que só funciona com subscription paga. Sem subscription, todo `apt update` falha com erro `401 Unauthorized`. Para uso doméstico, trocamos para o repositório **No-Subscription** (gratuito, mesmas atualizações com pequeno atraso).
 
-> ⚠️ **Proxmox VE 9 (Debian 13 Trixie) usa o formato moderno `deb822` (`.sources`).** Não confunda com o formato antigo `.list` — o APT em Trixie avisa sobre formato legacy; veja [Repository formats](https://pve.proxmox.com/wiki/Package_Repositories#repository_formats) na wiki.
+> ⚠️ **Proxmox VE 9 (Debian 13 Trixie) usa o formato moderno `deb822` (`.sources`).** Não confunda com o formato antigo `.list` — o APT em Trixie avisa sobre formato legacy; veja [Repository formats](https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_apt_repo_formats) na wiki.
 
 ### Desabilitar o repositório Enterprise
 
