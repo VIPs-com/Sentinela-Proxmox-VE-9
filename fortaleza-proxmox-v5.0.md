@@ -47,7 +47,7 @@ Cada fase segue sempre a mesma estrutura:
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia. |
-| 2026-05-12 | **Auditoria** — cruzamento com wiki/docs oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md); avisos *tech preview* do `proxmox-firewall`; notas ZFS, APT `Enabled: no`, supply chain de scripts remotos; URLs e disclaimers atualizados. |
+| 2026-05-12 | **Auditoria + ressalvas** — matriz [docs/audit-matrix.md](docs/audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
 
 ---
 
@@ -140,6 +140,10 @@ A estratégia correta é **isolar** o root, não eliminá-lo:
 3. 📱 **Celular do lado** durante a Fase 3 (2FA). Sem ele, você não loga.
 4. 🖥️ **Acesso físico ao Mini PC** funciona como "plano B" se tudo travar.
 5. 📝 **Documente cada mudança** num arquivo `~/lab-diario.md` (Fase 10).
+
+### Mini PC, RAM e o que fica ligado 24/7
+
+O **Proxmox (host)** pode ficar **sempre ligado** — agendamentos de backup, rede e endurecimento do guia **não exigem** que todas as VMs/CTs do teu laboratório (oficina, DMZ, etc.) estejam **acesas ao mesmo tempo**. Em hosts com **pouca RAM** (ex.: 16 GB), o uso típico é: **infra leve no host** (e eventualmente um CT como o Tailscale) **+ só as VMs que precisas naquele momento**; desliga ou suspende o resto quando não estiveres a estudar esse módulo. A **segurança do host** (SSH, 2FA, firewall, CrowdSec) protege a plataforma mesmo com poucos guests ligados — não é necessário “encher” o servidor para o guia fazer sentido.
 
 ### Pré-requisitos
 
@@ -1032,8 +1036,11 @@ sudo apt install crowdsec crowdsec-firewall-bouncer-nftables -y
 ```
 
 > O pacote `crowdsec-firewall-bouncer-nftables` aplica decisões via **nftables** (adequado quando o host usa firewall nft). A doc de instalação Linux exemplifica muitas vezes o bouncer **iptables**; no Proxmox com `proxmox-firewall`, o variante nftables costuma ser o mais coerente. Em caso de dúvida, veja [Firewall bouncer](https://docs.crowdsec.net/u/bouncers/firewall).
-> - `crowdsec` — o "cérebro" que lê logs e detecta padrões
-> - `crowdsec-firewall-bouncer-nftables` — o "braço" que bloqueia IPs via nftables
+
+**O que cada componente faz:**
+
+- `crowdsec` — o "cérebro" que lê logs e detecta padrões  
+- `crowdsec-firewall-bouncer-nftables` — o "braço" que bloqueia IPs via nftables
 
 ### 4.2 Whitelist (CRÍTICO para não se banir)
 
@@ -1095,6 +1102,8 @@ sudo cscli decisions list
 sudo nft list ruleset | grep -i crowdsec
 # Saída esperada: pelo menos uma linha mencionando 'crowdsec'
 ```
+
+> **CrowdSec + `proxmox-firewall` (nftables):** o host pode ter **vários** consumidores de nftables ao mesmo tempo. Os nomes de tabela/chain do bouncer **mudam entre versões**. Se, após a Fase 7, bans ou comportamentos estranhos deixarem de bater com o esperado, inspecione o conjunto completo com `sudo nft list ruleset` e cruze com a [documentação do bouncer](https://docs.crowdsec.net/u/bouncers/firewall) e a [wiki Firewall](https://pve.proxmox.com/wiki/Firewall) — não assumas um único nome de chain fixo copiado da internet.
 
 ### 4.3 (Opcional) Conectar ao CrowdSec Console
 
@@ -1259,6 +1268,8 @@ tailscale ip                     # IP da VPN (100.x.x.x)
 ip addr show tailscale0
 # Deve existir interface tailscale0 com IP 100.x.x.x
 ```
+
+> Se **`tailscale0` não existir**, o TUN/capabilities podem estar incompletos — reveja a Fase 5 (`pct set`, device passthrough) ou a doc [Tailscale em LXC](https://tailscale.com/docs/features/containers/lxc/lxc-unprivileged) (modo userspace só como último recurso, com pior desempenho típico).
 
 No seu PC/celular (Tailscale ativo):
 ```
@@ -1463,6 +1474,8 @@ Edite `/etc/pve/firewall/cluster.fw`, mude `enable: 1` para `enable: 0` na seç�
 ```bash
 sudo journalctl -u proxmox-firewall -n 50 --no-pager
 # Veja os erros e corrija as regras inválidas
+# Acompanhar em tempo real (Ctrl+C para sair):
+sudo journalctl -u proxmox-firewall -f
 ```
 
 ### 📝 Documente
@@ -1481,7 +1494,7 @@ echo "- Port forwarding removido do roteador" >> ~/fortaleza-lab/diario.md
 
 📚 **FUNDAMENTO:** ShellHub usa **túnel reverso via Docker**. A VM do irmão "liga" para o ShellHub na nuvem. Quando ele se conecta, o tráfego escorrega pelo túnel até cair na VM. Você não abre porta nenhuma.
 
-> ⚠️ **O método oficial do ShellHub Agent requer Docker.** Por isso vamos habilitar `nesting=1` e instalar Docker no LXC.
+> ⚠️ **O método oficial do ShellHub Agent requer Docker.** Por isso vamos habilitar `nesting=1` e instalar Docker no LXC. **Nota:** Docker dentro de LXC usa namespaces aninhados — mais overhead que um CT “só Debian”; para **laboratório isolado** (como o do irmão) é aceitável; não é o padrão típico de produção.
 
 ### 📸 Snapshot
 
@@ -1622,6 +1635,16 @@ cat /etc/apt/apt.conf.d/50unattended-upgrades | grep -A 5 "Allowed origins"
 # Procure por "Debian-Security" - deve estar ativo
 ```
 
+### 9.1b `needrestart` e desconexão SSH (leia antes de reclamar do `unattended-upgrades`)
+
+O pacote **needrestart** (instalado na secção anterior) detecta daemons que precisam de reinício após atualização de bibliotecas. No ficheiro de exemplo [upstream](https://github.com/liske/needrestart/blob/master/ex/needrestart.conf), o modo de reinício é: **`l`** = só listar, **`i`** = interactivo, **`a`** = **reinício automático**. Em ambientes **não interactivos** (como o hook do `unattended-upgrades`), o modo interactivo pode fazer **fallback** para “só listar” — ou seja, **não** confundas “passar tudo para automático (`a`)" com “evitar surpresas”: o modo **`a`** pode **reiniciar serviços sem perguntar**, o que em acesso remoto pode ser **pior** se não souberes o que vai ser tocado.
+
+**Recomendações práticas (homelab com SSH remoto):**
+
+- Trate janelas de `full-upgrade` / reinícios como **manutenção**: duas sessões SSH, ou consola física.  
+- Leia a documentação Debian sobre [UnattendedUpgrades](https://wiki.debian.org/UnattendedUpgrades) e o projeto [needrestart](https://github.com/liske/needrestart) antes de alterar `/etc/needrestart/needrestart.conf`.  
+- **Não copie** da internet receitas `sed` que mudam `$nrconf{restart}` para `'a'` sem entender o efeito — pode aumentar reinícios automáticos.
+
 ### 9.2 Ferramentas essenciais
 
 ```bash
@@ -1749,6 +1772,9 @@ mkdir -p "$BACKUP_DIR"
 # Backup do /etc/pve (configurações Proxmox)
 tar czf "$BACKUP_DIR/etc-pve-$DATE.tar.gz" /etc/pve/
 
+# Verificação básica: o tar deve listar sem erro (não extrai)
+tar tzf "$BACKUP_DIR/etc-pve-$DATE.tar.gz" >/dev/null && echo "OK: arquivo tar legível"
+
 # Manter só os últimos 30 backups
 ls -t "$BACKUP_DIR"/etc-pve-*.tar.gz | tail -n +31 | xargs -r rm
 
@@ -1761,6 +1787,13 @@ Permissões e teste:
 ```bash
 sudo chmod +x /usr/local/bin/backup-fortaleza.sh
 sudo /usr/local/bin/backup-fortaleza.sh
+```
+
+Teste manual do último backup (opcional, a qualquer momento):
+
+```bash
+LATEST=$(ls -t /root/backups/etc-pve-*.tar.gz | head -1)
+tar tzf "$LATEST" >/dev/null && echo "Backup íntegro: $LATEST"
 ```
 
 ### Agendar backup diário via cron
@@ -1831,8 +1864,9 @@ cat > ~/fortaleza-lab/recuperacao.md << 'EOF'
 3. Configure rede igual: IP 192.168.1.100/24
 4. Restaure `/etc/pve` do último backup:
    - `tar xzf etc-pve-DATE.tar.gz -C /`
-5. Restaure containers (templates + backups VM)
-6. Reconfigure Tailscale (re-autenticar device)
+5. **TLS / certificado do painel:** após restaurar numa máquina nova ou com hostname/IP diferentes, o browser pode alertar certificado não confiável até alinhares certificados com o nó atual. Consulte a wiki [Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management) e `man pvenode` na tua versão — **não** forces comandos de cluster (`pvecm`) copiados da internet sem ler a doc (contexto *single node* vs *cluster*).
+6. Restaure containers (templates + backups VM)
+7. Reconfigure Tailscale (re-autenticar device)
 
 ## Cenário 4: Me banni acidentalmente no CrowdSec
 
@@ -1965,6 +1999,7 @@ Cole isso em um arquivo `~/fortaleza-lab/comandos.md`:
 | Tentativas SSH | `sudo journalctl -u ssh -f` | Tempo real |
 | Tentativas falhas | `sudo journalctl -u ssh \| grep -i fail` | Lista |
 | Status firewall | `sudo systemctl status proxmox-firewall` | active (running) |
+| Log firewall em tempo real | `sudo journalctl -u proxmox-firewall -f` | Ctrl+C para sair |
 | Ruleset nftables | `sudo nft list ruleset \| less` | Regras ativas |
 | Status Tailscale (CT 100) | `sudo pct exec 100 -- tailscale status` | Peers |
 | Recursos | `htop` | CPU/RAM/processos |
@@ -1972,6 +2007,7 @@ Cole isso em um arquivo `~/fortaleza-lab/comandos.md`:
 | Atualizações pendentes | `apt list --upgradable 2>/dev/null` | Pacotes |
 | Sincronização NTP | `timedatectl status` | synchronized: yes |
 | Backups recentes | `ls -lh /root/backups/ \| tail` | Backups recentes |
+| Testar leitura do último backup | `L=$(ls -t /root/backups/etc-pve-*.tar.gz \| head -1); tar tzf "$L" >/dev/null && echo OK` | `OK` se o `.tar.gz` não está corrompido |
 
 ---
 
@@ -2044,6 +2080,9 @@ R: Não. Tailscale (até 100 dispositivos), ShellHub Cloud Community, CrowdSec, 
 
 **P: Quanto de RAM isso tudo gasta?**
 R: ~600 MB extras com tudo rodando (Proxmox + Tailscale CT + ShellHub CT + CrowdSec + bouncer). Sobra ~14-15 GB para seus labs.
+
+**P: Comandos e versões deste guia vão desatualizar com o tempo?**
+R: **Sim.** Nomes de pacotes, menus da GUI e detalhes de `nft`/`sshd` mudam entre *point releases*. Antes de cada `dist-upgrade` ou mudança grande, confirme com `pveversion`, [wiki Proxmox](https://pve.proxmox.com/wiki/Main_Page), [release notes / anúncios](https://forum.proxmox.com/forums/announcements.11/) e a [matriz de auditoria](docs/audit-matrix.md). A **ordem das fases** e a lógica (NTP antes de 2FA, backup antes de firewall) permanecem válidas.
 
 **P: E se eu perder o celular do 2FA?**
 R: Use os códigos de recuperação salvos no Bitwarden. Em última instância, acesse pelo console físico como root e edite `/etc/pam.d/sshd`.
@@ -2161,7 +2200,9 @@ Este guia é **pedagógico** e foi confrontado com documentação oficial em 202
 | Tópico | Fonte |
 |--------|--------|
 | ShellHub | [ShellHub Documentation](https://docs.shellhub.io/) |
-| Atualizações não interativas Debian | [UnattendedUpgrades](https://wiki.debian.org/UnattendedUpgrades) |
+| Atualizações não interactivas Debian | [UnattendedUpgrades](https://wiki.debian.org/UnattendedUpgrades) |
+| Política de reinício após upgrades (`needrestart`) | [needrestart (GitHub)](https://github.com/liske/needrestart) — ler `needrestart.conf` antes de alterar `$nrconf{restart}` |
+| Certificados TLS / GUI após restore ou novo nó | [Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management) |
 
 ### Anúncios de versão Proxmox
 

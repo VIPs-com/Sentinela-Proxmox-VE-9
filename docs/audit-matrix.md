@@ -20,8 +20,8 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 | 6 | 2FA painel `pam` | Documentação GUI Proxmox (TFA) | **OK** (fluxo coerente com permissões PVE) |
 | 7 | `proxmox-firewall`, nftables | [Firewall (Proxmox VE)](https://pve.proxmox.com/wiki/Firewall) | **Ajuste** — wiki: *tech preview*, **não indicada para produção**; após mudança de backend, VMs/CT podem precisar de reinício (citado na wiki) |
 | 8 | Docker em LXC, ShellHub, GPG | [ShellHub docs](https://docs.shellhub.io/), Docker [get.docker.com](https://get.docker.com/) | **OK** (padrão homelab) + **Risco** scripts remotos e nesting |
-| 9 | `unattended-upgrades` | Debian [AutomaticUpdates](https://wiki.debian.org/UnattendedUpgrades) | **OK** |
-| 10 | Backups, cron, documentação | Alinhado a boas práticas; sem conflito com PVE | **OK** |
+| 9 | `unattended-upgrades`, `needrestart` | Debian [UnattendedUpgrades](https://wiki.debian.org/UnattendedUpgrades), [needrestart](https://github.com/liske/needrestart) | **OK** + **Ajuste** (secção 9.1b: não promover `restart=a` como “fix” para SSH; ler modos `l`/`i`/`a`) |
+| 10 | Backups, cron, documentação | Alinhado a boas práticas; `tar tzf` para integridade básica | **OK** |
 
 ---
 
@@ -40,6 +40,18 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 | Instalação CrowdSec `curl -s https://install.crowdsec.net \| sudo sh` | Documentação oficial CrowdSec Linux | **OK** + **Risco** supply chain |
 | `crowdsec-firewall-bouncer-nftables` | Pacote suportado (alternativa ao bouncer iptables); doc Linux mostra iptables como exemplo genérico | **OK** para host com nftables |
 | Ficheiro whitelist `parsers/s02-enrich/whitelists.yaml` | Estrutura pode variar; pós-instalação: confirmar com `cscli parsers list` / árvore `/etc/crowdsec` | **Ajuste** (nota de validação no guia) |
+| Interacção CrowdSec (nft) + `proxmox-firewall` | Vários consumidores nft no mesmo host; inspeccionar `nft list ruleset` + docs bouncer + wiki Firewall | **Ajuste** (nota qualitativa no guia Fase 4) |
+
+---
+
+## Sugestões externas analisadas e **não** incorporadas (ou incorporadas corrigidas)
+
+| Sugestão | Motivo |
+|----------|--------|
+| `sed` para `$nrconf{restart} = 'a'` como “solução” a desconexões SSH | Modo **`a`** = reinício **automático** de serviços; pode **aumentar** surpresas. Em `unattended-upgrades` não-interactivo, o modo interactivo pode fazer fallback a *list-only* — ver [needrestart.conf](https://github.com/liske/needrestart/blob/master/ex/needrestart.conf). |
+| `mv /etc/apt/sources.list.d/pve-enterprise.sources /root/` | Desorganiza o APT; a wiki documenta **`Enabled: no`** no deb822. |
+| `ifupdown2` obrigatório para todos após IP fixo | Já é **default** em instalações PVE novas desde 7.x; só necessário se instalaste PVE em cima de Debian manual — ver [Network Configuration](https://pve.proxmox.com/wiki/Network_Configuration). |
+| `tailscale status \| grep Userspace` como verificação canónica | Frágil entre versões; o guia usa **`ip addr show tailscale0`** (teste objectivo). |
 
 ---
 
