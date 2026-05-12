@@ -1,6 +1,6 @@
 # Scripts e exemplos — Fortaleza Proxmox (bónus)
 
-Estes ficheiros **não substituem** as [fases 0–10 do guia principal](../fortaleza-proxmox-v5.0.md): são **atalhos** depois de entenderes o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechares o lab com confiança.
+Estes ficheiros **não substituem** as [fases 0–10 do guia principal](../fortaleza-proxmox-v5.0.md): são **atalhos** depois de entenderes o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechares o lab com confiança. **Antes de tudo:** se te perdes no *repo*, lê o [manual de usabilidade](../docs/manual-usabilidade-fortaleza.md) (estágios A–E).
 
 **Segurança:** nunca faças commit de `.env`, tokens Telegram, chaves privadas, nem dumps de `/etc/pve` com segredos.
 

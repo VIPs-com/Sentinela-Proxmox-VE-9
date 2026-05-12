@@ -66,6 +66,7 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 | [README.md](README.md) | Índice numerado da pasta `docs/` (trilhas 0 a 4); separa núcleo, complementos e operação opcional. |
 | [CHANGELOG-repositorio.md](CHANGELOG-repositorio.md) | Histórico editorial do repositório; o changelog **curto** no guia principal remete aqui. |
 | [validacao-linha-a-linha.md](validacao-linha-a-linha.md) | Validação manual do **guia principal** por partes (registo vivo; Partes 1–7 concluídas). |
+| [manual-usabilidade-fortaleza.md](manual-usabilidade-fortaleza.md) | **GPS do repositório:** estágios A–E (onde estás, o que abrir); usabilidade para alunos — não substitui a auditoria por fase. |
 | [../scripts/README.md](../scripts/README.md) | Bónus **pós-fases**: health-check só-leitura, exemplos systemd, sync no PC (não substitui a auditoria por fase). |
 
 ## Próximas reverificações recomendadas

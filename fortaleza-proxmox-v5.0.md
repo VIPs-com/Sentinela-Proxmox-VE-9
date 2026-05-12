@@ -27,6 +27,7 @@ A v4.0 já cobria SSH, 2FA, CrowdSec, Tailscale, nftables e ShellHub. A v5.0 adi
 | **FASE 10: Documentação viva** | README local + diário + plano de recuperação |
 | **Apêndice G:** lista do que guardar no Bitwarden | Não esquecer nenhum segredo |
 | **Apêndice H:** plano de recuperação de desastre | Você vai precisar um dia |
+| **Manual de usabilidade do repo** (estágios A–E) | Saber **onde estás** no Git vs no host — [docs/manual-usabilidade-fortaleza.md](docs/manual-usabilidade-fortaleza.md) |
 | **Bónus `scripts/`** (health-check, `--json`, systemd, sync PC, `Makefile`) | Festejo pós-fases — [scripts/README.md](scripts/README.md) |
 
 ---
@@ -87,12 +88,15 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 
 ### 7. Se empatares
 
-1. Volta ao [mapa do curso](docs/mapa-do-curso.md) e confirma em que bloco estás.  
-2. Relê só o **FUNDAMENTO** e o **SE DEU ERRADO** dessa subsecção.  
-3. Consulta a [matriz de auditoria](docs/audit-matrix.md) se a dúvida for “isto ainda bate com a documentação oficial?”.  
-4. Apêndice H (recuperação) se perdeste acesso.
+1. Volta ao [manual de usabilidade](docs/manual-usabilidade-fortaleza.md) e confirma o **estágio** (A–E) em que estás.  
+2. Volta ao [mapa do curso](docs/mapa-do-curso.md) e confirma em que **bloco** do host estás.  
+3. Relê só o **FUNDAMENTO** e o **SE DEU ERRADO** dessa subsecção no guia.  
+4. Consulta a [matriz de auditoria](docs/audit-matrix.md) se a dúvida for “isto ainda bate com a documentação oficial?”.  
+5. Apêndice H (recuperação) no guia se perdeste acesso.
 
----
+### 8. Manual de usabilidade do repositório (GPS)
+
+Se não souberes **em que “andar” do projecto** estás (repo vs host vs VM vs scripts bónus), abre o [manual de usabilidade em `docs/`](docs/manual-usabilidade-fortaleza.md) — estágios A a E e o que abrir em cada um. Depois voltas a este guia na fase correcta.
 
 ## Changelog da documentação
 
@@ -101,6 +105,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
 | 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha do guia principal **concluída** (Partes 1–7): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 | 2026-05-12 | **Bónus `scripts/`:** [scripts/README.md](scripts/README.md) — `fortaleza-health-check.sh` (`--json`), [Makefile](Makefile) (`make check`), exemplos systemd para backup de `/etc/pve`, `pc/sync-fortaleza-backups.example.sh`; remissões na Fase 10 e Apêndice B. |
+| 2026-05-12 | **Manual de usabilidade do repo:** [docs/manual-usabilidade-fortaleza.md](docs/manual-usabilidade-fortaleza.md) (estágios A–E); entradas no [README](README.md) raiz, [docs/README.md](docs/README.md), [mapa-do-curso.md](mapa-do-curso.md) e **Dicas para o aluno** §7–8. |
 
 <span id="glossario-completo"></span>
 

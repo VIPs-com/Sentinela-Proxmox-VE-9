@@ -1,10 +1,11 @@
 # Índice da pasta `docs/`
 
-**Primeira vez na pasta `docs`? Lê isto na ordem.** Os ficheiros aqui **complementam** o guia principal na raiz do repositório; nenhum deles substitui as fases 0–10 do host.
+**Primeira vez no repositório?** Abre primeiro o [manual de usabilidade](manual-usabilidade-fortaleza.md) (estágios A–E: onde estás, o que abrir a seguir). **Primeira vez só na pasta `docs`?** Lê isto na ordem da tabela. Os ficheiros aqui **complementam** o guia principal na raiz; nenhum substitui as fases 0–10 do host.
 
 | Trilha | Ficheiro | O que é |
 |--------|----------|---------|
-| **0 — Entrada** | [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores (onboarding, blocos A–G no host, VM, GPG). **Começa aqui** se estiveres perdido. |
+| **Guia de uso do repo** | [manual-usabilidade-fortaleza.md](manual-usabilidade-fortaleza.md) | **Pega na mão:** estágios A–E, ficheiro certo em cada momento, dicas para não te perderes entre host / VM / scripts. |
+| **0 — Entrada** | [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores (onboarding, blocos A–G no host, VM, GPG). **Começa aqui** se já leste o manual e queres o mapa do laboratório. |
 | **1 — Núcleo do curso (host)** | [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md) | Guia canónico: fases 0–10 e apêndices. É o único “curso” passo a passo do Proxmox endurecido. |
 | **2 — Rastreio técnico** | [audit-matrix.md](audit-matrix.md) | Matriz fase × fonte oficial × conclusão. **Não** é lista de comandos a executar; serve para cruzar com a wiki e docs Proxmox/CrowdSec/etc. |
 | **3 — Complementos pedagógicos** | [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs** de estudo (não confundir com checklist do host). |

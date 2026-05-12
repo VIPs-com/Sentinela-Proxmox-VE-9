@@ -5,7 +5,7 @@
 
 Documentação em Markdown para um homelab **Proxmox VE 9.x** (Debian 13 Trixie): rede, APT, SSH com 2FA, CrowdSec, Tailscale em LXC, firewall `proxmox-firewall`, ShellHub e rotinas de backup — com foco em não ficar trancado fora do servidor.
 
-Perdido? Começa pelo [mapa do curso](docs/mapa-do-curso.md) (visão geral por setores: host, VM, GPG). **Lista ordenada de tudo em `docs/`:** [docs/README.md](docs/README.md) (trilhas 0 a 4).
+Perdido? Abre o [manual de usabilidade](docs/manual-usabilidade-fortaleza.md) (estágios A–E); depois o [mapa do curso](docs/mapa-do-curso.md) (host, VM, GPG). **Lista ordenada de tudo em `docs/`:** [docs/README.md](docs/README.md) (trilhas 0 a 4b).
 
 **Filosofia:** o projecto assume *fundamentos antes da escala* — segurança e documentação no host, laboratório que podes partir e recuperar, sem fingir um datacenter no primeiro dia. Parte da narrativa veio do plano anterior **Linux Foundation Lab** (Debian 13 bare metal); o caminho actual é **Proxmox-first** no mini PC N5095, com evolução de hardware documentada para fases futuras.
 
@@ -13,7 +13,8 @@ Perdido? Começa pelo [mapa do curso](docs/mapa-do-curso.md) (visão geral por s
 
 | Ficheiro | Descrição |
 |----------|-----------|
-| [docs/README.md](docs/README.md) | **Índice da pasta docs** — ordem de leitura (trilhas 0 a 4); núcleo vs complemento vs operação. |
+| [docs/README.md](docs/README.md) | **Índice da pasta docs** — ordem de leitura (trilhas 0 a 4b); núcleo vs complemento vs operação. |
+| [docs/manual-usabilidade-fortaleza.md](docs/manual-usabilidade-fortaleza.md) | **Manual de usabilidade:** em que estágio estás (A–E), o que fazer a seguir, links certos. |
 | [docs/mapa-do-curso.md](docs/mapa-do-curso.md) | Mapa do laboratório: onboarding, blocos A–G do host, trilha Linux em VM, ponte GPG/Obsidian. |
 | [fortaleza-proxmox-v5.0.md](fortaleza-proxmox-v5.0.md) | Guia principal (fases 0–10 e apêndices). |
 | [docs/audit-matrix.md](docs/audit-matrix.md) | Matriz de auditoria: fases × fontes oficiais × conclusão (última revisão 2026-05-12). |
