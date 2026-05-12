@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–4): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–5): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -1411,6 +1411,13 @@ echo "- IP Tailscale (IPv4) do CT 100: $(sudo pct exec 100 -- tailscale ip -4)" 
 
 Vamos usar `pam`. **O 2FA do painel é separado do 2FA do SSH** — tem que configurar de novo.
 
+### 📸 Snapshot (recomendado)
+
+```bash
+# No host Proxmox — dataset conforme §0.8; renato com sudo
+sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase6
+```
+
 ### ⚙️ Passo a passo
 
 Acesse `https://192.168.1.100:8006` (via Tailscale ou rede local) e logue como **root@pam** pela última vez.
@@ -1472,6 +1479,7 @@ echo "- renato@pam Administrator com 2FA TOTP" >> ~/fortaleza-lab/diario.md
 ### 📸 Snapshot e backup
 
 ```bash
+# No host Proxmox — dataset conforme §0.8; renato com sudo
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase7
 sudo tar czf /root/backups/etc-pve-fase7-$(date +%F).tar.gz /etc/pve/
 ```
@@ -1573,10 +1581,11 @@ fi
 
 ```bash
 # Do seu PC (com Tailscale):
-ssh fortaleza                 # → deve funcionar
+ssh fortaleza                 # → deve funcionar (se configuraste Host no §2.4)
+# Senão: ssh -i ~/.ssh/chave_fortaleza renato@192.168.1.100
 
 # Do seu PC (na rede local):
-ssh renato@192.168.1.100      # → deve funcionar
+ssh renato@192.168.1.100      # → deve funcionar (troca o IP se o teu nó for outro)
 
 # Do celular no 4G (sem Tailscale):
 # Tente acessar IP_PUBLICO_CASA porta 22 → deve dar timeout
@@ -1601,7 +1610,7 @@ sudo systemctl stop proxmox-firewall
 sudo systemctl stop pve-firewall
 sudo pve-firewall stop
 ```
-Edite `/etc/pve/firewall/cluster.fw`, mude `enable: 1` para `enable: 0` na seção `[OPTIONS]`. Reinicie o serviço quando corrigir as regras.
+Edite como root (ex.: `sudo nano /etc/pve/firewall/cluster.fw`), mude `enable: 1` para `enable: 0` na seção `[OPTIONS]`. Reinicie o serviço quando corrigir as regras.
 
 **Erro:** `proxmox-firewall.service: failed`
 **Solução:**
@@ -1624,15 +1633,16 @@ echo "- Port forwarding removido do roteador" >> ~/fortaleza-lab/diario.md
 
 # 🟢 FASE 8 — Laboratório do Irmão (ShellHub + GPG)
 
-🎯 **OBJETIVO:** VM isolada para o irmão estudar GPG, sem expor sua rede e sem entregar acesso ao lab.
+🎯 **OBJETIVO:** Container (LXC) isolado para o irmão estudar GPG, sem expor sua rede e sem entregar acesso ao lab.
 
-📚 **FUNDAMENTO:** ShellHub usa **túnel reverso via Docker**. A VM do irmão "liga" para o ShellHub na nuvem. Quando ele se conecta, o tráfego escorrega pelo túnel até cair na VM. Você não abre porta nenhuma.
+📚 **FUNDAMENTO:** ShellHub usa **túnel reverso via Docker**. O CT do irmão "liga" para o ShellHub na nuvem. Quando ele se conecta, o tráfego escorrega pelo túnel até cair no container. Você não abre porta nenhuma.
 
 > ⚠️ **O método oficial do ShellHub Agent requer Docker.** Por isso vamos habilitar `nesting=1` e instalar Docker no LXC. **Nota:** Docker dentro de LXC usa namespaces aninhados — mais overhead que um CT “só Debian”; para **laboratório isolado** (como o do irmão) é aceitável; não é o padrão típico de produção.
 
 ### 📸 Snapshot
 
 ```bash
+# No host Proxmox — dataset conforme §0.8; renato com sudo
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase8
 ```
 
@@ -1701,17 +1711,17 @@ No painel ShellHub, **Connect** ao lado do device:
 ssh irmao@SSHID.shellhub.io
 ```
 
-Mande esse comando para o irmão. Ele cola no terminal dele e cai direto na VM.
+Mande esse comando para o irmão. Ele cola no terminal dele e cai direto no CT (consola ShellHub).
 
 ### 8.7 Bônus pedagógico — GPG na prática
 
 Primeiro exercício para ele:
 
 ```bash
-# Na VM dele (como irmao)
+# No CT dele (como irmao)
 gpg --full-generate-key
-# Tipo: 9 (ECC sign and encrypt) → Curva: 1 (Curve 25519)
-# Validade: 1y, Nome: dele, Email: dele
+# Os números de menu variam com a versão do GnuPG — escolha ECC (preferencialmente Curve25519 / Ed25519) se existir.
+# Exemplo típico (GnuPG 2.2.x): tipo 9 (ECC sign and encrypt) → curva 1 (Curve25519); validade: 1y; nome e email dele.
 
 gpg --armor --export irmao@email.com > irmao.pub
 cat irmao.pub

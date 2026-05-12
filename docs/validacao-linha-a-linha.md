@@ -132,13 +132,36 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 5 — Linhas 1404–1751 (Fases 6 a 8 — painel 2FA, proxmox-firewall, ShellHub)
+## Parte 5 — Linhas 1404–1761 (Fases 6 a 8 — painel 2FA, proxmox-firewall, ShellHub)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
+
+> **Nota:** termina no `---` imediatamente antes da **Fase 9**.
+
+### Verificações feitas
+
+- **Fase 6** — utilizador `renato@pam`, permissão Administrator, TOTP + recovery keys; remissão a IP de exemplo e acesso via Tailscale/LAN; alinhamento com realms `pam` vs `pve`.
+- **Fase 7** — snapshot + `tar` de `/etc/pve`; instalação `proxmox-firewall`; quatro ACCEPT antes de DROP; opções Datacenter e nó; backend nftables e *tech preview*; `systemctl` / `nft` / `iptables` PVEFW; CrowdSec + coexistência nft; testes de conectividade e fecho de port forwarding; troubleshooting com paragem de serviços e `cluster.fw`.
+- **Fase 8** — CT 200, `nesting`/`keyctl`, Docker `get.docker.com`, ShellHub cloud, fluxo SSH do irmão; exercício GPG com `gpg --full-generate-key`.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| Fase 6 | Sem snapshot ZFS antes de alterações sensíveis ao acesso web — inconsistente com fases vizinhas. | Bloco **📸 Snapshot (recomendado)** com `snap-pre-fase6` + comentário §0.8 / `sudo`. |
+| Fase 7 | Snapshot `zfs` sem contexto de dataset/utilizador; teste SSH só com `ssh fortaleza`. | Comentário no bloco ZFS; testes com fallback `ssh -i … renato@IP` e nota para trocar IP. |
+| Fase 7 **Se deu errado** | «Edite `/etc/pve/firewall/cluster.fw`» sem indicar privilégios de root. | Texto: `sudo nano` (ou equivalente) como root. |
+| Fase 8 | Objetivo e texto falavam em **VM** mas o guia cria **LXC** (`pct`, CT 200). | Wording: container/LXC/CT; comentário no snapshot Fase 8; §8.6 «cai no CT»; §8.7 comentário GnuPG e menus variáveis. |
+
+### Observações P2
+
+- **§8.7 / GPG:** o exercício «tu importas / cifras» assume que corres comandos no **teu** ambiente com GnuPG — o guia não separa explicitamente «no teu PC» vs «no CT» em todos os blocos (já era ambíguo).
+- Mistura **você** / **tu** / **sua** — harmonização editorial futura.
 
 ---
 
-## Parte 6 — Linhas 1753–2052 (Fases 9 e 10 — manutenção automática e documentação viva)
+## Parte 6 — Linhas 1763–2062 (Fases 9 e 10 — manutenção automática e documentação viva)
 
 **Estado:** Pendente
 
@@ -146,7 +169,7 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 7 — Linhas 2054–fim (Apêndices A–I, FAQ, fontes, rodapé)
+## Parte 7 — Linhas 2064–fim (Apêndices A–I, FAQ, fontes, rodapé)
 
 **Estado:** Pendente
 
@@ -163,4 +186,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização: Partes 1 a 4 — 2026-05-12.*
+*Última actualização: Partes 1 a 5 — 2026-05-12.*
