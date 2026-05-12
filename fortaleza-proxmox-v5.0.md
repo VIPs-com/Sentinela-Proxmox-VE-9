@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–3): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–4): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -1095,6 +1095,7 @@ echo "- 2FA TOTP ativo no SSH, nullok removido" >> ~/fortaleza-lab/diario.md
 ### 📸 Snapshot
 
 ```bash
+# No host Proxmox — dataset conforme §0.8 (ex.: rpool/ROOT/pve-1); renato com sudo
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase4
 ```
 
@@ -1143,6 +1144,7 @@ whitelist:
 
 ```bash
 sudo systemctl restart crowdsec
+# Unidade do bouncer (pacote nftables): em Debian costuma ser crowdsec-firewall-bouncer
 sudo systemctl enable --now crowdsec-firewall-bouncer
 ```
 
@@ -1229,6 +1231,7 @@ echo "- CrowdSec + bouncer nftables ativo" >> ~/fortaleza-lab/diario.md
 ### 📸 Snapshot
 
 ```bash
+# No host Proxmox — mesmo dataset que nas outras fases; renato com sudo
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase5
 ```
 
@@ -1295,7 +1298,7 @@ Antes de instalar o Tailscale, confirme **rede e DNS** dentro do CT (sem isso, `
 
 ```bash
 ping -c 2 1.1.1.1 && echo "Rede IP OK" || echo "Sem reachability IP — verifique gateway/IP estático do CT no Proxmox"
-ping -c 1 -W 3 tailscale.com && echo "Resolução DNS OK (tailscale.com)" || echo "Falhou reachability ou DNS — confira /etc/resolv.conf e os dns-nameservers usados na criação do CT"
+ping -c 1 -W 3 tailscale.com && echo "Resolução DNS OK (tailscale.com)" || echo "Falhou ICMP ou DNS — confira /etc/resolv.conf; se o ping falhar mas a rede estiver OK, teste: curl -fsSI --max-time 5 https://tailscale.com/ | head -n1"
 ```
 
 ```bash
@@ -1393,7 +1396,7 @@ Deve carregar o painel mesmo via 4G.
 ```bash
 echo "## $(date +%F %H:%M) - Fase 5 concluída" >> ~/fortaleza-lab/diario.md
 echo "- CT 100 vpn-tailscale ativo com subnet routing" >> ~/fortaleza-lab/diario.md
-echo "- IP Tailscale do PVE: $(sudo pct exec 100 -- tailscale ip)" >> ~/fortaleza-lab/diario.md
+echo "- IP Tailscale (IPv4) do CT 100: $(sudo pct exec 100 -- tailscale ip -4)" >> ~/fortaleza-lab/diario.md
 ```
 
 ---

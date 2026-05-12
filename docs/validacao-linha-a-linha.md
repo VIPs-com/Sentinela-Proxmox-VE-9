@@ -104,27 +104,49 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 4 — Linhas 1089–1450 (Fase 4–5 CrowdSec / Tailscale)
+## Parte 4 — Linhas 1089–1402 (Fases 4 e 5 — CrowdSec e Tailscale em LXC)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
 
-*(Intervalo actualizado: a Fase 4 começa na linha ~1089 após as edições.)*
+> **Nota:** o intervalo **não** inclui a Fase 6 (2FA no painel): termina no `---` imediatamente antes de `# FASE 6`, para coincidir com o título «CrowdSec / Tailscale».
+
+### Verificações feitas
+
+- **Fase 4** — `curl|sh` com remissão a instalação manual; pacote `crowdsec-firewall-bouncer-nftables` e nota iptables vs nft; whitelist com CIDR local + Tailscale `100.64.0.0/10`; `systemctl` em `crowdsec` e bouncer; comandos `cscli` e `nft`; troubleshooting `cscli decisions`.
+- **Fase 5** — CT 100, template Debian 13, rede estática; `pct set` (`keyctl`, `nesting`, `/dev/net/tun`); pings de pré-checagem; `tailscale up` + subnet + `sysctl` forwarding; aprovação de rotas no admin; verificação `tailscale0`; doc CrowdSec + PVE na Fase 7 referenciada onde relevante.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| Snapshots Fase 4 e 5 | Sem contexto de *quem* corre nem remissão ao dataset da §0.8 (inconsistente com Fases 1–3). | Comentários no bloco: host Proxmox, dataset §0.8, `renato` com `sudo`. |
+| §4.2 | O nome da unidade systemd do bouncer não era óbvio para quem só vê o nome do pacote `…-nftables`. | Comentário: em Debian a unidade costuma ser `crowdsec-firewall-bouncer`. |
+| §5.4 | Mensagem de erro do `ping tailscale.com` misturava ICMP bloqueado com falha de DNS. | Texto separado + `curl -fsSI` opcional se ICMP falhar com rede OK. |
+| §5 **Documente** | «IP Tailscale do PVE» — o comando obtém o IP do **CT 100**, não do hipervisor. | Texto e comando: IPv4 do CT com `tailscale ip -4`. |
+
+### Observações P2
+
+- Mistura **você** / **tu** / **compartilha** (PT-BR) vs resto do guia — harmonização editorial futura.
+- Tabela do CT (IP `192.168.1.110`) e subnet `192.168.1.0/24` são exemplos; já alinhados às Dicas noutras fases.
 
 ---
 
-## Parte 5 — Linhas 1451–1850 (Fase 6–8)
+## Parte 5 — Linhas 1404–1751 (Fases 6 a 8 — painel 2FA, proxmox-firewall, ShellHub)
 
 **Estado:** Pendente
 
 ---
 
-## Parte 6 — Linhas 1851–2250 (Fase 9–10 e apêndices iniciais)
+## Parte 6 — Linhas 1753–2052 (Fases 9 e 10 — manutenção automática e documentação viva)
 
 **Estado:** Pendente
 
+> **Nota:** termina no `---` imediatamente antes do **Apêndice A**.
+
 ---
 
-## Parte 7 — Linhas 2251–fim (FAQ, apêndices finais, fontes)
+## Parte 7 — Linhas 2054–fim (Apêndices A–I, FAQ, fontes, rodapé)
 
 **Estado:** Pendente
 
@@ -141,4 +163,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização: Partes 1 a 3 — 2026-05-12.*
+*Última actualização: Partes 1 a 4 — 2026-05-12.*
