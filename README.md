@@ -2,12 +2,15 @@
 
 Documentação em Markdown para um homelab **Proxmox VE 9.x** (Debian 13 Trixie): rede, APT, SSH com 2FA, CrowdSec, Tailscale em LXC, firewall `proxmox-firewall`, ShellHub e rotinas de backup — com foco em não ficar trancado fora do servidor.
 
+Perdido? Começa pelo [mapa do curso](docs/mapa-do-curso.md) (visão geral por setores: host, VM, GPG).
+
 **Filosofia:** o projecto assume *fundamentos antes da escala* — segurança e documentação no host, laboratório que podes partir e recuperar, sem fingir um datacenter no primeiro dia. Parte da narrativa veio do plano anterior **Linux Foundation Lab** (Debian 13 bare metal); o caminho actual é **Proxmox-first** no mini PC N5095, com evolução de hardware documentada para fases futuras.
 
 ## Conteúdo
 
 | Ficheiro | Descrição |
 |----------|-----------|
+| [docs/mapa-do-curso.md](docs/mapa-do-curso.md) | Mapa do laboratório: onboarding, blocos A–G do host, trilha Linux em VM, ponte GPG/Obsidian. |
 | [fortaleza-proxmox-v5.0.md](fortaleza-proxmox-v5.0.md) | Guia principal (fases 0–10 e apêndices). |
 | [docs/audit-matrix.md](docs/audit-matrix.md) | Matriz de auditoria: fases × fontes oficiais × conclusão (última revisão 2026-05-12). |
 | [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs de estudo** (não é checklist do host PVE). |

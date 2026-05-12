@@ -62,6 +62,7 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 |-----------|-----|
 | [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs** de estudo; explícito que **não** é checklist do host PVE. |
 | [roadmap-hardware.md](roadmap-hardware.md) | Narrativa N5095 → i7 → Xeon; contexto do legado *Linux Foundation Lab*. |
+| [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores: onboarding, blocos A–G do guia Fortaleza, trilha Linux em VM, ponte para curso GPG externo/Obsidian. |
 
 ---
 

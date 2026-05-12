@@ -8,6 +8,8 @@
 
 > **Status da documentação:** guia de homelab **revisado contra fontes oficiais** em 2026-05-12. Não substitui suporte enterprise nem auditoria profissional. Matriz fase × fonte × conclusão: [docs/audit-matrix.md](docs/audit-matrix.md).
 
+> **Perdido nos estudos?** Visão geral por setores (onboarding, blocos A–G, VM, GPG): [docs/mapa-do-curso.md](docs/mapa-do-curso.md).
+
 ---
 
 ## 📌 O que mudou em relação às versões anteriores
@@ -40,6 +42,8 @@ Cada fase segue sempre a mesma estrutura:
 
 > ⚠️ **Não pule fases.** A ordem foi escolhida para você nunca perder o acesso ao servidor.
 
+Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curso](docs/mapa-do-curso.md).
+
 ---
 
 ## Changelog da documentação
@@ -50,6 +54,7 @@ Cada fase segue sempre a mesma estrutura:
 | 2026-05-12 | **Auditoria + ressalvas** — matriz [docs/audit-matrix.md](docs/audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
 | 2026-05-12 | **Opcional:** secção e FAQ sobre [ProxMenux](https://proxmenux.com/) (menu shell de terceiros; aviso de verificação de fonte). |
 | 2026-05-12 | **Legado Linux Foundation Lab:** [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md), [docs/roadmap-hardware.md](docs/roadmap-hardware.md); FAQ origem; Fase 0 (nota BIOS / contexto legado); Fase 10 (lab descartável); Apêndice D (Docker/K8s); Apêndice I (links); README (filosofia). |
+| 2026-05-12 | **Mapa do curso:** [docs/mapa-do-curso.md](docs/mapa-do-curso.md) — entrada única por setores (onboarding, blocos A–G, trilha VM, ponte GPG); links no README e na matriz de auditoria. |
 
 ---
 
