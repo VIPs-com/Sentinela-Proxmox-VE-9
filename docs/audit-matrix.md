@@ -65,9 +65,7 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 | [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores: onboarding, blocos A–G do guia Fortaleza, trilha Linux em VM, ponte para curso GPG externo/Obsidian. |
 | [README.md](README.md) | Índice numerado da pasta `docs/` (trilhas 0 a 4); separa núcleo, complementos e operação opcional. |
 | [CHANGELOG-repositorio.md](CHANGELOG-repositorio.md) | Histórico editorial do repositório; o changelog **curto** no guia principal remete aqui. |
-| [revisao-geral-projeto.md](revisao-geral-projeto.md) | Revisão geral (didáctica, usabilidade, lacunas); meta-documentação. |
-
----
+| [validacao-linha-a-linha.md](validacao-linha-a-linha.md) | Validação manual do guia por partes (registo vivo; Parte 1 concluída). |
 
 ## Próximas reverificações recomendadas
 

@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório de auditoria pedagógica: [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha por partes: [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -141,7 +141,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
         ┌────────────────────────────────────────┐
         │  Mini PC — Proxmox VE 9.x              │
         │  ┌──────────────────────────────────┐  │
-        │  │ proxmox-firewall (nftables) DROP │  │  ← "Some" da internet
+        │  │ proxmox-firewall (nftables) DROP │  │  ← tráfego da internet barrado (DROP)
         │  │  ▲ SSH (chave Ed25519 + 2FA)     │  │
         │  │  ▲ Web GUI (senha + 2FA TOTP)    │  │
         │  │  ▲ CrowdSec bouncer (nftables)   │  │  ← Bana IPs maliciosos
@@ -190,7 +190,7 @@ A estratégia correta é **isolar** o root, não eliminá-lo:
 2. 📸 **Snapshot antes de cada fase grande.** No painel: `pve → Disks → ZFS → Snapshot`.
 3. 📱 **Celular do lado** durante a Fase 3 (2FA). Sem ele, você não loga.
 4. 🖥️ **Acesso físico ao Mini PC** funciona como "plano B" se tudo travar.
-5. 📝 **Documente cada mudança** num arquivo `~/lab-diario.md` (Fase 10).
+5. 📝 **Documente cada mudança** no diário do laboratório `~/fortaleza-lab/diario.md` (a pasta é criada na **Fase 1**; se ainda estiveres na Fase 0, podes fazer uma vez `mkdir -p ~/fortaleza-lab` e usar esse ficheiro, ou anotar temporariamente noutro sítio até lá chegar).
 
 ### Mini PC, RAM e o que fica ligado 24/7
 

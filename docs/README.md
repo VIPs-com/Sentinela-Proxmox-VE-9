@@ -12,6 +12,7 @@
 | | [glossario.md](glossario.md) | Atalho ao glossário; a lista canónica longa está no guia principal (âncora `#glossario-completo`). |
 | **4 — Operação (pós-lab)** | [monitoramento-telegram-fortaleza-proxmox.md](monitoramento-telegram-fortaleza-proxmox.md) | Alertas no telemóvel (Telegram). **Não faz parte das fases 0–10**; usa depois da base segura (idealmente após Fases 4–7: CrowdSec, firewall, rede). Script: [../scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py). |
 | **Meta — Revisão do projecto** | [revisao-geral-projeto.md](revisao-geral-projeto.md) | Relatório de auditoria pedagógica/usabilidade (o que foi revisto, P1/P2, próximos passos). **Não** é fase de laboratório. |
+| **Meta — Validação linha-a-linha** | [validacao-linha-a-linha.md](validacao-linha-a-linha.md) | Registo **por partes** da releitura do guia (Parte 1 concluída; Partes 2–7 pendentes). |
 
 ## Histórico do repositório (não é matéria de exame)
 
