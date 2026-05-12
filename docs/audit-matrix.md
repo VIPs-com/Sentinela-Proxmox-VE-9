@@ -52,6 +52,7 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 | `mv /etc/apt/sources.list.d/pve-enterprise.sources /root/` | Desorganiza o APT; a wiki documenta **`Enabled: no`** no deb822. |
 | `ifupdown2` obrigatório para todos após IP fixo | Já é **default** em instalações PVE novas desde 7.x; só necessário se instalaste PVE em cima de Debian manual — ver [Network Configuration](https://pve.proxmox.com/wiki/Network_Configuration). |
 | `tailscale status \| grep Userspace` como verificação canónica | Frágil entre versões; o guia usa **`ip addr show tailscale0`** (teste objectivo). |
+| [ProxMenux](https://proxmenux.com/) como atalho de administração | Projecto de terceiros; o guia trata-o como **opcional** com aviso de *supply chain* (ver secção “Antes de Começar” e FAQ). |
 
 ---
 

@@ -48,6 +48,7 @@ Cada fase segue sempre a mesma estrutura:
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia. |
 | 2026-05-12 | **Auditoria + ressalvas** — matriz [docs/audit-matrix.md](docs/audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
+| 2026-05-12 | **Opcional:** secção e FAQ sobre [ProxMenux](https://proxmenux.com/) (menu shell de terceiros; aviso de verificação de fonte). |
 
 ---
 
@@ -174,6 +175,12 @@ Crie uma pasta "Fortaleza Proxmox" e prepare entradas para:
 11. **Senha do usuário `irmao`** (no CT 200)
 
 > Apêndice G traz a lista completa para conferir no final.
+
+### (Opcional) ProxMenux — menu interactivo na shell
+
+[ProxMenux](https://proxmenux.com/) é uma ferramenta **de terceiros** (open source, projecto comunitário) que oferece um **menu interactivo** na linha de comandos para tarefas comuns em Proxmox VE (recursos, rede, storage, VM/LXC, manutenção). Documentação introdutória: [Introduction](https://proxmenux.com/docs/introduction).
+
+> **Segurança:** não é produto da Proxmox GmbH. O próprio ProxMenux avisa para **verificar a fonte** antes de executar scripts da Internet — o mesmo princípio do guia sobre `curl|bash`. Revê o [repositório GitHub](https://github.com/MacRimi/proxmenux) e a [instalação](https://proxmenux.com/docs/installation) **antes** de instalar em produção. Usar ProxMenux **não substitui** perceberes o que as Fases 0–7 fazem (rede, repos, SSH, firewall); serve sobretudo para **ganhar tempo** no dia-a-dia depois de dominares o básico.
 
 ---
 
@@ -2084,6 +2091,9 @@ R: ~600 MB extras com tudo rodando (Proxmox + Tailscale CT + ShellHub CT + Crowd
 **P: Comandos e versões deste guia vão desatualizar com o tempo?**
 R: **Sim.** Nomes de pacotes, menus da GUI e detalhes de `nft`/`sshd` mudam entre *point releases*. Antes de cada `dist-upgrade` ou mudança grande, confirme com `pveversion`, [wiki Proxmox](https://pve.proxmox.com/wiki/Main_Page), [release notes / anúncios](https://forum.proxmox.com/forums/announcements.11/) e a [matriz de auditoria](docs/audit-matrix.md). A **ordem das fases** e a lógica (NTP antes de 2FA, backup antes de firewall) permanecem válidas.
 
+**P: Posso usar ProxMenux para facilitar a administração?**
+R: **Sim, como opcional.** O [ProxMenux](https://proxmenux.com/) é um menu interactivo para tarefas no host e em guests — vê a secção no início do guia e a [documentação](https://proxmenux.com/docs/introduction). Trata-o como **terceiro**: revê código e guias de instalação antes de executar; não invalida a ordem nem a segurança das fases Fortaleza.
+
 **P: E se eu perder o celular do 2FA?**
 R: Use os códigos de recuperação salvos no Bitwarden. Em última instância, acesse pelo console físico como root e edite `/etc/pam.d/sshd`.
 
@@ -2207,6 +2217,12 @@ Este guia é **pedagógico** e foi confrontado com documentação oficial em 202
 ### Anúncios de versão Proxmox
 
 - [Fórum — anúncios / release notes](https://forum.proxmox.com/forums/announcements.11/) (ex.: tópicos VE 9.1, 9.2, …)
+
+### Ferramentas de terceiros (opcional, não oficiais PVE)
+
+| Ferramenta | Nota |
+|-------------|------|
+| [ProxMenux](https://proxmenux.com/) | Menu shell para administração; [intro](https://proxmenux.com/docs/introduction). Verificar fonte antes de instalar. |
 
 ---
 
