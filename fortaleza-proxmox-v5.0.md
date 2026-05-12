@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–6): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha do guia principal **concluída** (Partes 1–7): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -2119,11 +2119,13 @@ echo "- Backup automático via cron 03:00" >> ~/fortaleza-lab/diario.md
 - [ ] Acesso ao PVE via 100.x.x.x funcionando
 
 ## FASE 6 — 2FA painel
+- [ ] Snapshot ZFS `snap-pre-fase6` (recomendado antes de alterar permissões/TFA na GUI)
 - [ ] `renato@pam` Administrator no painel
 - [ ] TOTP ativo, recovery keys no Bitwarden
 - [ ] `root@pam` não mais usado no dia-a-dia
 
 ## FASE 7 — Firewall
+- [ ] Snapshot ZFS `snap-pre-fase7` + backup `tar` de `/etc/pve` antes do DROP
 - [ ] 4 regras ACCEPT criadas ANTES do DROP
 - [ ] Firewall enabled em Datacenter E no Nó
 - [ ] nftables: Yes habilitado
@@ -2133,6 +2135,7 @@ echo "- Backup automático via cron 03:00" >> ~/fortaleza-lab/diario.md
 - [ ] Teste de 4G confirma servidor invisível
 
 ## FASE 8 — Lab Irmão
+- [ ] Snapshot ZFS `snap-pre-fase8` (recomendado antes de Docker/ShellHub)
 - [ ] CT 200 com nesting=1
 - [ ] Docker rodando dentro
 - [ ] ShellHub device accepted
@@ -2168,8 +2171,8 @@ Cole isso em um arquivo `~/fortaleza-lab/comandos.md`:
 | Ruleset nftables | `sudo nft list ruleset \| less` | Regras ativas |
 | Status Tailscale (CT 100) | `sudo pct exec 100 -- tailscale status` | Peers |
 | Recursos | `htop` | CPU/RAM/processos |
-| Serviços com falha | `systemctl --failed` | 0 listed |
-| Atualizações pendentes | `apt list --upgradable 2>/dev/null` | Pacotes |
+| Serviços com falha | `sudo systemctl --failed` | 0 listed |
+| Atualizações pendentes | `sudo apt list --upgradable 2>/dev/null` | Pacotes |
 | Sincronização NTP | `timedatectl status` | synchronized: yes |
 | Backups recentes | `ls -lh /root/backups/ \| tail` | Backups recentes |
 | Testar leitura do último backup | `L=$(ls -t /root/backups/etc-pve-*.tar.gz \| head -1); tar tzf "$L" >/dev/null && echo OK` | `OK` se o `.tar.gz` não está corrompido |
@@ -2243,7 +2246,7 @@ R: Fases 0 (parcial), 1–4, 9 e 10 funcionam em qualquer Debian 13. Fases 5, 7 
 R: **Evolui** a partir da mesma filosofia (fundamentos, segurança, GPG, redes, sem port forwarding), mas o **caminho actual** é **Proxmox no mini PC**, não Debian minimal como único SO no metal. Comandos de estudo e UFW/`fail2ban` **dentro de VMs** continuam no cheat sheet [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md); o **host** segue as fases Fortaleza (firewall PVE, CrowdSec, etc.). Ver também [docs/roadmap-hardware.md](docs/roadmap-hardware.md).
 
 **P: E se eu errar e me trancar fora?**
-R: Console físico do Mini PC sempre funciona. Apêndice H tem o plano de recuperação completo.
+R: Console físico do Mini PC sempre funciona. O **detalhe** do runbook está em `~/fortaleza-lab/recuperacao.md` (Fase 10); o **Apêndice H** abaixo é só um resumo dos primeiros passos.
 
 **P: Preciso pagar por algo?**
 R: Não. Tailscale (até 100 dispositivos), ShellHub Cloud Community, CrowdSec, Proxmox Community — todos gratuitos.
@@ -2258,7 +2261,7 @@ R: **Sim.** Nomes de pacotes, menus da GUI e detalhes de `nft`/`sshd` mudam entr
 R: **Sim, como opcional.** O [ProxMenux](https://proxmenux.com/) é um menu interactivo para tarefas no host e em guests — vê a secção no início do guia e a [documentação](https://proxmenux.com/docs/introduction). Trata-o como **terceiro**: revê código e guias de instalação antes de executar; não invalida a ordem nem a segurança das fases Fortaleza.
 
 **P: E se eu perder o celular do 2FA?**
-R: Use os códigos de recuperação salvos no Bitwarden. Em última instância, acesse pelo console físico como root e edite `/etc/pam.d/sshd`.
+R: Use os códigos de recuperação salvos no Bitwarden. Em última instância, acesse pelo console físico como root e edite com cuidado `/etc/pam.d/sshd` (ex.: `sudo nano /etc/pam.d/sshd`).
 
 **P: O Proxmox 9.x atualiza entre minor (ex. 9.1 → 9.2) sem quebrar isso?**
 R: Em geral, sim: configurações em `sshd_config.d/`, snapshots e regras de firewall na GUI tendem a ser preservadas em *point releases*. Sempre leia as [release notes](https://forum.proxmox.com/forums/announcements.11/) e faça backup de `/etc/pve` antes de subir major/minor.
@@ -2319,8 +2322,8 @@ Resumo:
 | Não consigo logar SSH | Console físico do Mini PC |
 | Perdi celular do 2FA | Códigos de recuperação no Bitwarden |
 | Mini PC quebrou | Reinstala PVE, restaura backup de `/etc/pve` |
-| Me bani no CrowdSec | Console físico → `cscli decisions delete --ip MEU_IP` |
-| Firewall me trancou | Console → `pve-firewall stop` |
+| Me bani no CrowdSec | Console físico → `sudo cscli decisions delete --ip MEU_IP` |
+| Firewall me trancou | Console → `sudo pve-firewall stop` |
 
 ---
 

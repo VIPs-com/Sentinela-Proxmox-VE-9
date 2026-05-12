@@ -191,9 +191,36 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 7 — Linhas 2081–fim (Apêndices A–I, FAQ, fontes, rodapé)
+## Parte 7 — Linhas 2081–2404 (Apêndices A–I, FAQ, fontes, rodapé)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
+
+> **Nota:** o número da última linha pode crescer com edições futuras; o bloco cobre desde `# Apêndice A` até ao parágrafo **Próximo passo** no fim do ficheiro.
+
+### Verificações feitas
+
+- **Apêndice A** — checklist por fase alinhada ao corpo do guia (incl. snapshots fases 6–10).
+- **Apêndice B** — tabela de comandos de rotina; escapes `\|` nas células para tabelas Markdown.
+- **Apêndices C–D** — convenções de IDs, roadmap opcional.
+- **Apêndice E (FAQ)** — nftables/tech preview, âmbito Debian vs Proxmox, ProxMenux, 2FA, ShellHub vs `AllowTcpForwarding`, NTP/TOTP.
+- **Apêndices F–I** — glossário, Bitwarden, resumo recuperação, fontes oficiais e links internos `docs/`.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| FAQ (Ap. E) | «Apêndice H tem o plano **completo**» — o detalhe está na Fase 10 (`recuperacao.md`); H é resumo. | Texto corrigido: ficheiro na Fase 10 + H como resumo. |
+| FAQ (Ap. E) | Perda 2FA: editar `sshd` PAM sem mencionar `sudo`/editor. | `sudo nano` explícito. |
+| Ap. H (tabela) | `cscli` e `pve-firewall` sem `sudo` (inconsistente com Fases 4 e 7). | Prefixo `sudo` nos exemplos. |
+| Ap. B (tabela) | `apt list --upgradable` sem `sudo` no host onde `renato` é típico. | `sudo apt list …` |
+| Ap. B (tabela) | `systemctl --failed` como utilizador pode omitir falhas de sistema. | `sudo systemctl --failed` |
+| Ap. A (checklist) | Snapshots ZFS das fases 6–8 no guia principal mas não reflectidos no checklist. | Linhas de verificação `snap-pre-fase6` … `snap-pre-fase8` + tar fase 7. |
+
+### Observações P2
+
+- Estimativa de RAM no FAQ (~600 MB) é ordem de grandeza — depende de versões e serviços extra.
+- Tabela Ap. B: alguns comandos assumem sessão no **host** (não no CT); não está explicitado em cada linha.
 
 ---
 
@@ -208,4 +235,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização: Partes 1 a 6 — 2026-05-12.*
+*Última actualização: Partes 1 a 7 (guia principal) — 2026-05-12.*
