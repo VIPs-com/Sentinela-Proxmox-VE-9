@@ -1,0 +1,15 @@
+# Changelog do repositório (Fortaleza Proxmox)
+
+Este ficheiro regista **alterações à documentação satélite** e ao layout do repositório (pasta `docs/`, README, scripts, etc.). O conteúdo pedagógico das **fases 0–10** do guia principal vive em [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md); o changelog **curto** desse guia remete aqui para o detalhe histórico.
+
+| Data | Alteração |
+|------|-----------|
+| 2026-05 | **v5.0** — rascunho inicial do guia principal (ficheiro na raiz). |
+| 2026-05-12 | **Auditoria + ressalvas** — matriz [audit-matrix.md](audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
+| 2026-05-12 | **Opcional:** secção e FAQ sobre [ProxMenux](https://proxmenux.com/) no guia (menu shell de terceiros; aviso de verificação de fonte). |
+| 2026-05-12 | **Legado Linux Foundation Lab:** [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md), [roadmap-hardware.md](roadmap-hardware.md); FAQ origem no guia; Fase 0 (nota BIOS); Fase 10 (lab descartável); Apêndice D (Docker/K8s); Apêndice I (links); README (filosofia). |
+| 2026-05-12 | **Mapa do curso:** [mapa-do-curso.md](mapa-do-curso.md) — entrada por setores (onboarding, blocos A–G, trilha VM, ponte GPG); links no README e na matriz. |
+| 2026-05-12 | **Refinos pós-auditoria (guia):** Fase 0.2 (`ifupdown2`/`ifreload`); Fase 0.5 (aviso supply chain alinhado ao ProxMenux); Fase 0.6 (`needrestart -r i` + remissão 9.1b); Fase 5.4b (forwarding: verificar `sysctl` após `tailscale up`, ficheiro manual `99-fortaleza-tailscale-forward.conf` só se preciso); Fase 7 (checagem `pve-firewall` + bloco `if` PVEFW); [glossario.md](glossario.md) com âncora `#glossario-completo`, [CONTRIBUTING.md](../CONTRIBUTING.md); matriz actualizada (fases 0, 5, 7). |
+| 2026-05-12 | **Revisão analistas (guia + mapa):** Fase 3.4 (alerta antes de `reload`/`restart` do `ssh` + teste TOTP); Fase 5.4 (`ping` no CT antes do install Tailscale); Fase 7 (coexistência `nft` PVE + CrowdSec + `crowdsec-firewall-bouncer`); Fase 0.4 (repos enterprise/Ceph: painel ou `Enabled: no`); FAQ `AllowTcpForwarding` vs ShellHub / `ssh -L`; [mapa-do-curso.md](mapa-do-curso.md) Setor 3 com pré-requisito Blocos A e B. |
+| 2026-05-12 | **Monitoramento Telegram:** [monitoramento-telegram-fortaleza-proxmox.md](monitoramento-telegram-fortaleza-proxmox.md) e [../scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py) (operação; fora das fases 0–10). |
+| 2026-05-12 | **Organização da pasta `docs`:** [README.md](README.md) (trilha numerada 0–4); este `CHANGELOG-repositorio.md`; changelog do guia principal enxuto; remissões no [README](../README.md) raiz, no [mapa-do-curso.md](mapa-do-curso.md) e na matriz ([audit-matrix.md](audit-matrix.md)). |

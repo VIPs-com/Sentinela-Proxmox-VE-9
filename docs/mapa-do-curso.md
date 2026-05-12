@@ -15,6 +15,12 @@
 
 ---
 
+## O que há dentro de `docs/`
+
+Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operação** e links estáveis: **[README.md desta pasta](README.md)**. Abre esse ficheiro sempre que entrares na pasta `docs/` no GitHub ou no disco — evita confundir o guia principal com complementos e operação opcional.
+
+---
+
 ## Setor 0 — Onboarding (antes de mexer no host)
 
 **Objetivo:** saber *onde* vais e com *que* contas, sem instalar nada à cega.
@@ -105,6 +111,8 @@ flowchart LR
 
 ## Setor 3 — Trilha VM: Linux na prática **(VM)**
 
+> **Pré-requisito:** Blocos **A** (Fase 0) e **B** (Fases 1–2) do guia Fortaleza concluídos e testados — SSH com chave a funcionar no host antes de abrir VMs de estudo prolongadas. O host seguro é a fundação; não pules para laboratório em VM “em paralelo” sem essa base.
+
 - **Documento:** [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) — navegação, `systemctl`, rede, GPG resumo, Docker intro, UFW/`fail2ban` **só em guests**.  
 - **Laboratório de redes (DMZ/LAN/WAN):** quando montares as VMs da oficina (firewall, DNS, WEB, cliente), podes criar um `notes/rede-lab.md` **dentro** da VM ou no teu `~/fortaleza-lab/` no host — placeholder para não esquecer.
 
@@ -116,6 +124,8 @@ flowchart LR
 - **Curso canónico** (mapa estilo *OpenPGP/GPG do Zero ao Expert*, Módulos 0–1, etc.): o detalhe completo fica no teu **Obsidian / outro repositório** — cola aqui o link quando tiveres:
 
   - **URL ou caminho do curso GPG:** `SUBSTITUIR_PELO_LINK_OU_CAMINHO` (ex.: `https://github.com/...` ou `obsidian://open?vault=...`)
+
+  - **Como preencher:** edita esta linha em `docs/mapa-do-curso.md` (no repo ou no teu clone), grava o ficheiro e, se usares Git, `git commit -am "docs: link do curso GPG no mapa"` (ou mensagem equivalente). Não precisas de Git se só mantiveres cópia local.
 
 Até lá, usa este ficheiro só para saber **que** o curso EXT existe e **onde** encaixa (depois da base HOST e em paralelo com prática na Fase 8).
 

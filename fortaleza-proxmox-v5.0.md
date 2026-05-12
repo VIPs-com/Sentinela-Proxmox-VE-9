@@ -50,13 +50,10 @@ Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curs
 
 | Data | Alteração |
 |------|-----------|
-| 2026-05 | **v5.0** — rascunho inicial do guia. |
-| 2026-05-12 | **Auditoria + ressalvas** — matriz [docs/audit-matrix.md](docs/audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
-| 2026-05-12 | **Opcional:** secção e FAQ sobre [ProxMenux](https://proxmenux.com/) (menu shell de terceiros; aviso de verificação de fonte). |
-| 2026-05-12 | **Legado Linux Foundation Lab:** [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md), [docs/roadmap-hardware.md](docs/roadmap-hardware.md); FAQ origem; Fase 0 (nota BIOS / contexto legado); Fase 10 (lab descartável); Apêndice D (Docker/K8s); Apêndice I (links); README (filosofia). |
-| 2026-05-12 | **Mapa do curso:** [docs/mapa-do-curso.md](docs/mapa-do-curso.md) — entrada única por setores (onboarding, blocos A–G, trilha VM, ponte GPG); links no README e na matriz de auditoria. |
+| 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). **Histórico detalhado** de ficheiros satélites, refinamentos e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
----
+<span id="glossario-completo"></span>
 
 ## 📚 Glossário completo
 
@@ -322,10 +319,18 @@ iface vmbr0 inet static
 Salve (`Ctrl+O`, Enter, `Ctrl+X`) e aplique:
 
 ```bash
+# ifreload vem do pacote ifupdown2 (normalmente já instalado no PVE novo; em upgrades antigos pode faltar)
+command -v ifreload >/dev/null || apt install -y ifupdown2
+
 # Aplica a config nova sem reiniciar
 ifreload -a
+# Saída típica inclui algo como: applying /etc/network/interfaces ...
+```
 
-# OU se preferir mais conservador:
+> Se `ifreload` falhar com «command not found» mesmo após instalar `ifupdown2`, usa o caminho mais conservador: `systemctl restart networking` (pode cortar SSH momentaneamente — tenha console físico ou segunda sessão).
+
+```bash
+# OU se preferir mais conservador (reinicia stack de rede inteira):
 # systemctl restart networking
 ```
 
@@ -400,25 +405,16 @@ ping -c 1 pve
 
 ### Desabilitar o repositório Enterprise
 
-O método **documentado na wiki** é desativar a entrada com `Enabled: no` no ficheiro deb822 (mantém o texto legível para reativar com subscription). Alternativa equivalente: comentar todas as linhas com `sed`.
+O método **documentado na wiki** é desactivar a entrada **sem** partir o formato deb822: `Enabled: no` no bloco correcto, ou desligar a entrada no painel.
 
-**Opção A (alinhada à [wiki Package Repositories](https://pve.proxmox.com/wiki/Package_Repositories)):** edite `pve-enterprise.sources` e acrescente `Enabled: no` ao bloco do repositório enterprise (ou use o painel **Node → Repository**).
+**Recomendado (menos erro que `sed` em ficheiro `.sources`):**
 
-**Opção B (comentário em massa):**
+1. No painel web: **nó (pve) → Updates → Repositories** — seleccione `pve-enterprise` → **Disable** (equivalente a `Enabled: no` no deb822).
+2. **Ou** no host: `nano /etc/apt/sources.list.d/pve-enterprise.sources` e acrescente `Enabled: no` ao bloco do repositório enterprise (mantém o ficheiro legível para voltar a `yes` com subscription).
 
-```bash
-sed -i 's/^/# /' /etc/apt/sources.list.d/pve-enterprise.sources
-```
+> **Evite** `sed -i 's/^/# /'` em `.sources` deb822: comentar **todas** as linhas (incluindo cabeçalhos de secção) pode deixar o APT com ficheiro malformado. Se **só** tiveres shell, edita manualmente ou usa o painel.
 
-> O `sed` coloca `# ` no início de cada linha. Para reativar depois (se comprar subscription), remova os `# ` ou volte a `Enabled: yes`.
-
-Faça o mesmo para o repo do Ceph (não usamos em lab pequeno):
-
-```bash
-# Verifica se existe
-ls /etc/apt/sources.list.d/ceph.sources 2>/dev/null && \
-sed -i 's/^/# /' /etc/apt/sources.list.d/ceph.sources
-```
+Faça o equivalente para o repositório **Ceph** (não usamos em lab pequeno): no mesmo ecrã **Repositories**, desactive `ceph-enterprise` / entradas Ceph, **ou** `Enabled: no` no ficheiro `ceph.sources` correspondente — **não** uses comentário em massa com `sed` no deb822.
 
 ### Adicionar o repositório No-Subscription
 
@@ -456,7 +452,7 @@ apt list --upgradable 2>/dev/null | head
 ### 🆘 Se deu errado
 
 **Erro:** `The repository 'https://enterprise.proxmox.com/debian/pve trixie InRelease' is not signed`
-**Solução:** Você não comentou todas as linhas do `pve-enterprise.sources`. Repita o `sed` ou edite manualmente.
+**Solução:** O repositório enterprise ainda está activo. No painel **Updates → Repositories**, desactive `pve-enterprise`, **ou** em `pve-enterprise.sources` use `Enabled: no` no bloco correcto (evite `sed` que comenta o ficheiro inteiro em deb822).
 
 **Erro:** Chave GPG do Proxmox faltando
 **Solução:**
@@ -474,12 +470,12 @@ wget https://enterprise.proxmox.com/debian/proxmox-archive-keyring-trixie.gpg \
 - **(b)** comprar uma subscription (R$ ~600/ano para Community)
 - **(c)** aplicar um patch que remove o popup
 
-Se preferir (c), use o script da comunidade **community-scripts** (amplamente usado em homelab; **não** é da Proxmox GmbH):
+Se preferir (c), use o script da comunidade **community-scripts** (amplamente usado em homelab; **não** é da Proxmox GmbH — mesmo tipo de risco de *supply chain* que `curl|sh` ou ProxMenux de terceiros).
 
-> **Cadeia de confiança:** executar `wget|bash` transfere código remoto com os privilégios que o script pedir. Revise o repositório no GitHub antes, use só a branch/commit que confiar, e prefira máquina de teste primeiro.
+> **Cadeia de confiança:** `wget|bash` executa código remoto com os privilégios que o script pedir. Abre o script no GitHub **antes** (compare o URL `raw` com o repositório oficial), lê o que ele altera em `/etc` e no APT, usa só o commit/branch em que confias, e testa primeiro em máquina descartável se possível. Não há substituto «oficial Proxmox» para este patch — ou ignoras o popup ou aceitas o risco com consciência.
 
 ```bash
-# Versão "tteck" / "community-scripts" — rever código em https://github.com/community-scripts/ProxmoxVE
+# Versão "tteck" / "community-scripts" — auditar em https://github.com/community-scripts/ProxmoxVE/blob/main/misc/post-pve-install.sh
 bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/misc/post-pve-install.sh)"
 ```
 
@@ -516,12 +512,14 @@ apt install sudo curl wget nano gnupg ca-certificates git -y
 Se kernel foi atualizado, reinicie:
 
 ```bash
-# Pergunta o que precisa reiniciar
-needrestart -k -r a
+# Modo interactivo: pergunta o que reiniciar (mais seguro para novatos que a Fase 9.1b ainda não leu)
+needrestart -k -r i
 
 # OU reboot total se preferir
 reboot
 ```
+
+> O modo `-r a` (reinício **automático** de serviços) existe mas **não** é «só uma pergunta» — lê a secção **9.1b** antes de usar ou de editar `/etc/needrestart/needrestart.conf`.
 
 ### ✅ Verifique
 
@@ -794,7 +792,7 @@ UsePAM yes
 > - `ClientAliveCountMax 2` — desconecta após 2 checks sem resposta
 > - `X11Forwarding no` — desabilita encaminhamento gráfico
 > - `AllowAgentForwarding no` — proíbe forward do ssh-agent
-> - `AllowTcpForwarding no` — proíbe túneis TCP (**endurecimento forte**; comente ou mude para `yes` só se precisar de `ssh -L` / `-D` para saltos)
+> - `AllowTcpForwarding no` — proíbe túneis TCP locais `ssh -L` / `-D` / `-R` **neste host** (**endurecimento forte**). Se no futuro precisares de port forwarding SSH para debug, o sintoma típico é falha **silenciosa** ou recusa sem mensagem clara — aí comenta temporariamente ou muda para `yes` **só** no drop-in. **Não** afecta o ShellHub no CT do irmão (túnel reverso do *agent* para a cloud ShellHub); afecta **só** o que passa pelo `sshd` do host PVE.
 > - `UsePAM yes` — habilita PAM (vamos usar pro 2FA)
 
 Salve (`Ctrl+O`, Enter) e saia (`Ctrl+X`).
@@ -949,12 +947,20 @@ AuthenticationMethods publickey,keyboard-interactive
 
 > ⚠️ **CRÍTICO no Debian 13:** Use `KbdInteractiveAuthentication`. A diretiva antiga `ChallengeResponseAuthentication` foi **REMOVIDA** no OpenSSH 10 — vai dar erro se você usar.
 
-Valide e reinicie:
+> **PARA AQUI — não apliques a nova config do `sshd` até confirmares o TOTP (evita ficar trancado fora)**  
+> Com `AuthenticationMethods publickey,keyboard-interactive` activo, um `sshd` mal alinhado com o PAM/TOTP pode **rejeitar** o login mesmo com chave correcta. **Checklist obrigatório:**
+> 1. Concluíste o §3.2 (`google-authenticator`) e o código de 6 dígitos **já aparece** no telemóvel?
+> 2. O §3.3 está gravado em `/etc/pam.d/sshd` com `nullok` (ainda) na linha do `pam_google_authenticator`?
+> 3. Mantém **esta** sessão SSH aberta e prepara **outra** janela de terminal (mesmo PC ou outro na LAN).
+
+Valide a sintaxe e **aplica** a configuração (preferir `reload` para manter esta sessão; se falhar, `restart` sem fechar esta janela):
 
 ```bash
 sudo sshd -t                   # Não deve retornar nada
-sudo systemctl restart ssh
+sudo systemctl reload ssh || sudo systemctl restart ssh
 ```
+
+> 4. **Na nova janela:** `ssh fortaleza` → deves ver `Verification code:` depois da autenticação por chave. Se **não** pedir código, o código falhar sempre, ou a ligação cair, **não** avances para o §3.5 nem removas o `nullok` — reverifica `/etc/pam.d/sshd`, o drop-in e `sudo sshd -T | grep -iE 'authenticationmethods|kbdinteractiveauthentication'`.
 
 ### ✅ Verifique
 
@@ -1233,6 +1239,13 @@ sudo pct start 100
 
 Abra o **Console** do CT 100 (`>_ Console` no topo), logue como root:
 
+Antes de instalar o Tailscale, confirme **rede e DNS** dentro do CT (sem isso, `curl`/`install.sh` falham sem diagnóstico claro):
+
+```bash
+ping -c 2 1.1.1.1 && echo "Rede IP OK" || echo "Sem reachability IP — verifique gateway/IP estático do CT no Proxmox"
+ping -c 1 -W 3 tailscale.com && echo "Resolução DNS OK (tailscale.com)" || echo "Falhou reachability ou DNS — confira /etc/resolv.conf e os dns-nameservers usados na criação do CT"
+```
+
 ```bash
 apt update && apt install curl -y
 # Cadeia de confiança: o script oficial de instalação é remoto — reveja https://tailscale.com/install.sh se quiser auditar antes.
@@ -1246,7 +1259,13 @@ ls -l /dev/net/tun
 # Deve mostrar: crw-rw-rw- 1 nobody nogroup 10, 200 ...
 ```
 
-Inicie o Tailscale anunciando sua rede local como subnet:
+### 5.4b Subnet router — encaminhamento IP no CT
+
+Para o Linux **encaminhar** tráfego entre `tailscale0` e a LAN (`192.168.1.x`), o kernel do CT precisa de `ip_forward` activo. Isto é **dentro do CT 100** (console como root), não no host Proxmox.
+
+> O comando `tailscale up --advertise-routes=...` **aceita sem erro** mesmo com forwarding em `0` — o sintoma é subnet aprovada no admin e **mesmo assim** tráfego que não roteia. Em clientes Tailscale recentes no Debian, o instalador ou o próprio serviço **podem** criar `/etc/sysctl.d/99-tailscale.conf` com forwarding; **não assumas**: confirma no teu CT após o primeiro `tailscale up`. Ver [Subnet routers](https://tailscale.com/kb/1019/subnets/).
+
+Inicie o Tailscale anunciando a rede local como subnet:
 
 ```bash
 tailscale up --advertise-routes=192.168.1.0/24 --accept-routes
@@ -1257,6 +1276,21 @@ tailscale up --advertise-routes=192.168.1.0/24 --accept-routes
 > - `--accept-routes` — aceita rotas anunciadas por outros peers
 
 Vai aparecer um link `https://login.tailscale.com/a/...`. Abra no navegador, autentique (Google, GitHub, etc.).
+
+Depois de autenticado, **ainda no CT**, verifica se o forwarding já ficou activo:
+
+```bash
+sysctl net.ipv4.ip_forward net.ipv6.conf.all.forwarding
+```
+
+- Se `net.ipv4.ip_forward = 1` (e `net.ipv6.conf.all.forwarding = 1` se precisares de IPv6 na rota), **não** precisas do bloco manual abaixo — o Tailscale ou o sistema já aplicaram.
+- Se `net.ipv4.ip_forward` for **0**, aplica manualmente (ficheiro separado para não sobrescrever um `99-tailscale.conf` eventualmente criado pelo cliente):
+
+```bash
+echo 'net.ipv4.ip_forward = 1' | tee /etc/sysctl.d/99-fortaleza-tailscale-forward.conf
+echo 'net.ipv6.conf.all.forwarding = 1' | tee -a /etc/sysctl.d/99-fortaleza-tailscale-forward.conf
+sysctl -p /etc/sysctl.d/99-fortaleza-tailscale-forward.conf
+```
 
 ### 5.5 Aprovar a subnet route
 
@@ -1299,8 +1333,8 @@ Deve carregar o painel mesmo via 4G.
 **Solução:** Repita `sudo pct set 100 --dev0 /dev/net/tun` com container parado.
 
 **Erro:** Conecta no Tailscale mas não enxerga `192.168.1.100`
-**Causa:** Subnet route não aprovada.
-**Solução:** Passo 5.5.
+**Causa:** Subnet route não aprovada, `sysctl` ainda em `0` após `tailscale up`, ou firewall.
+**Solução:** Passo 5.5; em 5.4b confirma `sysctl net.ipv4.ip_forward` e aplica o bloco manual se for `0`.
 
 ### 📝 Documente
 
@@ -1440,15 +1474,45 @@ sudo systemctl status proxmox-firewall --no-pager
 
 ```bash
 sudo nft list tables
-# Deve aparecer:
-# table inet proxmox-firewall
+# Deve aparecer, entre outras possíveis:
+# table inet proxmox-firewall        ← backend do PVE (nftables)
 # table bridge proxmox-firewall-guests
+# ... e uma tabela do bouncer CrowdSec (nome típico: contém "crowdsec" — ex.: table inet crowdsec)
+```
+
+Se a tabela do CrowdSec **não** aparecer mas a Fase 4 já instalou o bouncer nftables:
+
+```bash
+sudo systemctl status crowdsec-firewall-bouncer --no-pager
+sudo systemctl restart crowdsec-firewall-bouncer
+sudo nft list tables
 ```
 
 ```bash
 sudo nft list ruleset | head -50
 # Inspeção do ruleset ativo
 ```
+
+Confirmar que o firewall clássico **não** está a empilhar regras iptables quando esperas só nftables:
+
+```bash
+systemctl is-active pve-firewall
+```
+
+> **Ler o estado:** com **nftables: Yes** e `proxmox-firewall` a tratar do host, o serviço `pve-firewall` pode aparecer como `inactive` (esperado) **ou** `active` em algumas versões/configurações sem isso significar que ainda estás no backend iptables clássico. O sinal mais útil para “ainda há regras estilo pve-firewall em iptables” são **cadeias PVEFW** em `iptables -L`. Cruza sempre com `sudo systemctl status proxmox-firewall` e a [wiki Firewall](https://pve.proxmox.com/wiki/Firewall).
+
+Se `iptables` existir no host:
+
+```bash
+if sudo iptables -L 2>/dev/null | grep -q "PVEFW"; then
+  echo "ATENÇÃO: PVEFW detectado — o pve-firewall clássico ainda pode estar a gerar regras iptables."
+  echo "          Confirma: systemctl is-active pve-firewall && sudo systemctl status proxmox-firewall --no-pager"
+else
+  echo "OK: sem chains PVEFW visíveis em iptables (ou iptables vazio / não usado neste nó)."
+fi
+```
+
+> Em hosts **só nftables**, `iptables -L` pode estar vazio ou mapear para nft — o objectivo é não ficar com **duas** camadas de firewall por engano; se vires PVEFW massivo enquanto esperas nft-only, investiga antes de declarar a fase fechada.
 
 **Teste de conectividade:**
 
@@ -2118,6 +2182,9 @@ R: Em geral, sim: configurações em `sshd_config.d/`, snapshots e regras de fir
 **P: Devo usar Wi-Fi no Mini PC?**
 R: NÃO. Sempre cabo Ethernet. Wi-Fi adiciona instabilidade e complexidade desnecessária.
 
+**P: O `AllowTcpForwarding no` no host impede o meu irmão de usar ShellHub ou `ssh -L` para debug?**
+R: **ShellHub (CT do irmão):** não depende de `AllowTcpForwarding` no **sshd** do host Proxmox — o agente fala com a cloud ShellHub por fora do teu endurecimento SSH do PVE. **`ssh -L` / `-D` para o host PVE:** sim, com `AllowTcpForwarding no` o OpenSSH desativa esse encaminhamento; se precisares, ajusta só no drop-in (com consciência do risco) ou faz o túnel **a partir de uma VM/CT** de laboratório, não do host endurecido.
+
 **P: O NTP é mesmo tão importante?**
 R: SIM. Sem NTP sincronizado, o 2FA TOTP simplesmente não funciona — os códigos do servidor não batem com os do celular.
 
@@ -2128,7 +2195,7 @@ R: Os fundamentos sim. Mas para produção, considere também: backups offsite o
 
 # 📚 Apêndice F — Glossário Expandido
 
-Veja a seção "Glossário completo" no topo do documento.
+Veja a secção **Glossário completo** no topo do documento (âncora interna `#glossario-completo`), ou o atalho [docs/glossario.md](docs/glossario.md).
 
 ---
 
