@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha por partes: [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–2): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -408,9 +408,9 @@ ping -c 3 google.com
 ### Verificar configuração atual
 
 ```bash
-hostname              # Geralmente: pve
-hostname -i           # Deve retornar o IP correto, NÃO 127.0.1.1
-cat /etc/hosts        # Deve ter linha "192.168.1.100 pve.local pve"
+hostname              # Anote o nome curto (ex.: pve) — usa-o nas linhas de /etc/hosts abaixo
+hostname -i           # Deve retornar o IP correcto do nó, NÃO 127.0.1.1
+cat /etc/hosts        # Deve mapear esse IP ao hostname (ex.: 192.168.1.100 pve.local pve)
 ```
 
 ### Corrigir se necessário
@@ -435,11 +435,8 @@ ff02::2 ip6-allrouters
 ### ✅ Verifique
 
 ```bash
-hostname -i
-# Saída esperada: 192.168.1.100 (NÃO 127.0.1.1)
-
-ping -c 1 pve
-# Saída esperada: ping para 192.168.1.100
+ping -c 1 "$(hostname)"
+# Saída esperada: ping para o mesmo IP que hostname -i mostrou (não 127.0.0.1)
 ```
 
 ---
@@ -560,6 +557,7 @@ Se kernel foi atualizado, reinicie:
 
 ```bash
 # Modo interactivo: pergunta o que reiniciar (mais seguro para novatos que a Fase 9.1b ainda não leu)
+# -k = só kernel/módulos (lista mais curta). Sem -k, o needrestart também propõe serviços — útil se quiseres rever tudo.
 needrestart -k -r i
 
 # OU reboot total se preferir
@@ -636,7 +634,7 @@ zfs list -t snapshot
 - [ ] `apt update` funciona sem erros
 - [ ] Sistema atualizado (`pveversion` mostra última versão)
 - [ ] Backup inicial do `/etc/pve` em `/root/backups/`
-- [ ] Snapshot ZFS `snap-fase0-instalacao-limpa` criado
+- [ ] Snapshot ZFS `snap-fase0-instalacao-limpa` criado **ou** N/A (instalação sem ZFS — nesse caso o backup `tar` do `/etc/pve` é ainda mais importante)
 
 ---
 

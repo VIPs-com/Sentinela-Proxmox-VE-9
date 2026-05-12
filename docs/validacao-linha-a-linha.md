@@ -39,21 +39,47 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 - Mistura **você** / **tu** / **perceberes** no mesmo capítulo “Antes de Começar” e nas Dicas — tarefa editorial global (Parte futura ou PR só de idioma).
 - Diagrama: “Roteador da sua casa” com espaços duplos antes do `│` — cosmético.
-- **§0.2 em diante:** ainda **Pendente** neste ficheiro (será Parte 2).
+- **§0.2 em diante:** coberto na **Parte 2** (ver abaixo).
 
 ---
 
-## Parte 2 — Linhas 306–620 (Fase 0 §0.2 rede até ~Fase 1)
+## Parte 2 — Linhas 306–647 (Fase 0: §0.2 IP fixo até checklist e nota ZFS)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
 
-*(Preencher após a próxima sessão de revisão.)*
+> **Nota:** o intervalo foi alargado em relação ao rascunho inicial (306–620) para incluir o **fecho completo da Fase 0** (checklist, lembrete do dataset), evitando cortar a §0.8 a meio.
+
+### Verificações feitas
+
+- **§0.2** — `ifreload` / `ifupdown2`, aviso de `restart networking`, exemplos `vmbr0` / `enp1s0` coerentes com o guia; lembrete de IP de exemplo.
+- **§0.3** — `/etc/hosts` e `hostname -i` alinhados à [wiki](https://pve.proxmox.com/wiki/Network_Configuration) e quebras típicas de cluster.
+- **§0.4** — deb822, painel vs `Enabled: no`, aviso contra `sed` em massa; ficheiro `pve-no-subscription.sources` com `Suites: trixie` coerente com PVE 9.
+- **§0.5** — risco *supply chain* explícito; URL `community-scripts/ProxmoxVE` como referência auditável.
+- **§0.6** — `apt full-upgrade` como root; `needrestart -k -r i` com comentário sobre o significado de `-k`.
+- **§0.7** — `tar czf` de `/etc/pve` com data no nome; verificação `ls`.
+- **§0.8** — snapshot ZFS com aviso de dataset; alternativa LVM-Thin.
+- **Checklist Fase 0** — itens alinhados aos passos anteriores.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| §0.3 | `ping -c 1 pve` assume hostname `pve`; quem tem `mini` ou outro nome falha o teste. | `ping -c 1 "$(hostname)"` + comentário; comandos `hostname` / `cat` com texto que exige consistência nome/IP. |
+| Checklist Fase 0 | Item ZFS obrigatório mesmo sem pool ZFS. | Texto **ou N/A** com ênfase no backup `tar` quando não há ZFS. |
+
+### Observações P2 (não corrigidas agora)
+
+- Mistura **você** / **tu** / **activo** (PT-PT) vs **ativo** — harmonização global em parte futura.
+- `wget` da chave GPG a partir de `enterprise.proxmox.com` na secção “Se deu errado” — funcional para obter keyring; quem bloqueia DNS a enterprise pode precisar de espelho (caso raro em homelab).
 
 ---
 
-## Parte 3 — Linhas 621–1050 (Fase 2–3 SSH / 2FA)
+## Parte 3 — Linhas 648–1050 (Fase 1 e Fase 2–3 parcial)
 
 **Estado:** Pendente
+
+*(Intervalo ajustado após fecho da Parte 2.)*
 
 ---
 
@@ -92,4 +118,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização da Parte 1: 2026-05-12.*
+*Última actualização: Parte 1 e Parte 2 — 2026-05-12.*
