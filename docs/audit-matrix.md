@@ -56,6 +56,15 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 
 ---
 
+## Documentação complementar (não substitui a auditoria por fase)
+
+| Documento | Uso |
+|-----------|-----|
+| [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs** de estudo; explícito que **não** é checklist do host PVE. |
+| [roadmap-hardware.md](roadmap-hardware.md) | Narrativa N5095 → i7 → Xeon; contexto do legado *Linux Foundation Lab*. |
+
+---
+
 ## Próximas reverificações recomendadas
 
 - Reexecutar `apt-cache policy` / versões CrowdSec ao mudar de minor PVE ou Debian.

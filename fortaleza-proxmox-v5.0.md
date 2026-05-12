@@ -49,6 +49,7 @@ Cada fase segue sempre a mesma estrutura:
 | 2026-05 | **v5.0** — rascunho inicial do guia. |
 | 2026-05-12 | **Auditoria + ressalvas** — matriz [docs/audit-matrix.md](docs/audit-matrix.md); *tech preview* `proxmox-firewall`; ZFS, APT, supply chain; secção **Mini PC/RAM** (PVE 24/7 vs VMs por turnos); CrowdSec+nft; **9.1b** `needrestart`/unattended-upgrades (sem sed `restart=a`); teste **`tar tzf`** no backup; **`journalctl -f`** firewall; TLS pós-restore ([Certificate Management](https://pve.proxmox.com/wiki/Certificate_Management)); notas Tailscale `tailscale0` / Docker em LXC. |
 | 2026-05-12 | **Opcional:** secção e FAQ sobre [ProxMenux](https://proxmenux.com/) (menu shell de terceiros; aviso de verificação de fonte). |
+| 2026-05-12 | **Legado Linux Foundation Lab:** [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md), [docs/roadmap-hardware.md](docs/roadmap-hardware.md); FAQ origem; Fase 0 (nota BIOS / contexto legado); Fase 10 (lab descartável); Apêndice D (Docker/K8s); Apêndice I (links); README (filosofia). |
 
 ---
 
@@ -187,6 +188,8 @@ Crie uma pasta "Fortaleza Proxmox" e prepare entradas para:
 # 🟢 FASE 0 — Preparação do Sistema (FUNDAÇÃO)
 
 🎯 **OBJETIVO:** Deixar o Proxmox saudável **antes** de aplicar qualquer hardening. Atualizar, fixar IP, ajustar relógio, corrigir repositórios.
+
+> **BIOS / firmware (instalação por ISO):** habilite **Intel VT-x** (virtualização). **Intel VT-d** se um dia precisar de *passthrough* de dispositivos. Use **UEFI** conforme a placa e o instalador. **Secure Boot** / *Fast Boot*: depende do firmware e da versão do instalador PVE — veja a documentação da motherboard e a [wiki Proxmox](https://pve.proxmox.com/wiki/Main_Page) para o teu caso; o legado “Linux Foundation Lab” desactivava Secure Boot por simplicidade no Debian minimal, **não** é regra universal no PVE.
 
 > ⚠️ **Esta fase é a mais importante de todas.** Pular ela causa bugs que aparecem só depois (TOTP falhando, `apt update` quebrando, IP mudando). Faça com calma.
 
@@ -1694,6 +1697,8 @@ echo "- unattended-upgrades + ferramentas instaladas" >> ~/fortaleza-lab/diario.
 2. **Diário de mudanças** — histórico do que você fez
 3. **Plano de recuperação** — passos para reconstruir do zero
 
+> **Laboratório descartável (filosofia):** aprender inclui quebrar, reinstalar e documentar. No Proxmox isso traduz-se em **snapshots** antes de mudanças grandes, **`vzdump`** e cópias de `/etc/pve` para disco externo — separar o que é **configuração do nó** do que são **dados das VMs**. Podes ainda manter pastas tipo `~/scripts` e `~/notes` dentro de `~/fortaleza-lab/` ou nas VMs de estudo (ver [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md)).
+
 ### 10.1 README local
 
 Como `renato` no Proxmox:
@@ -2069,6 +2074,8 @@ Com a fortaleza de pé, sugiro esta ordem:
 5. **Proxmox Backup Server** (VM 900, 2GB) — Backup centralizado de VMs/CTs
 6. **Ansible** (no seu PC) — Automatize a criação de novos CTs
 
+> **Docker / Kubernetes:** não é preciso Kubernetes, Swarm ou Compose enorme para começar — primeiro containers, volumes e redes (ver [instalação Docker em Debian](https://docs.docker.com/engine/install/debian/) e Fase 8 do guia). Orquestração “de empresa” fica para quando os fundamentos estiverem sólidos.
+
 ---
 
 # ❓ Apêndice E — FAQ
@@ -2078,6 +2085,9 @@ R: No Proxmox VE 9, `proxmox-firewall` (nftables) é onde a equipa investe (regr
 
 **P: Posso usar este guia em outro servidor Debian, sem Proxmox?**
 R: Fases 0 (parcial), 1–4, 9 e 10 funcionam em qualquer Debian 13. Fases 5, 7 e 8 envolvem features específicas do Proxmox.
+
+**P: Este guia substitui o plano “Linux Foundation Lab” (Debian bare metal)?**
+R: **Evolui** a partir da mesma filosofia (fundamentos, segurança, GPG, redes, sem port forwarding), mas o **caminho actual** é **Proxmox no mini PC**, não Debian minimal como único SO no metal. Comandos de estudo e UFW/`fail2ban` **dentro de VMs** continuam no cheat sheet [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md); o **host** segue as fases Fortaleza (firewall PVE, CrowdSec, etc.). Ver também [docs/roadmap-hardware.md](docs/roadmap-hardware.md).
 
 **P: E se eu errar e me trancar fora?**
 R: Console físico do Mini PC sempre funciona. Apêndice H tem o plano de recuperação completo.
@@ -2223,6 +2233,8 @@ Este guia é **pedagógico** e foi confrontado com documentação oficial em 202
 | Ferramenta | Nota |
 |-------------|------|
 | [ProxMenux](https://proxmenux.com/) | Menu shell para administração; [intro](https://proxmenux.com/docs/introduction). Verificar fonte antes de instalar. |
+| [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) | Cheat sheet Linux (VMs de estudo); ver aviso de âmbito no cabeçalho. |
+| [roadmap-hardware.md](docs/roadmap-hardware.md) | Evolução prevista do hardware do lab. |
 
 ---
 
