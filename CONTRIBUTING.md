@@ -12,6 +12,12 @@ Obrigado por considerares melhorar o Fortaleza Proxmox.
 - Abre um issue com: versão do PVE (`pveversion`), saída do comando que falhou, e o que a documentação oficial diz agora (link).
 - Se tiveres patch, um MR pequeno é preferível a um issue longo.
 
+## Scripts opcionais (`scripts/`)
+
+- Mantém o **health-check** estritamente **só-leitura** (sem alterar firewall, APT nem ficheiros de configuração).
+- Exemplos **systemd** (`.example`): são modelos — o caminho canónico continua a ser criar o script na Fase 10 e escolher `cron` **ou** `timer` conscientemente.
+- No PR: indica se testaste no PVE (versão `pveversion`) ou no bash do teu PC (para `pc/*.sh`).
+
 ## Estilo
 
 - Mantém o tom e vocabulário do guia (português europeu onde o repositório já o usa).

@@ -20,7 +20,8 @@ Perdido? Começa pelo [mapa do curso](docs/mapa-do-curso.md) (visão geral por s
 | [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs de estudo** (não é checklist do host PVE). |
 | [docs/roadmap-hardware.md](docs/roadmap-hardware.md) | Narrativa de hardware: mini PC actual → i7 → Xeon (opcional). |
 | [docs/glossario.md](docs/glossario.md) | Atalho para o glossário (lista canónica no guia principal). |
-| [docs/monitoramento-telegram-fortaleza-proxmox.md](docs/monitoramento-telegram-fortaleza-proxmox.md) | Operação opcional: alertas Telegram + script em `scripts/` (após base segura no host). |
+| [docs/monitoramento-telegram-fortaleza-proxmox.md](docs/monitoramento-telegram-fortaleza-proxmox.md) | Operação opcional: alertas Telegram + [scripts/fortaleza-telegram-monitor.py](scripts/fortaleza-telegram-monitor.py) (após base segura no host). |
+| [scripts/README.md](scripts/README.md) | **Bónus:** health-check só-leitura, exemplos systemd (backup `/etc/pve`), sync no PC — índice em `scripts/`. |
 | [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md) | Histórico editorial do repositório (separado do changelog curto no guia). |
 | [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md) | Revisão geral (didáctica, usabilidade, checklist); meta-documentação. |
 | [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md) | Validação manual do guia **por partes** (registo vivo). |

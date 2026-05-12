@@ -1,0 +1,22 @@
+# Copiar para /etc/systemd/system/fortaleza-etc-pve-backup.service (sem .example)
+# e ajustar caminhos se o teu script não for /usr/local/bin/backup-fortaleza.sh
+#
+#   sudo cp fortaleza-etc-pve-backup.service.example /etc/systemd/system/fortaleza-etc-pve-backup.service
+#   sudo cp fortaleza-etc-pve-backup.timer.example /etc/systemd/system/fortaleza-etc-pve-backup.timer
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now fortaleza-etc-pve-backup.timer
+#
+# Documentação: systemd.timer(5), guia Fase 10 §10.3.
+
+[Unit]
+Description=Fortaleza Proxmox — backup oneshot de /etc/pve (tar)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup-fortaleza.sh
+User=root
+
+[Install]
+WantedBy=multi-user.target

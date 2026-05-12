@@ -1,0 +1,13 @@
+# Copiar para /etc/systemd/system/fortaleza-etc-pve-backup.timer (sem .example)
+# Par cron tradicional: ver Fase 10 do guia principal.
+
+[Unit]
+Description=Fortaleza Proxmox — agenda backup diário de /etc/pve (03:00)
+Requires=fortaleza-etc-pve-backup.service
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
