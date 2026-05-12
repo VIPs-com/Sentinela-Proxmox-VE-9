@@ -14,9 +14,10 @@ Verificações **só-leitura**: NTP, serviço `ssh`, `sshd -T` (password/root), 
 # No host (a partir da raiz do repositório clonado, ou copia o .sh para /root)
 sudo bash scripts/fortaleza-health-check.sh
 sudo bash scripts/fortaleza-health-check.sh --verbose
+sudo bash scripts/fortaleza-health-check.sh --json
 ```
 
-- Saída **verde / amarelo / vermelho** no terminal.
+- Saída **verde / amarelo / vermelho** no terminal (modo normal); com **`--json`** imprime **só** uma linha: `{"failures":N,"warnings":M,"ok":true|false}` — útil para **cron**, CI ou agendadores.
 - Exit `0` se não houver falhas críticas; `1` se houver pelo menos uma falha `[XX]`.
 
 ---
@@ -53,6 +54,8 @@ Em [pc/sync-fortaleza-backups.example.sh](pc/sync-fortaleza-backups.example.sh):
 ---
 
 ## Árvore resumida
+
+Na **raiz** do repositório existe também um [Makefile](../Makefile) com `make check`, `make check-verbose` e `make check-json` (Linux/PVE ou WSL).
 
 ```
 scripts/

@@ -27,7 +27,7 @@ A v4.0 já cobria SSH, 2FA, CrowdSec, Tailscale, nftables e ShellHub. A v5.0 adi
 | **FASE 10: Documentação viva** | README local + diário + plano de recuperação |
 | **Apêndice G:** lista do que guardar no Bitwarden | Não esquecer nenhum segredo |
 | **Apêndice H:** plano de recuperação de desastre | Você vai precisar um dia |
-| **Bónus `scripts/`** (health-check, systemd, sync PC) | Festejo pós-fases — [scripts/README.md](scripts/README.md) |
+| **Bónus `scripts/`** (health-check, `--json`, systemd, sync PC, `Makefile`) | Festejo pós-fases — [scripts/README.md](scripts/README.md) |
 
 ---
 
@@ -100,7 +100,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
 | 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha do guia principal **concluída** (Partes 1–7): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
-| 2026-05-12 | **Bónus `scripts/`:** [scripts/README.md](scripts/README.md) — `fortaleza-health-check.sh` (verificação só-leitura), exemplos systemd para backup de `/etc/pve`, `pc/sync-fortaleza-backups.example.sh`; remissões na Fase 10 e Apêndice B. |
+| 2026-05-12 | **Bónus `scripts/`:** [scripts/README.md](scripts/README.md) — `fortaleza-health-check.sh` (`--json`), [Makefile](Makefile) (`make check`), exemplos systemd para backup de `/etc/pve`, `pc/sync-fortaleza-backups.example.sh`; remissões na Fase 10 e Apêndice B. |
 
 <span id="glossario-completo"></span>
 
@@ -1971,7 +1971,7 @@ Adicione no final:
 0 3 * * * /usr/local/bin/backup-fortaleza.sh >> /var/log/backup-fortaleza.log 2>&1
 ```
 
-> **Bónus (repositório Git):** exemplos **systemd** (`.timer` + `.service`) para o mesmo horário sem editar `crontab`, e o script **só-leitura** `fortaleza-health-check.sh` (festim de verificação após fechares as fases). Índice e instruções: [scripts/README.md](scripts/README.md).
+> **Bónus (repositório Git):** exemplos **systemd** (`.timer` + `.service`) para o mesmo horário sem editar `crontab`, o script **só-leitura** `fortaleza-health-check.sh` (opção `--json` para agendadores), e **`make check`** / **`make check-json`** na raiz ([Makefile](Makefile)). Índice: [scripts/README.md](scripts/README.md).
 
 ### 10.4 Copiar backups para fora do servidor
 
@@ -2184,7 +2184,7 @@ Cole isso em um arquivo `~/fortaleza-lab/comandos.md`:
 
 ### Bónus — automação só-leitura (repositório)
 
-Depois de dominares as fases, podes usar o script **`scripts/fortaleza-health-check.sh`** no host (com `sudo`): confirma NTP, SSH endurecido, último `tar` de `/etc/pve`, CrowdSec/firewall se existirem, ZFS, CTs 100/200 — **sem alterar nada**. Índice completo (Telegram, systemd de exemplo, sync no PC): [scripts/README.md](scripts/README.md).
+Depois de dominares as fases, podes usar o script **`scripts/fortaleza-health-check.sh`** no host (com `sudo`): confirma NTP, SSH endurecido, último `tar` de `/etc/pve`, CrowdSec/firewall se existirem, ZFS, CTs 100/200 — **sem alterar nada**. Opção **`--json`** (uma linha para cron/CI) e **`make check`** / **`make check-json`** na raiz do clone ([Makefile](Makefile)). Índice completo (Telegram, systemd de exemplo, sync no PC): [scripts/README.md](scripts/README.md).
 
 ---
 

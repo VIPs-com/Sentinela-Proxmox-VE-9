@@ -16,7 +16,7 @@ Obrigado por considerares melhorar o Fortaleza Proxmox.
 
 - Mantém o **health-check** estritamente **só-leitura** (sem alterar firewall, APT nem ficheiros de configuração).
 - Exemplos **systemd** (`.example`): são modelos — o caminho canónico continua a ser criar o script na Fase 10 e escolher `cron` **ou** `timer` conscientemente.
-- No PR: indica se testaste no PVE (versão `pveversion`) ou no bash do teu PC (para `pc/*.sh`).
+- No PR: indica se testaste no PVE (versão `pveversion`) ou no bash do teu PC (para `pc/*.sh`). O alvo `make check-json` requer `make` + `sudo` no ambiente Linux (ou WSL).
 
 ## Estilo
 

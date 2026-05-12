@@ -5,23 +5,36 @@
 # Uso:
 #   sudo ./fortaleza-health-check.sh
 #   sudo ./fortaleza-health-check.sh --verbose
+#   sudo ./fortaleza-health-check.sh --json
+#   make check-json   # na raiz do repositório (ver Makefile)
 #
 # SPDX-License-Identifier: MIT
 
 set -uo pipefail
 
 VERBOSE=0
+JSON=0
 FAILURES=0
 WARNINGS=0
 
-case "${1:-}" in
--v | --verbose) VERBOSE=1 ;;
--h | --help)
-	echo "Uso: sudo $0 [--verbose]"
-	echo "  Verificações só-leitura. Usa sudo no host PVE para ler /root/backups e estado dos serviços."
-	exit 0
-	;;
-esac
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	-v | --verbose) VERBOSE=1 ;;
+	--json) JSON=1 ;;
+	-h | --help)
+		echo "Uso: sudo $0 [--verbose] [--json]"
+		echo "  --verbose   mais detalhe no terminal"
+		echo "  --json      uma linha JSON (failures, warnings, ok) — sem cores; útil para CI ou cron"
+		echo "  Correr no host PVE com sudo para /root/backups e serviços."
+		exit 0
+		;;
+	*)
+		echo "Argumento desconhecido: $1 (usa --help)" >&2
+		exit 2
+		;;
+	esac
+	shift
+done
 
 C_R='\033[0;31m'
 C_G='\033[0;32m'
@@ -29,10 +42,16 @@ C_Y='\033[0;33m'
 C_B='\033[0;34m'
 C_N='\033[0m'
 
-pass() { echo -e "${C_G}[OK]${C_N} $*"; }
-warn() { echo -e "${C_Y}[!!]${C_N} $*"; WARNINGS=$((WARNINGS + 1)); }
-fail() { echo -e "${C_R}[XX]${C_N} $*"; FAILURES=$((FAILURES + 1)); }
-info() { [[ "$VERBOSE" -eq 1 ]] && echo -e "${C_B}[..]${C_N} $*" || true; }
+pass() { [[ "$JSON" -eq 1 ]] || echo -e "${C_G}[OK]${C_N} $*"; }
+warn() {
+	WARNINGS=$((WARNINGS + 1))
+	[[ "$JSON" -eq 1 ]] || echo -e "${C_Y}[!!]${C_N} $*"
+}
+fail() {
+	FAILURES=$((FAILURES + 1))
+	[[ "$JSON" -eq 1 ]] || echo -e "${C_R}[XX]${C_N} $*"
+}
+info() { [[ "$VERBOSE" -eq 1 ]] && [[ "$JSON" -eq 0 ]] && echo -e "${C_B}[..]${C_N} $*" || true; }
 
 if [[ "$(id -u)" -ne 0 ]]; then
 	warn "Não estás como root/sudo — alguns testes (backups em /root/backups, pvesh) podem falhar ou omitir-se."
@@ -170,6 +189,13 @@ if command -v pct >/dev/null 2>&1; then
 			fi
 		fi
 	done
+fi
+
+if [[ "$JSON" -eq 1 ]]; then
+	ok=true
+	[[ "$FAILURES" -gt 0 ]] && ok=false
+	printf '{"failures":%d,"warnings":%d,"ok":%s}\n' "$FAILURES" "$WARNINGS" "$ok"
+	[[ "$FAILURES" -eq 0 ]] && exit 0 || exit 1
 fi
 
 echo ""
