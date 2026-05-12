@@ -98,7 +98,7 @@ Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–2): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md); validação linha-a-linha (Partes 1–3): [docs/validacao-linha-a-linha.md](docs/validacao-linha-a-linha.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 
@@ -653,6 +653,7 @@ Sempre que aparecer `rpool/ROOT/pve-1` num `zfs snapshot`, use o **mesmo** datas
 ### 📸 Snapshot antes de começar
 
 ```bash
+# Como root (sessão onde criaste o utilizador renato)
 zfs snapshot rpool/ROOT/pve-1@snap-pre-fase1
 ```
 
@@ -717,6 +718,7 @@ Saia (`exit`) e entre de novo. Grupos só são lidos no login.
 ### 📸 Snapshot
 
 ```bash
+# Como root
 zfs snapshot rpool/ROOT/pve-1@snap-pre-fase2
 ```
 
@@ -850,11 +852,11 @@ sudo sshd -t
 
 > Não deve retornar nada (silêncio = OK). Se retornar erro, **corrija antes** de reiniciar.
 
+> ⚠️ **No Debian 13 o serviço chama-se `ssh`, não `sshd`.** `systemctl restart sshd` dá erro.
+
 ```bash
 sudo systemctl restart ssh
 ```
-
-> ⚠️ **No Debian 13 o serviço chama-se `ssh`, não `sshd`.** `systemctl restart sshd` dá erro.
 
 ### ✅ Verifique
 
@@ -914,6 +916,7 @@ echo "- SSH só com chave Ed25519, drop-in em sshd_config.d/" >> ~/fortaleza-lab
 ### 📸 Snapshot
 
 ```bash
+# Como renato (sudo) — o dataset continua a ser o que ajustaste na Fase 0.8
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase3
 ```
 
@@ -1005,12 +1008,14 @@ sudo sshd -t                   # Não deve retornar nada
 sudo systemctl reload ssh || sudo systemctl restart ssh
 ```
 
-> 4. **Na nova janela:** `ssh fortaleza` → deves ver `Verification code:` depois da autenticação por chave. Se **não** pedir código, o código falhar sempre, ou a ligação cair, **não** avances para o §3.5 nem removas o `nullok` — reverifica `/etc/pam.d/sshd`, o drop-in e `sudo sshd -T | grep -iE 'authenticationmethods|kbdinteractiveauthentication'`.
+> 4. **Na nova janela:** `ssh fortaleza` (ou `ssh -i ~/.ssh/chave_fortaleza renato@SEU_IP` se não usaste o §2.4) → deves ver `Verification code:` depois da autenticação por chave. Se **não** pedir código, o código falhar sempre, ou a ligação cair, **não** avances para o §3.5 nem removas o `nullok` — reverifica `/etc/pam.d/sshd`, o drop-in e `sudo sshd -T | grep -iE 'authenticationmethods|kbdinteractiveauthentication'`.
 
 ### ✅ Verifique
 
 ```bash
+# Se configuraste o Host "fortaleza" no §2.4:
 ssh fortaleza
+# Senão: ssh -i ~/.ssh/chave_fortaleza renato@192.168.1.100   (troca o IP)
 ```
 
 Deve aparecer:
@@ -1041,7 +1046,9 @@ auth required pam_google_authenticator.so
 ```
 
 ```bash
-sudo systemctl restart ssh
+sudo sshd -t
+# Debian 13: unidade systemd = ssh (não sshd)
+sudo systemctl reload ssh || sudo systemctl restart ssh
 ```
 
 ### 🆘 Se deu errado

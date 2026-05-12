@@ -75,17 +75,40 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-## Parte 3 — Linhas 648–1050 (Fase 1 e Fase 2–3 parcial)
+## Parte 3 — Linhas 648–1088 (Fases 1 a 3 — fim da documentação da Fase 3)
 
-**Estado:** Pendente
+**Ficheiro:** `fortaleza-proxmox-v5.0.md`  
+**Estado:** Concluída (2026-05-12)
 
-*(Intervalo ajustado após fecho da Parte 2.)*
+> **Nota:** o intervalo final foi alargado em relação ao rascunho (648–1050) para incluir o **§3.5 completo** e o bloco **Documente** da Fase 3, terminando antes da Fase 4.
+
+### Verificações feitas
+
+- **Fase 1** — `adduser` / `usermod -aG sudo`; verificação em segundo terminal; diário em `~/fortaleza-lab/`; troubleshooting `sudoers`.
+- **Fase 2** — chave no PC local, `ssh-copy-id`, `~/.ssh/config`, drop-in `99-hardening.conf` alinhado a OpenSSH 10 / Debian 13; `sshd -T` para validar.
+- **Fase 3** — PAM `nullok` → remoção; `KbdInteractiveAuthentication`; bloco **PARA AQUI** + `reload||restart`; instalação `libpam-google-authenticator`; snapshot com `sudo` explícito para sessão `renato`.
+
+### Problemas encontrados e correcções
+
+| Secção | Problema | Acção |
+|--------|----------|--------|
+| §2.5 | Aviso “serviço `ssh` não `sshd`” vinha **depois** do `systemctl restart ssh` — fácil de não ler a tempo. | Aviso movido para **antes** do `restart`. |
+| §3 **Verifique** | Assume sempre `ssh fortaleza`; quem saltou o §2.4 fica preso. | Alternativa `ssh -i … renato@IP` no bloco e no passo 4 do checklist TOTP. |
+| Snapshots Fase 1–3 | Fase 1–2: `zfs` sem `sudo` (root implícito); Fase 3: `sudo zfs` — ambíguo para o novato. | Comentários `# Como root` nos snapshots 1 e 2; Fase 3: nota “como renato (sudo)” + dataset Fase 0.8. |
+| §3.5 | Só `restart ssh` após remover `nullok`; §3.4 já ensina `reload` preferencial. | `sshd -t` + `reload \|\| restart` + lembrete da unidade `ssh`. |
+
+### Observações P2
+
+- Mistura **você** / **tu** / **activo** — harmonização global em parte futura.
+- Linha de exemplo `(renato@192.168.1.100)` na saída esperada do TOTP — IP de modelo (já coberto nas Dicas).
 
 ---
 
-## Parte 4 — Linhas 1051–1450 (Fase 4–5 CrowdSec / Tailscale)
+## Parte 4 — Linhas 1089–1450 (Fase 4–5 CrowdSec / Tailscale)
 
 **Estado:** Pendente
+
+*(Intervalo actualizado: a Fase 4 começa na linha ~1089 após as edições.)*
 
 ---
 
@@ -118,4 +141,4 @@ Este ficheiro regista a **revisão manual** do conteúdo, **por partes**, com ca
 
 ---
 
-*Última actualização: Parte 1 e Parte 2 — 2026-05-12.*
+*Última actualização: Partes 1 a 3 — 2026-05-12.*
