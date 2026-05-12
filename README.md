@@ -22,6 +22,7 @@ Perdido? Começa pelo [mapa do curso](docs/mapa-do-curso.md) (visão geral por s
 | [docs/glossario.md](docs/glossario.md) | Atalho para o glossário (lista canónica no guia principal). |
 | [docs/monitoramento-telegram-fortaleza-proxmox.md](docs/monitoramento-telegram-fortaleza-proxmox.md) | Operação opcional: alertas Telegram + script em `scripts/` (após base segura no host). |
 | [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md) | Histórico editorial do repositório (separado do changelog curto no guia). |
+| [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md) | Revisão geral (didáctica, usabilidade, checklist); meta-documentação. |
 
 ## Avisos
 

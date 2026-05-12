@@ -11,6 +11,7 @@
 | | [roadmap-hardware.md](roadmap-hardware.md) | Narrativa de hardware (mini PC → evolução). Opcional. |
 | | [glossario.md](glossario.md) | Atalho ao glossário; a lista canónica longa está no guia principal (âncora `#glossario-completo`). |
 | **4 — Operação (pós-lab)** | [monitoramento-telegram-fortaleza-proxmox.md](monitoramento-telegram-fortaleza-proxmox.md) | Alertas no telemóvel (Telegram). **Não faz parte das fases 0–10**; usa depois da base segura (idealmente após Fases 4–7: CrowdSec, firewall, rede). Script: [../scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py). |
+| **Meta — Revisão do projecto** | [revisao-geral-projeto.md](revisao-geral-projeto.md) | Relatório de auditoria pedagógica/usabilidade (o que foi revisto, P1/P2, próximos passos). **Não** é fase de laboratório. |
 
 ## Histórico do repositório (não é matéria de exame)
 
@@ -22,4 +23,4 @@ Alterações a vários ficheiros do repo (matriz, mapa, refinamentos, etc.) est�
 |---------|-----|
 | [../README.md](../README.md) | Cartão de visita do projecto e tabela resumida de ficheiros. |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Como contribuir e o que citar em PRs. |
-| [../scripts/](../scripts/) | Scripts opcionais (ex.: monitor Telegram). |
+| [../scripts/README.md](../scripts/README.md) | Índice mínimo dos scripts opcionais (Telegram). |

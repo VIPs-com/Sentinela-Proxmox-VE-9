@@ -42,7 +42,54 @@ Cada fase segue sempre a mesma estrutura:
 
 > ⚠️ **Não pule fases.** A ordem foi escolhida para você nunca perder o acesso ao servidor.
 
-Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curso](docs/mapa-do-curso.md).
+Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curso](docs/mapa-do-curso.md). A **ordem dos ficheiros** em `docs/` (núcleo vs complemento vs operação) está em [docs/README.md](docs/README.md).
+
+---
+
+## Dicas para o aluno — como usar este guia (fundamentos)
+
+Estas dicas valem para **todas** as fases. O objectivo é reduzir ansiedade e erros por pressa.
+
+### 1. Leia antes de copiar
+
+- Cada bloco **COMANDOS** mistura linhas que são **comentários** (começam por `#` no shell) com linhas que são **ordens reais** para o terminal.
+- Quando o guia mostra **conteúdo de ficheiro** (ex.: `interfaces`, `sshd_config`), o bloco pode ser “cole isto no editor” — não corras isso na shell como se fosse `bash`.
+- Se um comando tiver `grep`, `|`, `&&` ou `$(...)`, é **composto**: lê o comentário acima para saber o que o filtro ou a condição fazem.
+
+### 2. Duas sessões SSH (regra de ouro)
+
+A partir do momento em que mexes em **rede** ou **SSH**, mantém **sempre** duas ligações ao servidor (duas janelas de terminal, ou uma janela + consola física / `Shell` no painel web). A primeira sessão é a “corda de segurança”; a segunda serve para testar. Se fechares a única sessão no meio de um `restart` de rede ou SSH, o stress aumenta muito.
+
+### 3. Exemplos não são a tua rede
+
+Endereços como `192.168.1.100`, gateway `192.168.1.1`, interface `vmbr0` / `enp1s0` são **modelos**. Substitui pelos valores **da tua** LAN e pelos nomes que o **teu** `ip addr show` mostrar. Erro típico de novato: copiar IP do guia e depois não bater com o roteador.
+
+### 4. O que é o bloco “Tradução”
+
+Quando aparece **Tradução** (ou glossário inline), o guia está a explicar **o significado** das linhas anteriores (opções do `sshd`, campos do `interfaces`, etc.). Nem todos os passos têm esse rótulo — muitas vezes a explicação está nos **comentários** `#` dentro do `bash`. Se não perceberes uma flag, pesquisa `man comando` no Debian ou a wiki Proxmox ligada na fase.
+
+### 5. Legenda rápida dos rótulos das fases
+
+| Rótulo | Função |
+|--------|--------|
+| **OBJETIVO** | O que vais ganhar ao terminar o passo. |
+| **FUNDAMENTO** | Porque é que isto importa (segurança, rede, relógio…). |
+| **COMANDOS** | Passos concretos. |
+| **VERIFIQUE** | Provas de que funcionou; não avances sem isto quando a fase for crítica. |
+| **SE DEU ERRADO** | O erro mais comum e como sair dele. |
+
+### 6. Ferramentas e contexto
+
+- **Bitwarden** (ou outro gestor): guarda segredos e códigos de recuperação **no momento** em que o guia os gera — ver Apêndice G.
+- **Acesso físico** ao mini PC: trata-o como “plano B” sempre que mexeres em rede ou firewall.
+- **Documentação satélite** (matriz de auditoria, mapa, cheat sheet Linux): ajudam a **orientar** e a **cruzar fontes**; não substituem executar as fases na ordem no host.
+
+### 7. Se empatares
+
+1. Volta ao [mapa do curso](docs/mapa-do-curso.md) e confirma em que bloco estás.  
+2. Relê só o **FUNDAMENTO** e o **SE DEU ERRADO** dessa subsecção.  
+3. Consulta a [matriz de auditoria](docs/audit-matrix.md) se a dúvida for “isto ainda bate com a documentação oficial?”.  
+4. Apêndice H (recuperação) se perdeste acesso.
 
 ---
 
@@ -51,7 +98,7 @@ Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curs
 | Data | Alteração |
 |------|-----------|
 | 2026-05 | **v5.0** — rascunho inicial do guia (fases 0–10 e apêndices). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). **Histórico detalhado** de ficheiros satélites, refinamentos e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [docs/audit-matrix.md](docs/audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório de auditoria pedagógica: [docs/revisao-geral-projeto.md](docs/revisao-geral-projeto.md). **Histórico detalhado** de ficheiros satélites e reorganização da pasta `docs/`: [docs/CHANGELOG-repositorio.md](docs/CHANGELOG-repositorio.md). |
 
 <span id="glossario-completo"></span>
 

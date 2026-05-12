@@ -17,7 +17,7 @@
 
 ## O que há dentro de `docs/`
 
-Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operação** e links estáveis: **[README.md desta pasta](README.md)**. Abre esse ficheiro sempre que entrares na pasta `docs/` no GitHub ou no disco — evita confundir o guia principal com complementos e operação opcional.
+Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operação** e links estáveis: **[README.md desta pasta](README.md)**. Abre esse ficheiro sempre que entrares na pasta `docs/` no GitHub ou no disco — evita confundir o guia principal com complementos e operação opcional. Relatório meta (o que foi revisto, lacunas P1/P2): [revisao-geral-projeto.md](revisao-geral-projeto.md).
 
 ---
 
