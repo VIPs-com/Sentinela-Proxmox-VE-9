@@ -1,5 +1,5 @@
-# Fortaleza Proxmox — alvos de conveniência (bónus pós-guia)
-# Correr na raiz do repositório; no Windows usa WSL ou Git Bash se tiveres `make` + `sudo` no alvo Linux.
+# Fortaleza Proxmox — alvos de conveniência (bônus pós-guia)
+# Execute na raiz do repositório; no Windows use WSL ou Git Bash se tiver `make` + `sudo` no alvo Linux.
 
 .DEFAULT_GOAL := help
 SHELL := /bin/bash

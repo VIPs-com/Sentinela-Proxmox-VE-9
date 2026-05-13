@@ -1,12 +1,21 @@
-# Segredos e artefactos locais — nunca versionar
+# Segredos e artefatos locais — nunca versionar
 .env
 .env.*
 *.pem
+*.key
 *_rsa
 *_ed25519
 authorized_keys
 **/etc-pve*.tar.gz
 fortaleza-backups/
+
+# Estado gerado pelo monitor Telegram (contém dados de runtime)
+estado.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
 
 # SO / IDE
 .DS_Store

@@ -59,7 +59,7 @@ def esc_html(s: object) -> str:
 def require_root() -> None:
     if os.geteuid() != 0:
         print(
-            "Aviso: não és root — pvesh e cscli podem falhar. "
+            "Aviso: não é root — pvesh e cscli podem falhar. "
             "O manual pvesh(1) restringe pvesh a root.",
             file=sys.stderr,
         )
@@ -354,7 +354,7 @@ def cmd_seg() -> str:
     sample = esc_html(crowdsec_sample_text())
     if n is None:
         return "🛡️ <b>CrowdSec</b>\nContagem indisponível.\n<pre>" + sample + "</pre>"
-    return f"🛡️ <b>CrowdSec</b>\nDecisões activas (aprox.): <b>{n}</b>\n<pre>{sample}</pre>"
+    return f"🛡️ <b>CrowdSec</b>\nDecisões ativas (aprox.): <b>{n}</b>\n<pre>{sample}</pre>"
 
 
 def cmd_hw() -> str:
@@ -439,7 +439,7 @@ def checar_alertas() -> None:
             )
         elif ant and ant != "running" and st == "running":
             send_message(
-                "🟢 <b>Guest a correr</b>\n"
+                "🟢 <b>Guest em execução</b>\n"
                 f"{item['tipo']} <b>{nm}</b> id {item['id']}"
             )
 
@@ -450,7 +450,7 @@ def checar_alertas() -> None:
         if cnt is not None and prev_c is not None and cnt > int(prev_c):
             send_message(
                 "🛡️ <b>CrowdSec</b>\n"
-                f"Decisões activas subiram: {prev_c} → <b>{cnt}</b>\n"
+                f"Decisões ativas subiram: {prev_c} → <b>{cnt}</b>\n"
                 "<pre>"
                 + esc_html(crowdsec_sample_text()[:3000])
                 + "</pre>"
@@ -474,7 +474,7 @@ def checar_alertas() -> None:
                     "🌡️ <b>ALERTA TEMPERATURA</b>\n"
                     f"thermal_zone0 ≈ {z0 / 1000.0:.1f} °C "
                     f"(limite {THERMAL_MAX_MC / 1000:.0f} °C)\n"
-                    "Verifica poeira, pasta térmica e carga."
+                    "Verifique poeira, pasta térmica e carga."
                 )
                 novos_alert[k] = True
         else:

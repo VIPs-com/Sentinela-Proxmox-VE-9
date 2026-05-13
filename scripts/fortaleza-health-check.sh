@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # fortaleza-health-check.sh — Verificações só-leitura no host Proxmox (Fortaleza Proxmox).
-# Não altera o sistema. Ideal após concluíres as fases 0–10 ou para revisão periódica.
+# Não altera o sistema. Ideal após concluir as fases 0–10 ou para revisão periódica.
 #
 # Uso:
 #   sudo ./fortaleza-health-check.sh
@@ -54,7 +54,7 @@ fail() {
 info() { [[ "$VERBOSE" -eq 1 ]] && [[ "$JSON" -eq 0 ]] && echo -e "${C_B}[..]${C_N} $*" || true; }
 
 if [[ "$(id -u)" -ne 0 ]]; then
-	warn "Não estás como root/sudo — alguns testes (backups em /root/backups, pvesh) podem falhar ou omitir-se."
+	warn "Não está como root/sudo — alguns testes (backups em /root/backups, pvesh) podem falhar ou ser omitidos."
 fi
 
 # --- NTP ---
@@ -70,11 +70,11 @@ fi
 
 # --- SSH (unidade Debian 13) ---
 if systemctl is-active --quiet ssh 2>/dev/null; then
-	pass "Serviço ssh está activo."
+	pass "Serviço ssh está ativo."
 elif systemctl is-active --quiet sshd 2>/dev/null; then
-	pass "Serviço sshd está activo (não Debian típico)."
+	pass "Serviço sshd está ativo (não Debian típico)."
 else
-	fail "Serviço SSH não está activo (esperado: ssh no Debian 13)."
+	fail "Serviço SSH não está ativo (esperado: ssh no Debian 13)."
 fi
 
 if command -v sshd >/dev/null 2>&1; then
@@ -82,7 +82,7 @@ if command -v sshd >/dev/null 2>&1; then
 	pr="$(sshd -T 2>/dev/null | awk '/^permitrootlogin /{print $2}')"
 	info "sshd -T: passwordauthentication=$pa permitrootlogin=$pr"
 	if [[ "${pa,,}" == "no" ]]; then
-		pass "SSH: PasswordAuthentication desactivado."
+		pass "SSH: PasswordAuthentication desativado."
 	else
 		fail "SSH: PasswordAuthentication não está 'no' (ver Fase 2)."
 	fi
@@ -119,7 +119,7 @@ if command -v zpool >/dev/null 2>&1; then
 	npools="$(echo "${npools:-0}" | tr -d '[:space:]')"
 	npools="${npools:-0}"
 	if [[ "${npools}" -eq 0 ]]; then
-		info "ZFS: sem pools importadas neste nó (OK se não usas ZFS)."
+		info "ZFS: sem pools importadas neste nó (OK se não usa ZFS)."
 	else
 		bad="$(zpool list -H -o health 2>/dev/null | grep -vc '^ONLINE$' || true)"
 		if [[ "${bad:-0}" -eq 0 ]]; then
@@ -152,26 +152,26 @@ fi
 # --- CrowdSec (opcional, pós-Fase 4) ---
 if systemctl list-unit-files 2>/dev/null | grep -q '^crowdsec\.service'; then
 	if systemctl is-active --quiet crowdsec 2>/dev/null; then
-		pass "CrowdSec (crowdsec) activo."
+		pass "CrowdSec (crowdsec) ativo."
 	else
-		warn "CrowdSec instalado mas serviço não activo."
+		warn "CrowdSec instalado mas serviço não ativo."
 	fi
 else
-	info "CrowdSec não instalado (N/A se ainda não fizeste Fase 4)."
+	info "CrowdSec não instalado (N/A se ainda não fez a Fase 4)."
 fi
 
 if systemctl list-unit-files 2>/dev/null | grep -q '^crowdsec-firewall-bouncer\.service'; then
 	if systemctl is-active --quiet crowdsec-firewall-bouncer 2>/dev/null; then
-		pass "Bouncer CrowdSec (nftables) activo."
+		pass "Bouncer CrowdSec (nftables) ativo."
 	else
-		warn "Bouncer CrowdSec instalado mas não activo."
+		warn "Bouncer CrowdSec instalado mas não ativo."
 	fi
 fi
 
 # --- proxmox-firewall (opcional, pós-Fase 7) ---
 if systemctl list-unit-files 2>/dev/null | grep -q '^proxmox-firewall\.service'; then
 	if systemctl is-active --quiet proxmox-firewall 2>/dev/null; then
-		pass "proxmox-firewall activo."
+		pass "proxmox-firewall ativo."
 	else
 		info "proxmox-firewall instalado mas inactive (pode ser normal em algumas transições — ver Fase 7)."
 	fi

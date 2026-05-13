@@ -1,8 +1,8 @@
-# Scripts e exemplos — Fortaleza Proxmox (bónus)
+# Scripts e exemplos — Fortaleza Proxmox (bônus)
 
-Estes ficheiros **não substituem** as [fases 0–10 do guia principal](../fortaleza-proxmox-v5.0.md): são **atalhos** depois de entenderes o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechares o lab com confiança. **Antes de tudo:** se te perdes no *repo*, lê o [manual de usabilidade](../docs/manual-usabilidade-fortaleza.md) (estágios A–E).
+Esses arquivos **não substituem** as [fases 0–10 do guia principal](../fortaleza-proxmox-v5.0.md): são **atalhos** depois de entender o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechar o lab com confiança. **Antes de tudo:** se se perder no *repo*, leia o [manual de usabilidade](../docs/manual-usabilidade-fortaleza.md) (estágios A–E).
 
-**Segurança:** nunca faças commit de `.env`, tokens Telegram, chaves privadas, nem dumps de `/etc/pve` com segredos.
+**Segurança:** nunca faça commit de `.env`, tokens Telegram, chaves privadas, nem dumps de `/etc/pve` com segredos.
 
 ---
 
@@ -11,7 +11,7 @@ Estes ficheiros **não substituem** as [fases 0–10 do guia principal](../forta
 Verificações **só-leitura**: NTP, serviço `ssh`, `sshd -T` (password/root), `pveversion`, disco `/`, ZFS (se existir), último backup `etc-pve-*.tar.gz` com `tar tzf`, CrowdSec + bouncer + `proxmox-firewall` se estiverem instalados, CTs 100/200 se existirem.
 
 ```bash
-# No host (a partir da raiz do repositório clonado, ou copia o .sh para /root)
+# No host (a partir da raiz do repositório clonado, ou copie o .sh para /root)
 sudo bash scripts/fortaleza-health-check.sh
 sudo bash scripts/fortaleza-health-check.sh --verbose
 sudo bash scripts/fortaleza-health-check.sh --json
@@ -30,12 +30,12 @@ Alertas Telegram (RAM, disco, ZFS, CrowdSec digest, etc.). Instalação e variá
 
 ## 3. Systemd — backup diário de `/etc/pve` (alternativa ao cron)
 
-Ficheiros em [systemd/](systemd/) (suffixo `.example` — copia **sem** o sufixo para `/etc/systemd/system/`):
+Arquivos em [systemd/](systemd/) (sufixo `.example` — copie **sem** o sufixo para `/etc/systemd/system/`):
 
-| Ficheiro | Descrição |
-|----------|-----------|
+| Arquivo | Descrição |
+|---------|-----------|
 | [systemd/fortaleza-etc-pve-backup.service.example](systemd/fortaleza-etc-pve-backup.service.example) | Oneshot que chama `/usr/local/bin/backup-fortaleza.sh` (script da Fase 10). |
-| [systemd/fortaleza-etc-pve-backup.timer.example](systemd/fortaleza-etc-pve-backup.timer.example) | Dispara todos os dias às **03:00** (ajusta `OnCalendar` se precisares). |
+| [systemd/fortaleza-etc-pve-backup.timer.example](systemd/fortaleza-etc-pve-backup.timer.example) | Dispara todos os dias às **03:00** (ajuste `OnCalendar` se precisar). |
 
 ```bash
 sudo cp scripts/systemd/fortaleza-etc-pve-backup.service.example /etc/systemd/system/fortaleza-etc-pve-backup.service

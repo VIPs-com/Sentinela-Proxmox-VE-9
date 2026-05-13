@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Exemplo para o TEU PC (Linux/macOS com bash) — puxa /root/backups do Proxmox.
-# Copia para ~/bin ou similar, chmod +x, edita FORTALEZA_SSH.
+# Exemplo para o SEU PC (Linux/macOS com bash) — puxa /root/backups do Proxmox.
+# Copie para ~/bin ou similar, chmod +x, edite FORTALEZA_SSH.
 #
 # Variável FORTALEZA_SSH:
-#   - Host do teu ~/.ssh/config (ex.: fortaleza) — Fase 2 §2.4 do guia
-#   - OU utilizador@IP (ex.: renato@192.168.1.100)
+#   - Host do seu ~/.ssh/config (ex.: fortaleza) — Fase 2 §2.4 do guia
+#   - OU usuario@IP (ex.: renato@192.168.1.100)
 #
 # Uso: ./sync-fortaleza-backups.example.sh
 #
@@ -23,4 +23,4 @@ rsync -avz --delete \
   "${FORTALEZA_SSH}:/root/backups/" \
   "$DEST/"
 
-echo "OK. Lembra-te: isto não substitui cópia para disco externo / nuvem (Fase 10)."
+echo "OK. Lembre-se: isso não substitui cópia para disco externo / nuvem (Fase 10)."

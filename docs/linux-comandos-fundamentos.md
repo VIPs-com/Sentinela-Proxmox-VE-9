@@ -1,25 +1,25 @@
 # Linux — comandos de fundamentos (cheat sheet)
 
-**Âmbito:** uso em **VMs ou CTs Debian de estudo** (laboratório, DMZ, exercícios de aula).  
-**Não** substitui nem contradiz o [guia Fortaleza Proxmox](../fortaleza-proxmox-v5.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado “bare metal” fazem sentido **dentro** de guests Debian; **evita** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que estás a fazer.
+**Escopo:** uso em **VMs ou CTs Debian de estudo** (laboratório, DMZ, exercícios de aula).  
+**Não** substitui nem contradiz o [guia Fortaleza Proxmox](../fortaleza-proxmox-v5.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado "bare metal" fazem sentido **dentro** de guests Debian; **evite** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que está fazendo.
 
-Origem conceptual: projecto anterior **Linux Foundation Lab** (Debian 13 minimal à mão). Este ficheiro condensa só a parte **reutilizável** de comandos e hábitos.
+Origem conceitual: projeto anterior **Linux Foundation Lab** (Debian 13 minimal à mão). Este arquivo condensa só a parte **reutilizável** de comandos e hábitos.
 
 ---
 
-## Pastas úteis (na VM de estudo ou no teu utilizador no PVE)
+## Pastas úteis (na VM de estudo ou no seu usuário no PVE)
 
-Podes organizar assim (ajusta caminhos ao teu utilizador):
+Você pode organizar assim (ajuste caminhos ao seu usuário):
 
 ```bash
 mkdir -p ~/lab ~/scripts ~/notes ~/gpg
 ```
 
-No host Fortaleza já existe `~/fortaleza-lab/` (README, diário, recuperação) — podes espelhar a mesma ideia **dentro** de cada VM.
+No host Fortaleza já existe `~/fortaleza-lab/` (README, diário, recuperação) — você pode espelhar a mesma ideia **dentro** de cada VM.
 
 ---
 
-## Navegação e ficheiros
+## Navegação e arquivos
 
 | Área | Comandos |
 |------|----------|
@@ -38,8 +38,10 @@ No host Fortaleza já existe `~/fortaleza-lab/` (README, diário, recuperação)
 |--------|---------|
 | Serviços (systemd) | `systemctl status NOME`, `systemctl list-units --failed` |
 | Logs | `journalctl -xe`, `journalctl -u ssh -f` |
-| Recursos | `htop` ou `btop`, `free -h`, `df -h` |
-| Discos / blocos | `lsblk` |
+| Recursos | `btop` (moderno) ou `htop`, `free -h`, `df -h` |
+| Snapshot do sistema | `fastfetch` |
+| Discos / blocos | `lsblk`, `blkid` |
+| Auditoria de segurança | `sudo lynis audit system` |
 
 ---
 
@@ -48,9 +50,9 @@ No host Fortaleza já existe `~/fortaleza-lab/` (README, diário, recuperação)
 | Tarefa | Comando |
 |--------|---------|
 | Interfaces | `ip a`, `ip r` |
-| Ligações e portas | `ss -tulpen` |
+| Conexões e portas em escuta | `ss -tuln` (substitui `netstat`) |
 | Teste | `ping`, `traceroute` |
-| DNS | `dig`, `host` |
+| DNS | `dig`, `host`, `resolvectl status` |
 | Captura (cuidado em produção) | `tcpdump`, `nmap` (só em lab com permissão) |
 
 ---
@@ -62,6 +64,8 @@ lscpu
 lsblk
 free -h
 df -h
+fastfetch          # resumo completo: OS, CPU, RAM, uptime
+inxi -Fxz          # inventário detalhado (apt install inxi)
 ```
 
 ---
@@ -70,67 +74,85 @@ df -h
 
 ```bash
 ip a                    # descobrir IP na VM
-ssh utilizador@IP
+ssh usuario@IP
 ```
 
-No **host** Proxmox o guia Fortaleza configura **chave Ed25519 + 2FA** — não uses esta secção como modelo do servidor PVE.
+No **host** Proxmox o guia Fortaleza configura **chave Ed25519 + 2FA** — não use esta seção como modelo do servidor PVE.
 
 ---
 
 ## OpenPGP / GPG (resumo)
 
-Objectivos típicos: chaves pública/privada, assinatura, cifra, identidade.
+Objetivos típicos: chaves pública/privada, assinatura, cifra, identidade.
 
 ```bash
 gpg --full-generate-key
 gpg --list-keys
 gpg --armor --export EMAIL
-gpg --sign ficheiro.txt
-gpg --encrypt --recipient EMAIL ficheiro.txt
+gpg --sign arquivo.txt
+gpg --encrypt --recipient EMAIL arquivo.txt
 ```
 
 Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](../fortaleza-proxmox-v5.0.md).
 
 ---
 
-## Docker (quando chegares lá)
+## Docker (quando chegar lá)
 
 Instalação oficial em Debian: [Docker Engine — Debian](https://docs.docker.com/engine/install/debian/).
 
-**Não** começar por Kubernetes / Swarm / Compose gigante — primeiro imagens, volumes, redes, um `Dockerfile` simples. No Fortaleza, Docker aparece no **CT do ShellHub** (Fase 8); stacks grandes ficam para VMs dedicadas quando tiveres RAM.
-
----
-
-## Segurança mínima **dentro** de uma VM Debian (legado)
-
-Isto **não** é o checklist do host PVE.
-
-- Firewall tipo **UFW**: `ufw default deny incoming`, `ufw allow from LAN to any port 22`, `ufw enable`, `ufw status verbose`.
-- **fail2ban**: `systemctl enable --now fail2ban`, `fail2ban-client status`.
-
-No host Proxmox usa-se **CrowdSec** + regras do guia, não misturar à ligeira com UFW no mesmo nó.
-
----
-
-## Primeira actualização (guest)
+**Não** começar por Kubernetes / Swarm / Compose gigante — primeiro imagens, volumes, redes, um `Dockerfile` simples. No Fortaleza, Docker aparece no **CT do ShellHub** (Fase 8); stacks grandes ficam para VMs dedicadas quando tiver RAM disponível.
 
 ```bash
-sudo apt update && sudo apt full-upgrade -y
+docker run hello-world          # teste básico
+docker ps -a                    # listar containers
+docker images                   # listar imagens locais
+docker logs NOME                # ver saída de um container
+docker compose up -d            # subir stack (docker-compose.yml)
+docker compose down             # parar e remover
+docker stats                    # uso de recursos em tempo real
 ```
-
-Firmware (`intel-microcode`, `firmware-linux`, etc.) aplica-se sobretudo ao **metal** ou a VMs com pass-through; num CT típico o kernel é o do host.
 
 ---
 
-## Pacotes úteis em VM de lab (lista curta)
+## UFW / fail2ban (apenas em guests — NÃO no host PVE)
 
 ```bash
-sudo apt install -y sudo curl wget git vim nano htop tree zip unzip tar rsync \
-  dnsutils traceroute ca-certificates gnupg gpg
+# UFW — firewall simples para VMs Debian de estudo:
+apt install ufw
+ufw allow 22/tcp
+ufw enable
+ufw status verbose
+
+# fail2ban — proteção contra força bruta em VMs expostas:
+apt install fail2ban
+systemctl enable --now fail2ban
+fail2ban-client status sshd
 ```
 
-Pacotes como `nmap`, `tcpdump`, `iftop`, `iotop` — instala só quando fore à aula que precisa deles.
+> ⚠️ **No host PVE** use o `proxmox-firewall` (Fase 7 do guia). UFW e fail2ban são para **dentro** das VMs/CTs de estudo.
 
 ---
 
-*Documento complementar ao repositório Fortaleza Proxmox — não auditado linha a linha contra man pages; usa `man comando` quando tiveres dúvida.*
+## Comandos úteis do dia-a-dia (VM de estudo)
+
+```bash
+# Verificar o que está rodando na porta 80:
+ss -tuln | grep :80
+
+# Ver processos que mais consomem RAM:
+ps aux --sort=-%mem | head -10
+
+# Últimas 50 linhas do kernel log com timestamps:
+dmesg -T | tail -50
+
+# Histórico de reboots:
+last -x | grep -E "shutdown|reboot" | head -5
+
+# Verificar tempo de resposta DNS:
+dig @1.1.1.1 google.com | grep "Query time"
+```
+
+---
+
+*Última revisão: 2026-05-13 — alinhado ao Fortaleza Proxmox v5.0.*

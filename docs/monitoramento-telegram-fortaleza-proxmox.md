@@ -1,15 +1,15 @@
 # Monitoramento via Telegram — Fortaleza Proxmox
 
-> **Âmbito:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Fortaleza](../fortaleza-proxmox-v5.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
+> **Escopo:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Fortaleza](../fortaleza-proxmox-v5.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
 
 **Autor:** Renato (sysadmin)  
 **Data:** Maio/2026  
 **Hardware:** Mini PC · 16 GB RAM · Proxmox VE 9.x (Debian 13 Trixie)  
 **Relacionado:** [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md) (Fases 4–7: CrowdSec, firewall, rede)
 
-**Objectivo:** receber no telemóvel **alertas** sobre RAM, disco, estado de VMs/CTs, **mudanças em bloqueios CrowdSec**, **sinais de hardware** (temperatura, ZFS) e consultar **comandos** sob demanda — sem Prometheus/Grafana no homelab.
+**Objetivo:** receber no celular **alertas** sobre RAM, disco, estado de VMs/CTs, **mudanças em bloqueios CrowdSec**, **sinais de hardware** (temperatura, ZFS) e consultar **comandos** sob demanda — sem Prometheus/Grafana no homelab.
 
-> **Filosofia:** stack mínima — `python3` + `python3-requests` (APT), um script no **host** PVE, Bot Telegram, `cron` para alertas periódicos e `systemd` opcional para *long polling*. **Não** versionar tokens nem ficheiros `.env` com segredos no Git.
+> **Filosofia:** stack mínima — `python3` + `python3-requests` (APT), um script no **host** PVE, Bot Telegram, `cron` para alertas periódicos e `systemd` opcional para *long polling*. **Não** versionar tokens nem arquivos `.env` com segredos no Git.
 
 ---
 
@@ -21,11 +21,11 @@
 | API REST, tokens, ACL (alternativa futura sem root no script) | [Proxmox VE API](https://pve.proxmox.com/wiki/Proxmox_VE_API), [pveum(1)](https://pve.proxmox.com/pve-docs/pveum.1.html) |
 | Telegram — envio e recepção de updates | [Bot API](https://core.telegram.org/bots/api) (`sendMessage`, `getUpdates`); [Bots FAQ](https://core.telegram.org/bots/faq) (*webhook* e *long polling* são mutuamente exclusivos) |
 | Decisões / bloqueios CrowdSec | [cscli decisions list](https://docs.crowdsec.net/docs/cscli/cscli_decisions) |
-| Credenciais no arranque | [systemd.exec(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html) — directiva `EnvironmentFile=` |
+| Credenciais no arranque | [systemd.exec(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html) — diretiva `EnvironmentFile=` |
 
 ---
 
-## Visão geral da arquitectura
+## Visão geral da arquitetura
 
 ```text
 Host Proxmox (root)
@@ -39,12 +39,12 @@ Host Proxmox (root)
     │       └─ Opcional: thermal sysfs, ZFS health
     │
     └─ systemd (opcional) → … polling
-            └─ comandos /status, /vms, … (só o teu chat_id)
+            └─ comandos /status, /vms, … (só o seu chat_id)
                     │
                     └──► https://api.telegram.org  (HTTPS saída)
 ```
 
-**Pré-requisitos no guia Fortaleza:** concluir **Fase 0** (rede, NTP), **Fases 1–3** (SSH estável), idealmente **Fases 4–7** (CrowdSec + firewall). Garantir que o host pode sair para a Internet (regra **OUT** aceitar HTTPS se o teu `proxmox-firewall` for restritivo). Teste rápido:
+**Pré-requisitos no guia Fortaleza:** concluir **Fase 0** (rede, NTP), **Fases 1–3** (SSH estável), idealmente **Fases 4–7** (CrowdSec + firewall). Garantir que o host pode sair para a Internet (regra **OUT** aceitar HTTPS se o seu `proxmox-firewall` for restritivo). Teste rápido:
 
 ```bash
 curl -sS -o /dev/null -w "%{http_code}\n" https://api.telegram.org/
@@ -59,7 +59,7 @@ curl -sS -o /dev/null -w "%{http_code}\n" https://api.telegram.org/
 
 1. No Telegram, fala com **@BotFather** → `/newbot`  
 2. Guarda o **token** no Bitwarden (Apêndice G do guia principal).  
-3. Envia uma mensagem ao teu bot.
+3. Envie uma mensagem ao seu bot.
 
 ### 0.2 Obter o Chat ID
 
@@ -83,7 +83,7 @@ python3 -c "import requests; print('requests OK')"
 
 ## Fase 2 — Instalar script a partir deste repositório
 
-No teu PC (com o clone do repo) podes copiar via `scp` para o PVE. O script versionado está em [scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py). No **host** PVE:
+No seu PC (com o clone do repo) você pode copiar via `scp` para o PVE. O script versionado está em [scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py). No **host** PVE:
 
 ```bash
 sudo mkdir -p /opt/fortaleza-monitor
@@ -92,9 +92,9 @@ sudo chmod 700 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py
 sudo chown root:root /opt/fortaleza-monitor/fortaleza-telegram-monitor.py
 ```
 
-> **Porque root:** o manual [pvesh(1)](https://pve.proxmox.com/pve-docs/pvesh.1.html) indica que só **root** pode usar `pvesh`. O script lista QEMU/LXC por essa via. Alternativa avançada: token API PVE + `curl` à REST API com ACL mínima — fora do âmbito deste guia curto.
+> **Porque root:** o manual [pvesh(1)](https://pve.proxmox.com/pve-docs/pvesh.1.html) indica que só **root** pode usar `pvesh`. O script lista QEMU/LXC por essa via. Alternativa avançada: token API PVE + `curl` à REST API com ACL mínima — fora do escopo deste guia curto.
 
-### 2.1 Ficheiro de ambiente (segredos)
+### 2.1 Arquivo de ambiente (segredos)
 
 ```bash
 sudo install -m 600 /dev/null /etc/fortaleza-monitor.env
@@ -137,9 +137,9 @@ Deves receber uma mensagem no Telegram.
 
 ---
 
-## Fase 3 — Alertas periódicos (`cron`, utilizador **root**)
+## Fase 3 — Alertas periódicos (`cron`, usuário **root**)
 
-O utilizador `renato` **não** deve escrever em `/var/log/` por omissão. Usa **crontab de root** ou `/etc/cron.d/`.
+O usuário `renato` **não** deve escrever em `/var/log/` por omissão. Usa **crontab de root** ou `/etc/cron.d/`.
 
 Cria o log uma vez:
 
@@ -219,7 +219,7 @@ No Telegram: `/start` ou `/ajuda` (só o `chat_id` configurado é aceite).
 | **Hardware** | `thermal_zone*` (m°C), `zpool list` se ZFS existir | Temperatura é **aproximação** do que o kernel expõe; não substitui IPMI |
 | **SMART** | Não automático no script base | Opcional: `smartctl -H /dev/nvme0` manual ou extensão futura — discos errados destroem contexto |
 
-**Firewall / drops nft:** o script **não** parseia `nft` linha a linha (frágil entre versões). Para ver drops recentes do backend PVE, usa o que o guia Fortaleza já documenta — por exemplo `journalctl` no serviço `proxmox-firewall` — e correlaciona com [wiki Firewall](https://pve.proxmox.com/wiki/Firewall). Podes acrescentar mais tarde um digest de `journalctl` com filtros **muito** específicos se precisares.
+**Firewall / drops nft:** o script **não** parseia `nft` linha a linha (frágil entre versões). Para ver drops recentes do backend PVE, usa o que o guia Fortaleza já documenta — por exemplo `journalctl` no serviço `proxmox-firewall` — e correlaciona com [wiki Firewall](https://pve.proxmox.com/wiki/Firewall). Podes acrescentar mais tarde um digest de `journalctl` com filtros **muito** específicos se precisar.
 
 ---
 
@@ -239,8 +239,8 @@ No Telegram: `/start` ou `/ajuda` (só o `chat_id` configurado é aceite).
 ## Alternativa: métricas a partir de uma VM
 
 - **Prós:** não corres código como root no host.  
-- **Contras:** precisas de SSH com chave (ou API só leitura noutro endpoint), latência, e **não** podes usar `pvesh` localmente na VM — terias de usar a **API HTTPS** do PVE com token e ACL restrita ([wiki API](https://pve.proxmox.com/wiki/Proxmox_VE_API))).  
-- Recomendação Fortaleza: **primeiro** o caminho host+root deste documento; a VM como “painel” só quando dominares tokens ACL.
+- **Contras:** precisa de SSH com chave (ou API só leitura em outro endpoint), latência, e **não** pode usar `pvesh` localmente na VM — teria de usar a **API HTTPS** do PVE com token e ACL restrita ([wiki API](https://pve.proxmox.com/wiki/Proxmox_VE_API))).  
+- Recomendação Fortaleza: **primeiro** o caminho host+root deste documento; a VM como “painel” só quando dominar tokens ACL.
 
 ---
 
@@ -261,7 +261,7 @@ sudo cscli decisions list 2>/dev/null | head
 
 | Sintoma | Acção |
 |---------|--------|
-| `pvesh: error ... permission` a correr como `renato` | Esperado: usa **root** ou API token + HTTPS. |
+| `pvesh: error ... permission` ao rodar como `renato` | Esperado: use **root** ou API token + HTTPS. |
 | Bot não responde | `systemctl status fortaleza-monitor`; confirma `TELEGRAM_*`; `curl api.telegram.org`. |
 | Lista de VMs vazia | Confirma `pvesh get /nodes` e o nome do nó; define `PVE_NODE=` no `.env`. |
 | `cscli` falha no digest | CrowdSec não instalado ou PATH; define `DIGEST_CROWDSEC=0` temporariamente. |
