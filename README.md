@@ -8,7 +8,15 @@
 Curso open-source em português para montar um **homelab Proxmox VE 9.x** endurecido: rede fixa, SSH com chave e 2FA, CrowdSec, Tailscale, firewall `proxmox-firewall`, backups e VM de estudo Linux — **sem expor portas na internet**, com laboratório que você pode partir e recuperar.
 
 **Autor:** Projeto Colaborativo [VIPs-com](https://github.com/VIPs-com)  
+**Repositório:** [github.com/VIPs-com/Sentinela-Proxmox-VE-9](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9)  
 **Hardware de referência:** mini PC Intel N5095 · 16 GB RAM (funciona em qualquer PVE 9.x compatível).
+
+```bash
+git clone https://github.com/VIPs-com/Sentinela-Proxmox-VE-9.git
+cd Sentinela-Proxmox-VE-9
+```
+
+> Se você clonou antes do rename e a pasta local ainda se chama `Fortaleza Proxmox`, feche o Cursor/VS Code e renomeie para `Sentinela-Proxmox-VE-9` (alinhado ao slug do GitHub).
 
 ---
 
@@ -87,7 +95,7 @@ Detalhe de cada fase: **[docs/INDICE-CURSO.md](docs/INDICE-CURSO.md)**.
 
 | Curso | Repositório |
 |-------|-------------|
-| **Sentinela Proxmox** (este) | Homelab PVE endurecido |
+| **[Sentinela Proxmox](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9)** (este) | Homelab PVE endurecido |
 | **[Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core)** | KeePassXC, OpenPGP air-gap, backup 3-2-1-1-0 |
 
 Recomendado combinar Sentinela (infra) + Zero Trust Core (segredos e identidade) após a **Fase 8**.

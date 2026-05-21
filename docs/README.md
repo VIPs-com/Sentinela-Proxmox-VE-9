@@ -1,5 +1,7 @@
 # Índice da pasta `docs/` — material do aluno
 
+**Repositório:** [VIPs-com/Sentinela-Proxmox-VE-9](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9)
+
 **Primeira vez?** Siga esta ordem:
 
 1. [manual-usabilidade.md](manual-usabilidade.md) — como usar o repositório (estágios A–E).

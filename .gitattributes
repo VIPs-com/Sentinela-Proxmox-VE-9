@@ -1,0 +1,11 @@
+# Perfil Linguist: curso em Markdown; scripts são auxiliares pós-curso
+*.md linguist-detectable
+docs/** linguist-detectable
+
+Makefile linguist-detectable=false
+*.sh linguist-detectable=false
+
+scripts/sentinela-telegram-monitor.py linguist-vendored
+scripts/sentinela-health-check.sh linguist-vendored
+scripts/pc/** linguist-vendored
+scripts/systemd/** linguist-vendored

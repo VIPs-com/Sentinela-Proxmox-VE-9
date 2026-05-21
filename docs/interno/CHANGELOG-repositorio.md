@@ -4,6 +4,7 @@ Este arquivo registra **alterações à documentação satélite** e ao layout d
 
 | Data | Alteração |
 |------|-----------|
+| 2026-05-20 | **Pós-rename GitHub:** repo `VIPs-com/Sentinela-Proxmox-VE-9`; README/manual/CONTRIBUTING com URL canónica; `.gitattributes` (Linguist → Markdown); pasta local sugerida `Sentinela-Proxmox-VE-9`. |
 | 2026-05-20 | **Auditoria pré-publicação:** [AUDITORIA-PRE-PUBLICACAO-v1.0.md](AUDITORIA-PRE-PUBLICACAO-v1.0.md) — sign-off; âncoras §1; LICENSE alinhada VIPs-com. |
 | 2026-05-20 | **Release v1.0 (canônica) — Sentinela Proxmox:** rebrand de *Fortaleza Proxmox v5.0*; guia em [../sentinela-proxmox-v1.0.md](../sentinela-proxmox-v1.0.md); docs de manutenção em `docs/interno/`; scripts `sentinela-*`; README e badges v1.0 para GitHub. |
 | 2026-05 | **v5.0** — rascunho inicial do guia principal (arquivo na raiz; legado antes do v1.0). |

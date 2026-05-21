@@ -82,4 +82,4 @@ Execute **na sequência**. Não pule fases críticas de rede, SSH ou firewall.
 
 ---
 
-*Sentinela Proxmox v1.0 (canônica) — Projeto Colaborativo [VIPs-com](https://github.com/VIPs-com)*
+*Sentinela Proxmox v1.0 (canônica) — [VIPs-com/Sentinela-Proxmox-VE-9](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9)*

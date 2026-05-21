@@ -2,6 +2,8 @@
 
 Obrigado por considerar melhorar o **Sentinela Proxmox** (release canônica v1.0).
 
+**Repositório:** https://github.com/VIPs-com/Sentinela-Proxmox-VE-9
+
 ## Alterações técnicas
 
 - Cite sempre uma **fonte oficial** (wiki Proxmox, Debian, Tailscale, CrowdSec, OpenSSH, etc.) no PR ou issue.
