@@ -98,7 +98,7 @@ scripts/ (health-check, telegram, pc/, systemd/)
 
 ## 8. Checklist de publicação GitHub
 
-- [ ] Criar repositório público (sugestão: `VIPs-com/sentinela-proxmox` ou nome escolhido)
+- [x] Repositório público: [VIPs-com/Sentinela-Proxmox-VE-9](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9) (renomeado de `sentinela-proxmox`)
 - [ ] `git push` da branch `main` / `master`
 - [ ] Tag **`v1.0.0`** com release notes (copiar resumo do README)
 - [ ] Descrição do repo: link para [manual-usabilidade.md](../manual-usabilidade.md) e [INDICE-CURSO.md](../INDICE-CURSO.md)
