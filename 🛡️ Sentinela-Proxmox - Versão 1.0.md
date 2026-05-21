@@ -6,9 +6,9 @@
 **Base:** Proxmox VE 9.x (ex.: 9.1) sobre Debian 13 “Trixie”; kernel e OpenSSH variam com `apt full-upgrade` — confirme com `pveversion`, `uname -r`, `ssh -V`.
 **Objetivo:** Construir uma infraestrutura **segura, invisível, documentada e recuperável** antes de começar a estudar.
 
-> **Status da documentação:** guia de homelab **revisado contra fontes oficiais** em 2026-05-12. Não substitui suporte enterprise nem auditoria profissional. Matriz fase × fonte × conclusão: [audit-matrix.md](audit-matrix.md).
+> **Status da documentação:** guia de homelab **revisado contra fontes oficiais** em 2026-05-12. Não substitui suporte enterprise nem auditoria profissional. Fontes por fase: [Apêndice I](#apendice-i).
 
-> **Perdido nos estudos?** [manual-usabilidade.md](manual-usabilidade.md) (GPS) · [mapa-do-curso.md](mapa-do-curso.md) (HOST/VM/GPG) · **[§1 Índice com links](INDICE-CURSO.md)** (pular para qualquer fase).
+> **Perdido nos estudos?** [manual-usabilidade.md](docs/manual-usabilidade.md) (GPS) · [mapa-do-curso.md](docs/mapa-do-curso.md) (HOST/VM/GPG) · **[§1 Índice com links](docs/INDICE-CURSO.md)** (pular para qualquer fase).
 
 ---
 
@@ -19,12 +19,12 @@ Esta é a **única versão publicada** neste repositório: não há v4/v5 anteri
 | Trilha | Conteúdo |
 |--------|----------|
 | **Host endurecido** | Fases **-1 a 10b** — ISO → rede → SSH + 2FA → CrowdSec → Tailscale → firewall → documentação e backups |
-| **Laboratório Linux** | **Fase VM-01** + [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) |
+| **Laboratório Linux** | **Fase VM-01** + [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) |
 | **Expansão opcional** | Apêndice **D** (AdGuard, Vaultwarden, bind9, nginx, Prometheus…) |
 | **Referência** | Apêndices **A–N** (checklist, FAQ, recuperação, fontes oficiais) |
 | **Bônus pós-curso** | [scripts/README.md](../scripts/README.md), `make check` |
 
-**Índice clicável de todas as fases:** [INDICE-CURSO.md](INDICE-CURSO.md) (recomendado abrir em aba fixa no browser).
+**Índice clicável de todas as fases:** [INDICE-CURSO.md](docs/INDICE-CURSO.md) (recomendado abrir em aba fixa no browser).
 
 **Trilha integrada (criptografia e identidade):** depois da Fase 8, combine com o curso [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core) (KeePassXC, OpenPGP air-gap, backup 3-2-1-1-0) — mesma família de projetos [VIPs-com](https://github.com/VIPs-com).
 
@@ -34,13 +34,13 @@ Esta é a **única versão publicada** neste repositório: não há v4/v5 anteri
 
 | Fase | Link |
 |------|------|
-| -1 · ISO | [Ir](sentinela-proxmox-v1.0.md#fase-m1) |
-| 0 · Fundação | [Ir](sentinela-proxmox-v1.0.md#fase-0) |
-| 1–4 · SSH, 2FA, CrowdSec | [1](sentinela-proxmox-v1.0.md#fase-1) · [2](sentinela-proxmox-v1.0.md#fase-2) · [3](sentinela-proxmox-v1.0.md#fase-3) · [4](sentinela-proxmox-v1.0.md#fase-4) |
-| 5–7 · Tailscale, GUI, firewall | [5](sentinela-proxmox-v1.0.md#fase-5) · [6](sentinela-proxmox-v1.0.md#fase-6) · [7](sentinela-proxmox-v1.0.md#fase-7) |
-| 8–10b · Lab, manutenção, vzdump | [8](sentinela-proxmox-v1.0.md#fase-8) · [9](sentinela-proxmox-v1.0.md#fase-9) · [10](sentinela-proxmox-v1.0.md#fase-10) · [10b](sentinela-proxmox-v1.0.md#fase-10b) |
-| VM-01 · Estudo | [Ir](sentinela-proxmox-v1.0.md#fase-vm-01) |
-| Apêndices A–N | [Índice completo](INDICE-CURSO.md#apêndices-consulta-e-pós-curso) |
+| -1 · ISO | [Ir](#fase-m1) |
+| 0 · Fundação | [Ir](#fase-0) |
+| 1–4 · SSH, 2FA, CrowdSec | [1](#fase-1) · [2](#fase-2) · [3](#fase-3) · [4](#fase-4) |
+| 5–7 · Tailscale, GUI, firewall | [5](#fase-5) · [6](#fase-6) · [7](#fase-7) |
+| 8–10b · Lab, manutenção, vzdump | [8](#fase-8) · [9](#fase-9) · [10](#fase-10) · [10b](#fase-10b) |
+| VM-01 · Estudo | [Ir](#fase-vm-01) |
+| Apêndices A–N | [Índice completo](docs/INDICE-CURSO.md#apêndices-consulta-e-pós-curso) |
 
 ---
 
@@ -56,7 +56,7 @@ Cada fase segue sempre a mesma estrutura:
 
 > ⚠️ **Não pule fases.** A ordem foi escolhida para você nunca perder o acesso ao servidor.
 
-Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curso](mapa-do-curso.md). A **ordem dos arquivos** em `docs/` (núcleo vs complemento vs operação) está em [README.md](../README.md).
+Para uma leitura “de cima” antes de mergulhar nas fases, use o [mapa do curso](docs/mapa-do-curso.md). A **ordem dos arquivos** em `docs/` (núcleo vs complemento vs operação) está em [docs/README.md](docs/README.md).
 
 ---
 
@@ -98,29 +98,29 @@ Quando aparece **Tradução** (ou glossário inline), o guia está explicando **
 
 - **Bitwarden** (ou outro gerenciador): guarde segredos e códigos de recuperação **no momento** em que o guia os gera — ver Apêndice G.
 - **Acesso físico** ao mini PC: trate-o como “plano B” sempre que você mexer em rede ou firewall.
-- **Documentação satélite** (matriz de auditoria, mapa, cheat sheet Linux): ajudam a **orientar** e a **cruzar fontes**; não substituem executar as fases na ordem no host.
+- **Documentação satélite** (mapa, cheat sheet Linux, Apêndice I): ajudam a **orientar** e a **cruzar fontes**; não substituem executar as fases na ordem no host.
 
 ### 7. Se travar
 
-1. Volte ao [manual de usabilidade](manual-usabilidade.md) e confirme o **estágio** (A–E) em que você está.  
-2. Volte ao [mapa do curso](mapa-do-curso.md) e confirme em que **bloco** do host você está.  
+1. Volte ao [manual de usabilidade](docs/manual-usabilidade.md) e confirme o **estágio** (A–E) em que você está.  
+2. Volte ao [mapa do curso](docs/mapa-do-curso.md) e confirme em que **bloco** do host você está.  
 3. Releia só o **FUNDAMENTO** e o **SE DEU ERRADO** dessa subseção no guia.  
-4. Consulte a [matriz de auditoria](audit-matrix.md) se a dúvida for “isso ainda bate com a documentação oficial?”.  
+4. Consulte o [Apêndice I](#apendice-i) (fontes oficiais) se a dúvida for “isso ainda bate com a documentação oficial?”.  
 5. Apêndice H (recuperação) no guia se você perdeu acesso.
 
 ### 8. Manual de usabilidade do repositório (GPS)
 
-Se não souber **em que “andar” do projeto** você está (repo vs host vs VM vs scripts bônus), abra o [manual de usabilidade em `docs/`](manual-usabilidade.md) — estágios A a E e o que abrir em cada um. Depois volte a este guia na fase correta.
+Se não souber **em que “andar” do projeto** você está (repo vs host vs VM vs scripts bônus), abra o [manual de usabilidade](docs/manual-usabilidade.md) — estágios A a E e o que abrir em cada um. Depois volte a este guia na fase correta.
 
 ## Changelog da documentação
 
 | Data | Alteração |
 |------|-----------|
-| 2026-05 | Rascunho interno do guia (pré-release; histórico em [interno/CHANGELOG-repositorio.md](interno/CHANGELOG-repositorio.md)). |
-| 2026-05-12 | Revisão do texto do guia contra fontes oficiais; matriz em [audit-matrix.md](audit-matrix.md). Secção **Dicas para o aluno** (usabilidade); relatório [revisao-geral-projeto.md](interno/revisao-geral-projeto.md); validação linha-a-linha do guia principal **concluída** (Partes 1–7): [validacao-linha-a-linha.md](interno/validacao-linha-a-linha.md). **Histórico detalhado** de arquivos satélites e reorganização da pasta `docs/`: [CHANGELOG-repositorio.md](interno/CHANGELOG-repositorio.md). |
+| 2026-05 | Rascunho interno do guia (pré-release v1.0). |
+| 2026-05-12 | Revisão do texto do guia contra fontes oficiais (Apêndice I). Secção **Dicas para o aluno** (usabilidade). Reorganização da pasta `docs/`. |
 | 2026-05-12 | **Bónus `scripts/`:** [scripts/README.md](../scripts/README.md) — `sentinela-health-check.sh` (`--json`), [Makefile](../Makefile) (`make check`), exemplos systemd para backup de `/etc/pve`, `pc/sync-sentinela-backups.example.sh`; remissões na Fase 10 e Apêndice B. |
-| 2026-05-20 | **v1.0 (canônica)** — release GitHub: guia em sentinela-proxmox-v1.0.md; marca Sentinela Proxmox; manutenção em interno/. Histórico: [interno/CHANGELOG-repositorio.md](interno/CHANGELOG-repositorio.md). |
-| 2026-05-12 | **Manual de usabilidade do repo:** [manual-usabilidade.md](manual-usabilidade.md) (estágios A–E); entradas no [README](../README.md) raiz, [README.md](README.md) (`docs/`), [mapa-do-curso.md](mapa-do-curso.md) e **Dicas para o aluno** §7–8. |
+| 2026-05-20 | **v1.0 (canônica)** — release GitHub: guia na raiz do repositório; marca Sentinela Proxmox. |
+| 2026-05-12 | **Manual de usabilidade do repo:** [manual-usabilidade.md](docs/manual-usabilidade.md) (estágios A–E); entradas no [README](README.md) raiz, [docs/README.md](docs/README.md) e [mapa-do-curso.md](docs/mapa-do-curso.md) e **Dicas para o aluno** §7–8. |
 
 <span id="glossario-completo"></span>
 
@@ -1214,7 +1214,7 @@ AuthenticationMethods publickey,keyboard-interactive
 
 > ⚠️ **CRÍTICO no Debian 13:** Use `KbdInteractiveAuthentication`. A diretiva antiga `ChallengeResponseAuthentication` foi **REMOVIDA** no OpenSSH 10 — vai dar erro se você usar.
 
-> 🆘 **Bloqueado fora?** Consulta o **[Apêndice H](sentinela-proxmox-v1.0.md#apendice-h)** (Recuperação de desastre) — final do guia.
+> 🆘 **Bloqueado fora?** Consulta o **[Apêndice H](#apendice-h)** (Recuperação de desastre) — final do guia.
 
 > **PARA AQUI — não apliques a nova config do `sshd` até confirmares o TOTP (evita ficar trancado fora)**  
 > Com `AuthenticationMethods publickey,keyboard-interactive` ativo, um `sshd` mal alinhado com o PAM/TOTP pode **rejeitar** o login mesmo com chave correta. **Checklist obrigatório:**
@@ -2278,7 +2278,7 @@ echo "- unattended-upgrades + ferramentas instaladas" >> ~/sentinela-lab/diario.
 sudo zfs snapshot rpool/ROOT/pve-1@snap-pre-fase10
 ```
 
-> **Laboratório descartável (filosofia):** aprender inclui quebrar, reinstalar e documentar. No Proxmox isso traduz-se em **snapshots** antes de mudanças grandes, **`vzdump`** e cópias de `/etc/pve` para disco externo — separar o que é **configuração do nó** do que são **dados das VMs**. Podes ainda manter pastas tipo `~/scripts` e `~/notes` dentro de `~/sentinela-lab/` ou nas VMs de estudo (ver [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md)).
+> **Laboratório descartável (filosofia):** aprender inclui quebrar, reinstalar e documentar. No Proxmox isso traduz-se em **snapshots** antes de mudanças grandes, **`vzdump`** e cópias de `/etc/pve` para disco externo — separar o que é **configuração do nó** do que são **dados das VMs**. Podes ainda manter pastas tipo `~/scripts` e `~/notes` dentro de `~/sentinela-lab/` ou nas VMs de estudo (ver [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md)).
 
 ### 10.1 README local
 
@@ -2823,7 +2823,7 @@ free -h         # RAM disponível
 systemctl list-units --type=service --state=running  # serviços ativos
 ```
 
-> **Próximo passo de estudo:** abra o [cheat sheet Linux](linux-comandos-fundamentos.md) e siga os exercícios na VM 110. Cada seção tem comandos para praticar — use a VM, não o host PVE.
+> **Próximo passo de estudo:** abra o [cheat sheet Linux](docs/linux-comandos-fundamentos.md) e siga os exercícios na VM 110. Cada seção tem comandos para praticar — use a VM, não o host PVE.
 
 ---
 
@@ -2863,7 +2863,7 @@ echo "- VM 110 (debian-estudo) criada com Cloud-Init" >> ~/sentinela-lab/diario.
 echo "- Snapshot base-limpa criado — laboratório pronto" >> ~/sentinela-lab/diario.md
 ```
 
-> **Próximo passo:** siga os [Fundamentos Linux](linux-comandos-fundamentos.md) na VM 110. Quando quiser instalar DNS bind9, nginx ou iptables, veja o **Apêndice D** (roadmap de labs).
+> **Próximo passo:** siga os [Fundamentos Linux](docs/linux-comandos-fundamentos.md) na VM 110. Quando quiser instalar DNS bind9, nginx ou iptables, veja o **Apêndice D** (roadmap de labs).
 
 ---
 
@@ -3036,7 +3036,7 @@ hw-check >> /root/backups/hw-check-$(date +%F).txt
 # 3. Expansão e planeamento:
 # - O N5095 ainda é suficiente? Ver Apêndice D para roadmap de expansão
 # - Avaliar upgrade de hardware ou adição de nó PBS dedicado
-# - Reler audit-matrix.md para verificar se algo mudou de status (nftables tech preview → estável?)
+# - Reler wiki Proxmox Firewall se algo mudou de status (nftables tech preview → estável?)
 ```
 
 ---
@@ -4610,7 +4610,7 @@ R: **Sim** — via Tailscale. Instale o Tailscale no celular (Play Store / App S
 R: Fases 0 (parcial), 1–4, 9 e 10 funcionam em qualquer Debian 13. Fases 5, 7 e 8 envolvem features específicas do Proxmox.
 
 **P: Este guia substitui o plano “Linux Foundation Lab” (Debian bare metal)?**
-R: **Evolui** a partir da mesma filosofia (fundamentos, segurança, GPG, redes, sem port forwarding), mas o **caminho atual** é **Proxmox no mini PC**, não Debian minimal como único SO no metal. Comandos de estudo e UFW/`fail2ban` **dentro de VMs** continuam no cheat sheet [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md); o **host** segue as fases Sentinela (firewall PVE, CrowdSec, etc.). Ver também [roadmap-hardware.md](roadmap-hardware.md).
+R: **Evolui** a partir da mesma filosofia (fundamentos, segurança, GPG, redes, sem port forwarding), mas o **caminho atual** é **Proxmox no mini PC**, não Debian minimal como único SO no metal. Comandos de estudo e UFW/`fail2ban` **dentro de VMs** continuam no cheat sheet [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md); o **host** segue as fases Sentinela (firewall PVE, CrowdSec, etc.). Ver também [roadmap-hardware.md](docs/roadmap-hardware.md).
 
 **P: E se eu errar e me trancar fora?**
 R: Console físico do Mini PC sempre funciona. O **detalhe** do runbook está em `~/sentinela-lab/recuperacao.md` (Fase 10); o **Apêndice H** abaixo é só um resumo dos primeiros passos.
@@ -4622,7 +4622,7 @@ R: Não. Tailscale (até 100 dispositivos), ShellHub Cloud Community, CrowdSec, 
 R: ~600 MB extras com tudo rodando (Proxmox + Tailscale CT + ShellHub CT + CrowdSec + bouncer). Sobra ~14-15 GB para seus labs.
 
 **P: Comandos e versões deste guia vão desatualizar com o tempo?**
-R: **Sim.** Nomes de pacotes, menus da GUI e detalhes de `nft`/`sshd` mudam entre *point releases*. Antes de cada `dist-upgrade` ou mudança grande, confirme com `pveversion`, [wiki Proxmox](https://pve.proxmox.com/wiki/Main_Page), [release notes / anúncios](https://forum.proxmox.com/forums/announcements.11/) e a [matriz de auditoria](audit-matrix.md). A **ordem das fases** e a lógica (NTP antes de 2FA, backup antes de firewall) permanecem válidas.
+R: **Sim.** Nomes de pacotes, menus da GUI e detalhes de `nft`/`sshd` mudam entre *point releases*. Antes de cada `dist-upgrade` ou mudança grande, confirme com `pveversion`, [wiki Proxmox](https://pve.proxmox.com/wiki/Main_Page), [release notes / anúncios](https://forum.proxmox.com/forums/announcements.11/) e o [Apêndice I](#apendice-i). A **ordem das fases** e a lógica (NTP antes de 2FA, backup antes de firewall) permanecem válidas.
 
 **P: Posso usar ProxMenux para facilitar a administração?**
 R: **Sim, como opcional.** O [ProxMenux](https://proxmenux.com/) é um menu interativo para tarefas no host e em guests — veja a seção no início do guia e a [documentação](https://proxmenux.com/docs/introduction). Trate-o como **terceiro**: revise código e guias de instalação antes de executar; não invalida a ordem nem a segurança das fases Sentinela.
@@ -5539,7 +5539,7 @@ Você concluiu a Sentinela. O que vem a seguir?
 
 | Área | Recurso / Guia | Tipo |
 |------|----------------|------|
-| **Linux Fundamentals** | [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) + VM 110 | Interno |
+| **Linux Fundamentals** | [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) + VM 110 | Interno |
 | **GPG / OpenPGP** | Fase 8 (prática) + seu curso externo | EXT |
 | **AdGuard Home** | §D.2.1 — DNS bloqueador para a LAN inteira | Guia |
 | **Vaultwarden** | §D.2.2 — Bitwarden self-hosted, senhas fora da nuvem | Guia |
@@ -6214,7 +6214,7 @@ echo "- Chaves Tor com backup cifrado GPG" >> ~/sentinela-lab/diario.md
 
 # 🔗 Apêndice I — Fontes oficiais por fase
 
-Este guia é **pedagógico** e foi confrontado com documentação oficial em 2026-05-12 (detalhe em [audit-matrix.md](audit-matrix.md)). Use sempre as fontes abaixo como verdade final quando houver ambiguidade.
+Este guia é **pedagógico** e foi confrontado com documentação oficial em 2026-05-12. Use sempre as fontes abaixo como verdade final quando houver ambiguidade.
 
 ### Fase 0 — SO, rede, APT
 
@@ -6277,13 +6277,13 @@ Este guia é **pedagógico** e foi confrontado com documentação oficial em 202
 | Ferramenta | Nota |
 |-------------|------|
 | [ProxMenux](https://proxmenux.com/) | Menu shell para administração; [intro](https://proxmenux.com/docs/introduction). Verificar fonte antes de instalar. |
-| [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) | Cheat sheet Linux (VMs de estudo); ver aviso de âmbito no cabeçalho. |
-| [roadmap-hardware.md](roadmap-hardware.md) | Evolução prevista do hardware do lab. |
+| [linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) | Cheat sheet Linux (VMs de estudo); ver aviso de âmbito no cabeçalho. |
+| [roadmap-hardware.md](docs/roadmap-hardware.md) | Evolução prevista do hardware do lab. |
 
 ---
 
 *Repositório: documentação do projeto Sentinela Proxmox (homelab).*
-*Última revisão cruzada com fontes oficiais: 2026-05-12 — ver [audit-matrix.md](audit-matrix.md).*
+*Última revisão cruzada com fontes oficiais: 2026-05-12.*
 *Dúvidas, correções ou sugestões? Abra uma Issue no GitHub.*
 
 **Próximo passo:** Quando estiver pronto para executar no laboratório, siga **uma fase de cada vez**, com backup e duas sessões SSH nas alterações críticas. Comece pela **Fase 0**.

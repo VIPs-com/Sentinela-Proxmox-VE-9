@@ -1,6 +1,6 @@
 # Scripts e exemplos — Sentinela Proxmox (bônus)
 
-Esses arquivos **não substituem** as [fases 0–10 do guia principal](sentinela-proxmox-v1.0.md): são **atalhos** depois de entender o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechar o lab com confiança. **Antes de tudo:** se se perder no *repo*, leia o [manual de usabilidade](../docs/manual-usabilidade.md) (estágios A–E).
+Esses arquivos **não substituem** as [fases 0–10 do guia principal](../🛡️ Sentinela-Proxmox - Versão 1.0.md): são **atalhos** depois de entender o que cada passo faz — ideais na **segunda instalação**, revisão anual, ou para fechar o lab com confiança. **Antes de tudo:** se se perder no *repo*, leia o [manual de usabilidade](../docs/manual-usabilidade.md) (estágios A–E).
 
 **Segurança:** nunca faça commit de `.env`, tokens Telegram, chaves privadas, nem dumps de `/etc/pve` com segredos.
 

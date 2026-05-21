@@ -16,8 +16,6 @@ git clone https://github.com/VIPs-com/Sentinela-Proxmox-VE-9.git
 cd Sentinela-Proxmox-VE-9
 ```
 
-> Se você clonou antes do rename e a pasta local ainda se chama `Fortaleza Proxmox`, feche o Cursor/VS Code e renomeie para `Sentinela-Proxmox-VE-9` (alinhado ao slug do GitHub).
-
 ---
 
 ## Jornada do curso
@@ -52,7 +50,7 @@ Este repositório segue o mesmo modelo do [Zero Trust Core Expert](https://githu
 
 Abra e estude na ordem:
 
-1. **[docs/sentinela-proxmox-v1.0.md](docs/sentinela-proxmox-v1.0.md)** — curso canônico (~6200 linhas).
+1. **[🛡️ Sentinela-Proxmox - Versão 1.0.md](🛡️ Sentinela-Proxmox - Versão 1.0.md)** — curso canônico (~6200 linhas), na **raiz** (mesmo modelo do [Zero Trust Core](https://github.com/VIPs-com/Zero-Trust-Core)).
 2. Use o **[índice §1](docs/INDICE-CURSO.md)** para pular fases (`Ctrl+Click` no GitHub).
 
 Você pode clonar o repositório, baixar o ZIP ou copiar só os `.md` — **não é obrigatório usar Git** para aprender.
@@ -79,15 +77,13 @@ Detalhe de cada fase: **[docs/INDICE-CURSO.md](docs/INDICE-CURSO.md)**.
 
 | Caminho | Aluno? | Conteúdo |
 |---------|--------|----------|
-| [docs/sentinela-proxmox-v1.0.md](docs/sentinela-proxmox-v1.0.md) | Sim | **Curso canônico** |
+| [🛡️ Sentinela-Proxmox - Versão 1.0.md](🛡️ Sentinela-Proxmox - Versão 1.0.md) | Sim | **Curso canônico** (raiz) |
 | [docs/INDICE-CURSO.md](docs/INDICE-CURSO.md) | Sim | Índice §1 com links |
 | [docs/manual-usabilidade.md](docs/manual-usabilidade.md) | Sim | Manual de uso |
 | [docs/mapa-do-curso.md](docs/mapa-do-curso.md) | Sim | Mapa HOST / VM / GPG |
 | [docs/README.md](docs/README.md) | Sim | Índice da pasta `docs/` |
 | [docs/linux-comandos-fundamentos.md](docs/linux-comandos-fundamentos.md) | Sim | Cheat sheet em VMs |
-| [docs/audit-matrix.md](docs/audit-matrix.md) | Sim | Fase × fonte oficial |
 | [scripts/](scripts/) | Pós-curso | Health-check, Telegram, systemd |
-| [docs/interno/](docs/interno/) | Não | Changelog, revisão, [auditoria pré-publicação v1.0](docs/interno/AUDITORIA-PRE-PUBLICACAO-v1.0.md) |
 
 ---
 
@@ -114,11 +110,7 @@ Segurança no **host** primeiro. Cada fase crítica tem **VERIFIQUE** e **SE DEU
 
 - Laboratório pessoal — não substitui suporte Proxmox enterprise.
 - **Nunca** faça commit de chaves, `authorized_keys` ou dumps de `/etc/pve`.
-- `proxmox-firewall` (nftables): *tech preview* na [wiki](https://pve.proxmox.com/wiki/Firewall#nftables) — leia [docs/audit-matrix.md](docs/audit-matrix.md).
-
-## Contribuir
-
-[CONTRIBUTING.md](CONTRIBUTING.md)
+- `proxmox-firewall` (nftables): *tech preview* na [wiki Proxmox — Firewall](https://pve.proxmox.com/wiki/Firewall#nftables).
 
 ---
 

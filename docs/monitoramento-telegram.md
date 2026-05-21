@@ -1,11 +1,11 @@
 # Monitoramento via Telegram — Sentinela Proxmox
 
-> **Escopo:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Sentinela](sentinela-proxmox-v1.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
+> **Escopo:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Sentinela](../🛡️ Sentinela-Proxmox - Versão 1.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
 
 **Autor:** Renato (sysadmin)  
 **Data:** Maio/2026  
 **Hardware:** Mini PC · 16 GB RAM · Proxmox VE 9.x (Debian 13 Trixie)  
-**Relacionado:** [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) (Fases 4–7: CrowdSec, firewall, rede)
+**Relacionado:** [../🛡️ Sentinela-Proxmox - Versão 1.0.md](../🛡️ Sentinela-Proxmox - Versão 1.0.md) (Fases 4–7: CrowdSec, firewall, rede)
 
 **Objetivo:** receber no celular **alertas** sobre RAM, disco, estado de VMs/CTs, **mudanças em bloqueios CrowdSec**, **sinais de hardware** (temperatura, ZFS) e consultar **comandos** sob demanda — sem Prometheus/Grafana no homelab.
 

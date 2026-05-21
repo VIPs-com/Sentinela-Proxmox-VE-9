@@ -43,4 +43,4 @@ Isso é **horizonte** de aprendizagem (Proxmox cluster, storage avançado), não
 
 ---
 
-*Ver também [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) e [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md).*
+*Ver também o [guia na raiz](../🛡️ Sentinela-Proxmox - Versão 1.0.md) e [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md).*

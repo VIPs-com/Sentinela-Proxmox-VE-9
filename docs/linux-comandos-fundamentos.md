@@ -1,7 +1,7 @@
 # Linux — comandos de fundamentos (cheat sheet)
 
 **Escopo:** uso em **VMs ou CTs Debian de estudo** (laboratório, DMZ, exercícios de aula).  
-**Não** substitui nem contradiz o [guia Sentinela Proxmox](sentinela-proxmox-v1.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado "bare metal" fazem sentido **dentro** de guests Debian; **evite** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que está fazendo.
+**Não** substitui nem contradiz o [guia Sentinela Proxmox](../🛡️ Sentinela-Proxmox - Versão 1.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado "bare metal" fazem sentido **dentro** de guests Debian; **evite** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que está fazendo.
 
 Origem conceitual: projeto anterior **Linux Foundation Lab** (Debian 13 minimal à mão). Este arquivo condensa só a parte **reutilizável** de comandos e hábitos.
 
@@ -93,7 +93,7 @@ gpg --sign arquivo.txt
 gpg --encrypt --recipient EMAIL arquivo.txt
 ```
 
-Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](sentinela-proxmox-v1.0.md).
+Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](../🛡️ Sentinela-Proxmox - Versão 1.0.md).
 
 ---
 

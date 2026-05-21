@@ -1,7 +1,7 @@
 # Mapa do laboratório — visão geral (v1.0)
 
 **Função:** ponto de entrada único para não se perder entre o host Proxmox, as VMs de estudo e o curso GPG/OpenPGP.  
-**Guia:** [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) · **Índice §1 (link por fase):** [INDICE-CURSO.md](INDICE-CURSO.md) · **Como usar o repo:** [manual-usabilidade.md](manual-usabilidade.md)
+**Guia:** [../🛡️ Sentinela-Proxmox - Versão 1.0.md](../🛡️ Sentinela-Proxmox - Versão 1.0.md) · **Índice §1 (link por fase):** [INDICE-CURSO.md](INDICE-CURSO.md) · **Como usar o repo:** [manual-usabilidade.md](manual-usabilidade.md)
 
 ---
 
@@ -27,7 +27,7 @@ Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operaç
 
 - **Resultados esperados (trilha HOST concluída):** nó PVE com rede estável, repos corretos, SSH com chave + 2FA, painel com `renato@pam` + 2FA, CrowdSec, firewall nftables, acesso remoto sem port forwarding (Tailscale), lab do irmão opcional, backups e documentação viva.
 - **Perfil:** mini PC (ex.: N5095, 16 GB RAM), homelab — **não** é roadmap de datacenter no dia 1.
-- **Checklist de ferramentas:** Bitwarden, app TOTP, cabo Ethernet, acesso físico ao mini PC — ver **Antes de Começar** e **Apêndice G** no [guia Sentinela](sentinela-proxmox-v1.0.md).
+- **Checklist de ferramentas:** Bitwarden, app TOTP, cabo Ethernet, acesso físico ao mini PC — ver **Antes de Começar** e **Apêndice G** no [guia Sentinela](../🛡️ Sentinela-Proxmox - Versão 1.0.md).
 - **Leituras cruzadas:**
   - [audit-matrix.md](audit-matrix.md) — o que foi confrontado com docs oficiais.
   - [roadmap-hardware.md](roadmap-hardware.md) — evolução N5095 → máquinas mais fortes (opcional).
@@ -61,19 +61,19 @@ flowchart LR
 
 ## Setor 2 — Trilha HOST: Sentinela Proxmox (blocos A a G)
 
-**Documento:** [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) — atalhos: [INDICE-CURSO.md](INDICE-CURSO.md).
+**Documento:** [../🛡️ Sentinela-Proxmox - Versão 1.0.md](../🛡️ Sentinela-Proxmox - Versão 1.0.md) — atalhos: [INDICE-CURSO.md](INDICE-CURSO.md).
 
 ### Tabela rápida (tempo indicativo = ordem de grandeza para quem já tem ISO instalada)
 
 | Bloco | Fases | Tema | Links | Tempo indicativo |
 |-------|-------|------|-------|------------------|
-| **A** | -1, 0 | ISO + fundação | [Fase -1](sentinela-proxmox-v1.0.md#fase-m1) · [Fase 0](sentinela-proxmox-v1.0.md#fase-0) | 3–5 h |
-| **B** | 1–2 | Identidade e SSH | [1](sentinela-proxmox-v1.0.md#fase-1) · [2](sentinela-proxmox-v1.0.md#fase-2) | 1–2 h |
-| **C** | 3–4 | 2FA SSH e CrowdSec | [3](sentinela-proxmox-v1.0.md#fase-3) · [4](sentinela-proxmox-v1.0.md#fase-4) | 1–2 h |
-| **D** | 5–6 | Tailscale e 2FA GUI | [5](sentinela-proxmox-v1.0.md#fase-5) · [6](sentinela-proxmox-v1.0.md#fase-6) | 1–2 h |
-| **E** | 7 | Firewall nftables | [7](sentinela-proxmox-v1.0.md#fase-7) | 1–2 h |
-| **F** | 8 | Lab ShellHub + GPG | [8](sentinela-proxmox-v1.0.md#fase-8) | 2–3 h |
-| **G** | 9–10, 10b | Manutenção e vzdump | [9](sentinela-proxmox-v1.0.md#fase-9) · [10](sentinela-proxmox-v1.0.md#fase-10) · [10b](sentinela-proxmox-v1.0.md#fase-10b) | 2–3 h |
+| **A** | -1, 0 | ISO + fundação | [Fase -1](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-m1) · [Fase 0](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-0) | 3–5 h |
+| **B** | 1–2 | Identidade e SSH | [1](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-1) · [2](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-2) | 1–2 h |
+| **C** | 3–4 | 2FA SSH e CrowdSec | [3](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-3) · [4](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-4) | 1–2 h |
+| **D** | 5–6 | Tailscale e 2FA GUI | [5](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-5) · [6](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-6) | 1–2 h |
+| **E** | 7 | Firewall nftables | [7](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-7) | 1–2 h |
+| **F** | 8 | Lab ShellHub + GPG | [8](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-8) | 2–3 h |
+| **G** | 9–10, 10b | Manutenção e vzdump | [9](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-9) · [10](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-10) · [10b](../🛡️ Sentinela-Proxmox - Versão 1.0.md#fase-10b) | 2–3 h |
 
 ### Bloco A — Fundação e rede **(HOST)**
 
