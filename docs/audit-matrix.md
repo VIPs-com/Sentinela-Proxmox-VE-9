@@ -1,7 +1,7 @@
-# Matriz de auditoria — Fortaleza Proxmox v5.0
+# Matriz de auditoria — Sentinela Proxmox v1.0
 
 **Data da revisão cruzada com fontes oficiais:** 2026-05-12; pesquisa web suplementar: 2026-05-12  
-**Artefato auditado:** [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md)
+**Artefato auditado:** [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md)
 
 Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando precisava de correção/nota; **Risco** decisão de segurança ou supply chain a aceitar conscientemente.
 
@@ -62,11 +62,14 @@ Legenda: **OK** alinhado à documentação oficial; **Ajuste** texto ou comando 
 |-----------|-----|
 | [linux-comandos-fundamentos.md](linux-comandos-fundamentos.md) | Cheat sheet Linux para **VMs/CTs** de estudo; explícito que **não** é checklist do host PVE. |
 | [roadmap-hardware.md](roadmap-hardware.md) | Narrativa N5095 → i7 → Xeon; contexto do legado *Linux Foundation Lab*. |
-| [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores: onboarding, blocos A–G do guia Fortaleza, trilha Linux em VM, ponte para curso GPG externo/Obsidian. |
+| [mapa-do-curso.md](mapa-do-curso.md) | Visão geral por setores: onboarding, blocos A–G do guia Sentinela, trilha Linux em VM, ponte para curso GPG externo/Obsidian. |
 | [README.md](README.md) | Índice numerado da pasta `docs/` (trilhas 0 a 4); separa núcleo, complementos e operação opcional. |
-| [CHANGELOG-repositorio.md](CHANGELOG-repositorio.md) | Histórico editorial do repositório; o changelog **curto** no guia principal remete aqui. |
-| [validacao-linha-a-linha.md](validacao-linha-a-linha.md) | Validação manual do **guia principal** por partes (registo vivo; Partes 1–7 concluídas). |
-| [manual-usabilidade-fortaleza.md](manual-usabilidade-fortaleza.md) | **GPS do repositório:** estágios A–E (onde você está, o que abrir); usabilidade para alunos — não substitui a auditoria por fase. |
+| [INDICE-CURSO.md](INDICE-CURSO.md) | §1 — índice clicável de fases e apêndices (v1.0). |
+| [manual-usabilidade.md](manual-usabilidade.md) | **GPS do repositório:** estágios A–E; modelo alinhado ao [Zero-Trust-Core](https://github.com/VIPs-com/Zero-Trust-Core). |
+| [monitoramento-telegram.md](monitoramento-telegram.md) | Operação opcional pós Fases 4–7; fora do núcleo 0–10. |
+| [interno/CHANGELOG-repositorio.md](interno/CHANGELOG-repositorio.md) | Histórico editorial; changelog curto do guia remete aqui. |
+| [interno/validacao-linha-a-linha.md](interno/validacao-linha-a-linha.md) | Validação do guia por partes (manutenção; Partes 1–7 concluídas). |
+| [interno/AUDITORIA-PRE-PUBLICACAO-v1.0.md](interno/AUDITORIA-PRE-PUBLICACAO-v1.0.md) | Sign-off interno antes do GitHub público (2026-05-20). |
 | [../scripts/README.md](../scripts/README.md) | Bônus **pós-fases**: health-check só-leitura, exemplos systemd, sync no PC (não substitui a auditoria por fase). |
 
 ## Achados da pesquisa web suplementar (2026-05-12)

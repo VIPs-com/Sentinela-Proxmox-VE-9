@@ -1,7 +1,7 @@
-# Revisão geral do projeto Fortaleza Proxmox — auditoria pedagógica e técnica
+# Revisão geral do projeto Sentinela Proxmox — auditoria pedagógica e técnica
 
 **Data da revisão:** 2026-05-12  
-**Escopo:** repositório `Fortaleza Proxmox` — guia principal, pasta `docs/`, `scripts/`, README.  
+**Escopo:** repositório `Sentinela Proxmox` — guia principal, pasta `docs/`, `scripts/`, README.  
 **Objetivo:** avaliar didática, consistência de comandos, usabilidade para iniciantes e lacunas; **não** substitui auditoria profissional nem pen-test.
 
 ---
@@ -11,7 +11,7 @@
 | Atividade | Detalhe |
 |-----------|---------|
 | Leitura estrutural | Início do guia ("Como usar", Fase 0 parcial), seções de rede/SSH, changelog e remissões a `docs/`. |
-| Métricas rápidas | Contagem de blocos `bash` vs blocos explícitos "Tradução" no [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md). |
+| Métricas rápidas | Contagem de blocos `bash` vs blocos explícitos "Tradução" no [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md). |
 | Coerência do repo | [docs/README.md](README.md), [CHANGELOG-repositorio.md](CHANGELOG-repositorio.md), [audit-matrix.md](audit-matrix.md). |
 
 **Limite honesto:** não foi feita leitura linha-a-linha das ~6200 linhas do guia nem execução dos comandos num nó PVE nesta sessão. A matriz de auditoria continua sendo a referência cruzada com **fontes oficiais** por fase.
@@ -42,7 +42,7 @@ Não foram encontrados tokens ou chaves versionadas na amostragem; o `.gitignore
 
 ### P1 — Didática e usabilidade (melhorias contínuas)
 
-1. **Seção "Dicas para o aluno"** — acrescentada ao [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md) (duas sessões SSH, ler antes de copiar, exemplos de IP, legenda OBJETIVO/FUNDAMENTO, onde ir quando travar). ✅ Concluído.
+1. **Seção "Dicas para o aluno"** — acrescentada ao [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) (duas sessões SSH, ler antes de copiar, exemplos de IP, legenda OBJETIVO/FUNDAMENTO, onde ir quando travar). ✅ Concluído.
 2. **Uniformizar você** — padronizado em PT-BR em todo o repositório. ✅ Concluído em 2026-05-13.
 3. **Mais blocos "Tradução"** — opcional, nas fases 4–7 onde há muitas opções de firewall/CrowdSec, para quem aprende melhor com glossário após o bloco.
 

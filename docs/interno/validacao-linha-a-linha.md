@@ -1,8 +1,8 @@
-# Validação linha-a-linha — Fortaleza Proxmox
+# Validação linha-a-linha — Sentinela Proxmox
 
 Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com calma. Não substitui a [matriz de auditoria](audit-matrix.md) (fontes oficiais por fase).
 
-**Como usar:** cada parte indica o intervalo de linhas do arquivo [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md) (ou outro). O estado **Concluída** significa leitura + notas; **Correções** lista alterações já aplicadas no repo.
+**Como usar:** cada parte indica o intervalo de linhas do arquivo [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) (ou outro). O estado **Concluída** significa leitura + notas; **Correções** lista alterações já aplicadas no repo.
 
 ---
 
@@ -18,7 +18,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 1 — Linhas 1–305 (cabeçalho, Dicas, Changelog, Antes de Começar, início Fase 0 até fim §0.1 NTP)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 ### Verificações feitas
@@ -33,7 +33,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 | Linha (aprox.) | Problema | Ação |
 |----------------|----------|------|
 | Diagrama (~L144) | Texto `← "Some" da internet` — erro tipográfico / inglês ambíguo. | Substituído por texto claro em PT: tráfego da internet barrado (DROP). |
-| ~L193 | `~/lab-diario.md` inconsistente com o resto do guia (`~/fortaleza-lab/diario.md` a partir da Fase 1). | Unificado com explicação: pasta na Fase 1 ou `mkdir` antecipado. |
+| ~L193 | `~/lab-diario.md` inconsistente com o resto do guia (`~/sentinela-lab/diario.md` a partir da Fase 1). | Unificado com explicação: pasta na Fase 1 ou `mkdir` antecipado. |
 
 ### Observações não bloqueantes (P2)
 
@@ -45,7 +45,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 2 — Linhas 306–647 (Fase 0: §0.2 IP fixo até checklist e nota ZFS)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** o intervalo foi alargado em relação ao rascunho inicial (306–620) para incluir o **fecho completo da Fase 0** (checklist, lembrete do dataset), evitando cortar a §0.8 a meio.
@@ -77,14 +77,14 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 3 — Linhas 648–1088 (Fases 1 a 3 — fim da documentação da Fase 3)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** o intervalo final foi alargado em relação ao rascunho (648–1050) para incluir o **§3.5 completo** e o bloco **Documente** da Fase 3, terminando antes da Fase 4.
 
 ### Verificações feitas
 
-- **Fase 1** — `adduser` / `usermod -aG sudo`; verificação em segundo terminal; diário em `~/fortaleza-lab/`; troubleshooting `sudoers`.
+- **Fase 1** — `adduser` / `usermod -aG sudo`; verificação em segundo terminal; diário em `~/sentinela-lab/`; troubleshooting `sudoers`.
 - **Fase 2** — chave no PC local, `ssh-copy-id`, `~/.ssh/config`, drop-in `99-hardening.conf` alinhado a OpenSSH 10 / Debian 13; `sshd -T` para validar.
 - **Fase 3** — PAM `nullok` → remoção; `KbdInteractiveAuthentication`; bloco **PARA AQUI** + `reload||restart`; instalação `libpam-google-authenticator`; snapshot com `sudo` explícito para sessão `renato`.
 
@@ -93,7 +93,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 | Seção | Problema | Ação |
 |-------|----------|------|
 | §2.5 | Aviso "serviço `ssh` não `sshd`" vinha **depois** do `systemctl restart ssh` — fácil de não ler a tempo. | Aviso movido para **antes** do `restart`. |
-| §3 **Verifique** | Assume sempre `ssh fortaleza`; quem saltou o §2.4 fica preso. | Alternativa `ssh -i … renato@IP` no bloco e no passo 4 do checklist TOTP. |
+| §3 **Verifique** | Assume sempre `ssh sentinela`; quem saltou o §2.4 fica preso. | Alternativa `ssh -i … renato@IP` no bloco e no passo 4 do checklist TOTP. |
 | Snapshots Fase 1–3 | Fase 1–2: `zfs` sem `sudo` (root implícito); Fase 3: `sudo zfs` — ambíguo para o novato. | Comentários `# Como root` nos snapshots 1 e 2; Fase 3: nota "como renato (sudo)" + dataset Fase 0.8. |
 | §3.5 | Só `restart ssh` após remover `nullok`; §3.4 já ensina `reload` preferencial. | `sshd -t` + `reload \|\| restart` + lembrete da unidade `ssh`. |
 
@@ -106,7 +106,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 4 — Linhas 1089–1402 (Fases 4 e 5 — CrowdSec e Tailscale em LXC)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** o intervalo **não** inclui a Fase 6 (2FA no painel): termina no `---` imediatamente antes de `# FASE 6`, para coincidir com o título «CrowdSec / Tailscale».
@@ -134,7 +134,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 5 — Linhas 1404–1761 (Fases 6 a 8 — painel 2FA, proxmox-firewall, ShellHub)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** termina no `---` imediatamente antes da **Fase 9**.
@@ -150,7 +150,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 | Seção | Problema | Ação |
 |-------|----------|------|
 | Fase 6 | Sem snapshot ZFS antes de alterações sensíveis ao acesso web — inconsistente com fases vizinhas. | Bloco **📸 Snapshot (recomendado)** com `snap-pre-fase6` + comentário §0.8 / `sudo`. |
-| Fase 7 | Snapshot `zfs` sem contexto de dataset/usuário; teste SSH só com `ssh fortaleza`. | Comentário no bloco ZFS; testes com fallback `ssh -i … renato@IP` e nota para trocar IP. |
+| Fase 7 | Snapshot `zfs` sem contexto de dataset/usuário; teste SSH só com `ssh sentinela`. | Comentário no bloco ZFS; testes com fallback `ssh -i … renato@IP` e nota para trocar IP. |
 | Fase 7 **Se deu errado** | «Edite `/etc/pve/firewall/cluster.fw`» sem indicar privilégios de root. | Texto: `sudo nano` (ou equivalente) como root. |
 | Fase 8 | Objetivo e texto falavam em **VM** mas o guia cria **LXC** (`pct`, CT 200). | Wording: container/LXC/CT; comentário no snapshot Fase 8; §8.6 «cai no CT»; §8.7 comentário GnuPG e menus variáveis. |
 
@@ -162,7 +162,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 6 — Linhas 1763–2079 (Fases 9 e 10 — manutenção automática e documentação viva)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** termina no `---` imediatamente antes do **Apêndice A**.
@@ -170,7 +170,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 ### Verificações feitas
 
 - **Fase 9** — `unattended-upgrades`, `needrestart`, `apt-listchanges`; seção 9.1b (modos `l`/`i`/`a`, aviso contra `sed` cego); ferramentas `htop`/`iotop`/etc.; repetição nos CTs 100/200.
-- **Fase 10** — README heredoc, diário, script `backup-fortaleza.sh`, `tar tzf`, `crontab`, `rsync` off-site, runbook `recuperacao.md`, Git opcional.
+- **Fase 10** — README heredoc, diário, script `backup-sentinela.sh`, `tar tzf`, `crontab`, `rsync` off-site, runbook `recuperacao.md`, Git opcional.
 
 ### Problemas encontrados e correções
 
@@ -180,7 +180,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 | §9.1b | Frase com `` `a` `` e aspas misturadas — risco de renderização confusa. | Reformulação sem crases aninhadas no modo **a**. |
 | Fases 9–10 | Sem snapshot ZFS antes de automatizar upgrades / cron de backups — desalinhado das fases 4–8. | Blocos **📸 Snapshot** `snap-pre-fase9` e `snap-pre-fase10` + itens no Apêndice A. |
 | §9.3 | Quem entra no CT sem `root` pode não perceber o contexto. | Comentário: console como root ou `sudo -i`. |
-| §10.4 | `rsync fortaleza:` assume `Host fortaleza` no PC sem o dizer. | Comentário no script: Host §2.4 ou `renato@IP`. |
+| §10.4 | `rsync sentinela:` assume `Host sentinela` no PC sem o dizer. | Comentário no script: Host §2.4 ou `renato@IP`. |
 | Runbook §10.5 | «restart ssh» genérico; cenário 3 sem `sudo` no `tar`; cenário 5 sem `sudo` / editor. | `systemctl restart ssh` + unidade `ssh`; `sudo tar`; `sudo` nos stops e `sudo nano` + remissão wiki Firewall. |
 
 ### Observações P2
@@ -192,7 +192,7 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 
 ## Parte 7 — Linhas 2081–2404 (Apêndices A–I, FAQ, fontes, rodapé)
 
-**Arquivo:** `fortaleza-proxmox-v5.0.md`  
+**Arquivo:** `sentinela-proxmox-v1.0.md`  
 **Estado:** Concluída (2026-05-12)
 
 > **Nota:** o número da última linha pode crescer com edições futuras; o bloco cobre desde `# Apêndice A` até ao parágrafo **Próximo passo** no fim do arquivo.
@@ -229,8 +229,8 @@ Este arquivo registra a **revisão manual** do conteúdo, **por partes**, com ca
 |---------|--------|
 | [README.md](../README.md) raiz | ✅ Concluído (2026-05-13) — reescrito para lançamento público; PT-BR puro. |
 | [docs/mapa-do-curso.md](mapa-do-curso.md) | ✅ Concluído (2026-05-13) — PT-BR puro; apêndices A–N; Fases -1/10b/VM-01. |
-| [docs/monitoramento-telegram-fortaleza-proxmox.md](monitoramento-telegram-fortaleza-proxmox.md) | ✅ Concluído (2026-05-13) — PT-BR puro. |
-| [scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py) | ✅ Concluído (2026-05-13) — PT-BR puro nas strings de saída. |
+| [docs/monitoramento-telegram.md](monitoramento-telegram.md) | ✅ Concluído (2026-05-13) — PT-BR puro. |
+| [scripts/sentinela-telegram-monitor.py](../scripts/sentinela-telegram-monitor.py) | ✅ Concluído (2026-05-13) — PT-BR puro nas strings de saída. |
 
 ---
 

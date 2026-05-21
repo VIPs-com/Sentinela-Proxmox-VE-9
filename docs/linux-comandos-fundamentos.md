@@ -1,7 +1,7 @@
 # Linux — comandos de fundamentos (cheat sheet)
 
 **Escopo:** uso em **VMs ou CTs Debian de estudo** (laboratório, DMZ, exercícios de aula).  
-**Não** substitui nem contradiz o [guia Fortaleza Proxmox](../fortaleza-proxmox-v5.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado "bare metal" fazem sentido **dentro** de guests Debian; **evite** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que está fazendo.
+**Não** substitui nem contradiz o [guia Sentinela Proxmox](sentinela-proxmox-v1.0.md): no **host Proxmox** seguem-se as fases do guia (firewall `proxmox-firewall`, CrowdSec, SSH com chave + 2FA, etc.). Coisas como **UFW** ou **fail2ban** no legado "bare metal" fazem sentido **dentro** de guests Debian; **evite** empilhar UFW no nó PVE em paralelo com o firewall do Proxmox sem saber o que está fazendo.
 
 Origem conceitual: projeto anterior **Linux Foundation Lab** (Debian 13 minimal à mão). Este arquivo condensa só a parte **reutilizável** de comandos e hábitos.
 
@@ -15,7 +15,7 @@ Você pode organizar assim (ajuste caminhos ao seu usuário):
 mkdir -p ~/lab ~/scripts ~/notes ~/gpg
 ```
 
-No host Fortaleza já existe `~/fortaleza-lab/` (README, diário, recuperação) — você pode espelhar a mesma ideia **dentro** de cada VM.
+No host Sentinela já existe `~/sentinela-lab/` (README, diário, recuperação) — você pode espelhar a mesma ideia **dentro** de cada VM.
 
 ---
 
@@ -77,7 +77,7 @@ ip a                    # descobrir IP na VM
 ssh usuario@IP
 ```
 
-No **host** Proxmox o guia Fortaleza configura **chave Ed25519 + 2FA** — não use esta seção como modelo do servidor PVE.
+No **host** Proxmox o guia Sentinela configura **chave Ed25519 + 2FA** — não use esta seção como modelo do servidor PVE.
 
 ---
 
@@ -93,7 +93,7 @@ gpg --sign arquivo.txt
 gpg --encrypt --recipient EMAIL arquivo.txt
 ```
 
-Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](../fortaleza-proxmox-v5.0.md).
+Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](sentinela-proxmox-v1.0.md).
 
 ---
 
@@ -101,7 +101,7 @@ Exercício guiado no lab do irmão / GPG: ver **Fase 8** do [guia principal](../
 
 Instalação oficial em Debian: [Docker Engine — Debian](https://docs.docker.com/engine/install/debian/).
 
-**Não** começar por Kubernetes / Swarm / Compose gigante — primeiro imagens, volumes, redes, um `Dockerfile` simples. No Fortaleza, Docker aparece no **CT do ShellHub** (Fase 8); stacks grandes ficam para VMs dedicadas quando tiver RAM disponível.
+**Não** começar por Kubernetes / Swarm / Compose gigante — primeiro imagens, volumes, redes, um `Dockerfile` simples. No Sentinela, Docker aparece no **CT do ShellHub** (Fase 8); stacks grandes ficam para VMs dedicadas quando tiver RAM disponível.
 
 ```bash
 docker run hello-world          # teste básico
@@ -155,4 +155,4 @@ dig @1.1.1.1 google.com | grep "Query time"
 
 ---
 
-*Última revisão: 2026-05-13 — alinhado ao Fortaleza Proxmox v5.0.*
+*Última revisão: 2026-05-13 — alinhado ao Sentinela Proxmox v1.0.*

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 """
-fortaleza-telegram-monitor.py — alertas Telegram para homelab Fortaleza Proxmox.
+sentinela-telegram-monitor.py — alertas Telegram para homelab Sentinela Proxmox.
 
-Credenciais: variáveis de ambiente (ex.: systemd EnvironmentFile=/etc/fortaleza-monitor.env).
+Credenciais: variáveis de ambiente (ex.: systemd EnvironmentFile=/etc/sentinela-monitor.env).
 O manual pvesh(1) indica que apenas root pode usar pvesh — este script espera euid 0 para API PVE.
 
 Uso:
-  python3 fortaleza-telegram-monitor.py teste|alertas|polling|status|vms|top|seg|hw
+  python3 sentinela-telegram-monitor.py teste|alertas|polling|status|vms|top|seg|hw
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ except ImportError as e:
     raise SystemExit(1) from e
 
 ESTADO_FILE = os.environ.get(
-    "FORTALEZA_MONITOR_ESTADO", "/opt/fortaleza-monitor/estado.json"
+    "SENTINELA_MONITOR_ESTADO", "/opt/sentinela-monitor/estado.json"
 )
 LIMITE_RAM = int(os.environ.get("LIMITE_RAM_PORCENTO", "80"))
 LIMITE_DISCO = int(os.environ.get("LIMITE_DISCO_PORCENTO", "80"))
@@ -70,7 +70,7 @@ def env_token_chat() -> tuple[str, str]:
     cid = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if not tok or not cid:
         print(
-            "Defina TELEGRAM_TOKEN e TELEGRAM_CHAT_ID (ex.: /etc/fortaleza-monitor.env).",
+            "Defina TELEGRAM_TOKEN e TELEGRAM_CHAT_ID (ex.: /etc/sentinela-monitor.env).",
             file=sys.stderr,
         )
         raise SystemExit(2)
@@ -365,7 +365,7 @@ def cmd_hw() -> str:
 
 def cmd_start() -> str:
     return (
-        "🛡️ <b>Fortaleza Monitor</b>\n"
+        "🛡️ <b>Sentinela Monitor</b>\n"
         "/status /vms /top /seg /hw\n"
         "/ajuda — esta lista"
     )
@@ -560,7 +560,7 @@ def main() -> None:
     modo = sys.argv[1] if len(sys.argv) > 1 else ""
 
     if modo == "teste":
-        ok = send_message("🛡️ Fortaleza Monitor — teste OK.")
+        ok = send_message("🛡️ Sentinela Monitor — teste OK.")
         print("Enviado." if ok else "Falhou.")
         raise SystemExit(0 if ok else 1)
 
@@ -589,7 +589,7 @@ def main() -> None:
         return
 
     print(
-        "Uso: fortaleza-telegram-monitor.py "
+        "Uso: sentinela-telegram-monitor.py "
         "teste|alertas|polling|status|vms|top|seg|hw",
         file=sys.stderr,
     )

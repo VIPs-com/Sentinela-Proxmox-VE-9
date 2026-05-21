@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# fortaleza-health-check.sh — Verificações só-leitura no host Proxmox (Fortaleza Proxmox).
+# sentinela-health-check.sh — Verificações só-leitura no host Proxmox (Sentinela Proxmox).
 # Não altera o sistema. Ideal após concluir as fases 0–10 ou para revisão periódica.
 #
 # Uso:
-#   sudo ./fortaleza-health-check.sh
-#   sudo ./fortaleza-health-check.sh --verbose
-#   sudo ./fortaleza-health-check.sh --json
+#   sudo ./sentinela-health-check.sh
+#   sudo ./sentinela-health-check.sh --verbose
+#   sudo ./sentinela-health-check.sh --json
 #   make check-json   # na raiz do repositório (ver Makefile)
 #
 # SPDX-License-Identifier: MIT
@@ -204,7 +204,7 @@ echo " Avisos: $WARNINGS"
 echo " Falhas: $FAILURES"
 if [[ "$FAILURES" -eq 0 ]]; then
 	echo -e "${C_G}Resultado: nenhuma falha crítica detectada nesta passagem.${C_N}"
-	echo " Continua a documentar mudanças em ~/fortaleza-lab/diario.md"
+	echo " Continua a documentar mudanças em ~/sentinela-lab/diario.md"
 	exit 0
 else
 	echo -e "${C_R}Resultado: corrige as falhas acima antes de considerar o nó 'fechado'.${C_N}"

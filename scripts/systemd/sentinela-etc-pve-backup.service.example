@@ -1,5 +1,5 @@
 # Copiar para /etc/systemd/system/fortaleza-etc-pve-backup.service (sem .example)
-# e ajustar caminhos se o seu script não for /usr/local/bin/backup-fortaleza.sh
+# e ajustar caminhos se o seu script não for /usr/local/bin/backup-sentinela.sh
 #
 #   sudo cp fortaleza-etc-pve-backup.service.example /etc/systemd/system/fortaleza-etc-pve-backup.service
 #   sudo cp fortaleza-etc-pve-backup.timer.example /etc/systemd/system/fortaleza-etc-pve-backup.timer
@@ -15,7 +15,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/backup-fortaleza.sh
+ExecStart=/usr/local/bin/backup-sentinela.sh
 User=root
 
 [Install]

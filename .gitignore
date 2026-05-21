@@ -7,7 +7,7 @@
 *_ed25519
 authorized_keys
 **/etc-pve*.tar.gz
-fortaleza-backups/
+sentinela-backups/
 
 # Estado gerado pelo monitor Telegram (contém dados de runtime)
 estado.json
@@ -22,3 +22,7 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+.claude/
+
+# Scripts temporários de manutenção do repo
+docs/interno/_*.py

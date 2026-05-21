@@ -1,11 +1,11 @@
-# Monitoramento via Telegram — Fortaleza Proxmox
+# Monitoramento via Telegram — Sentinela Proxmox
 
-> **Escopo:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Fortaleza](../fortaleza-proxmox-v5.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
+> **Escopo:** documento de **operação** opcional; **não** substitui nem acrescenta fases ao [guia Sentinela](sentinela-proxmox-v1.0.md) (fases 0–10). Índice da pasta `docs/`: [README.md](README.md).
 
 **Autor:** Renato (sysadmin)  
 **Data:** Maio/2026  
 **Hardware:** Mini PC · 16 GB RAM · Proxmox VE 9.x (Debian 13 Trixie)  
-**Relacionado:** [fortaleza-proxmox-v5.0.md](../fortaleza-proxmox-v5.0.md) (Fases 4–7: CrowdSec, firewall, rede)
+**Relacionado:** [sentinela-proxmox-v1.0.md](sentinela-proxmox-v1.0.md) (Fases 4–7: CrowdSec, firewall, rede)
 
 **Objetivo:** receber no celular **alertas** sobre RAM, disco, estado de VMs/CTs, **mudanças em bloqueios CrowdSec**, **sinais de hardware** (temperatura, ZFS) e consultar **comandos** sob demanda — sem Prometheus/Grafana no homelab.
 
@@ -30,10 +30,10 @@
 ```text
 Host Proxmox (root)
     │
-    ├─ /opt/fortaleza-monitor/estado.json   ← anti-spam + últimos valores (CrowdSec, VMs…)
-    ├─ /etc/fortaleza-monitor.env           ← TELEGRAM_* (chmod 600, fora do Git)
+    ├─ /opt/sentinela-monitor/estado.json   ← anti-spam + últimos valores (CrowdSec, VMs…)
+    ├─ /etc/sentinela-monitor.env           ← TELEGRAM_* (chmod 600, fora do Git)
     │
-    ├─ cron (root) → fortaleza-telegram-monitor.py alertas
+    ├─ cron (root) → sentinela-telegram-monitor.py alertas
     │       ├─ RAM / disco / VMs caídas
     │       ├─ Opcional: digest CrowdSec (novos bans / contagem)
     │       └─ Opcional: thermal sysfs, ZFS health
@@ -44,7 +44,7 @@ Host Proxmox (root)
                     └──► https://api.telegram.org  (HTTPS saída)
 ```
 
-**Pré-requisitos no guia Fortaleza:** concluir **Fase 0** (rede, NTP), **Fases 1–3** (SSH estável), idealmente **Fases 4–7** (CrowdSec + firewall). Garantir que o host pode sair para a Internet (regra **OUT** aceitar HTTPS se o seu `proxmox-firewall` for restritivo). Teste rápido:
+**Pré-requisitos no guia Sentinela:** concluir **Fase 0** (rede, NTP), **Fases 1–3** (SSH estável), idealmente **Fases 4–7** (CrowdSec + firewall). Garantir que o host pode sair para a Internet (regra **OUT** aceitar HTTPS se o seu `proxmox-firewall` for restritivo). Teste rápido:
 
 ```bash
 curl -sS -o /dev/null -w "%{http_code}\n" https://api.telegram.org/
@@ -83,13 +83,13 @@ python3 -c "import requests; print('requests OK')"
 
 ## Fase 2 — Instalar script a partir deste repositório
 
-No seu PC (com o clone do repo) você pode copiar via `scp` para o PVE. O script versionado está em [scripts/fortaleza-telegram-monitor.py](../scripts/fortaleza-telegram-monitor.py). No **host** PVE:
+No seu PC (com o clone do repo) você pode copiar via `scp` para o PVE. O script versionado está em [scripts/sentinela-telegram-monitor.py](../scripts/sentinela-telegram-monitor.py). No **host** PVE:
 
 ```bash
-sudo mkdir -p /opt/fortaleza-monitor
-sudo cp /caminho/para/clone/scripts/fortaleza-telegram-monitor.py /opt/fortaleza-monitor/
-sudo chmod 700 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py
-sudo chown root:root /opt/fortaleza-monitor/fortaleza-telegram-monitor.py
+sudo mkdir -p /opt/sentinela-monitor
+sudo cp /caminho/para/clone/scripts/sentinela-telegram-monitor.py /opt/sentinela-monitor/
+sudo chmod 700 /opt/sentinela-monitor/sentinela-telegram-monitor.py
+sudo chown root:root /opt/sentinela-monitor/sentinela-telegram-monitor.py
 ```
 
 > **Porque root:** o manual [pvesh(1)](https://pve.proxmox.com/pve-docs/pvesh.1.html) indica que só **root** pode usar `pvesh`. O script lista QEMU/LXC por essa via. Alternativa avançada: token API PVE + `curl` à REST API com ACL mínima — fora do escopo deste guia curto.
@@ -97,8 +97,8 @@ sudo chown root:root /opt/fortaleza-monitor/fortaleza-telegram-monitor.py
 ### 2.1 Arquivo de ambiente (segredos)
 
 ```bash
-sudo install -m 600 /dev/null /etc/fortaleza-monitor.env
-sudo nano /etc/fortaleza-monitor.env
+sudo install -m 600 /dev/null /etc/sentinela-monitor.env
+sudo nano /etc/sentinela-monitor.env
 ```
 
 Conteúdo mínimo:
@@ -120,17 +120,17 @@ THERMAL_MAX_MC=85000
 ```
 
 ```bash
-sudo chmod 600 /etc/fortaleza-monitor.env
-sudo chown root:root /etc/fortaleza-monitor.env
+sudo chmod 600 /etc/sentinela-monitor.env
+sudo chown root:root /etc/sentinela-monitor.env
 ```
 
-**Bitwarden:** duplica `TELEGRAM_TOKEN` e `TELEGRAM_CHAT_ID` na pasta Fortaleza (Apêndice G).
+**Bitwarden:** duplica `TELEGRAM_TOKEN` e `TELEGRAM_CHAT_ID` na pasta Sentinela (Apêndice G).
 
 ### 2.2 Teste de envio
 
 ```bash
-sudo set -a; source /etc/fortaleza-monitor.env; set +a
-sudo -E python3 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py teste
+sudo set -a; source /etc/sentinela-monitor.env; set +a
+sudo -E python3 /opt/sentinela-monitor/sentinela-telegram-monitor.py teste
 ```
 
 Deves receber uma mensagem no Telegram.
@@ -144,9 +144,9 @@ O usuário `renato` **não** deve escrever em `/var/log/` por omissão. Usa **cr
 Cria o log uma vez:
 
 ```bash
-sudo touch /var/log/fortaleza-monitor.log
-sudo chown root:root /var/log/fortaleza-monitor.log
-sudo chmod 640 /var/log/fortaleza-monitor.log
+sudo touch /var/log/sentinela-monitor.log
+sudo chown root:root /var/log/sentinela-monitor.log
+sudo chmod 640 /var/log/sentinela-monitor.log
 ```
 
 `sudo crontab -e` — exemplo (alertas a cada 5 minutos):
@@ -155,20 +155,20 @@ sudo chmod 640 /var/log/fortaleza-monitor.log
 SHELL=/bin/bash
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-*/5 * * * * set -a; . /etc/fortaleza-monitor.env; set +a; /usr/bin/python3 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py alertas >> /var/log/fortaleza-monitor.log 2>&1
+*/5 * * * * set -a; . /etc/sentinela-monitor.env; set +a; /usr/bin/python3 /opt/sentinela-monitor/sentinela-telegram-monitor.py alertas >> /var/log/sentinela-monitor.log 2>&1
 ```
 
 Rotação simples semanal (truncar; em produção preferir `logrotate`):
 
 ```cron
-30 3 * * 0 truncate -s 0 /var/log/fortaleza-monitor.log 2>/dev/null || true
+30 3 * * 0 truncate -s 0 /var/log/sentinela-monitor.log 2>/dev/null || true
 ```
 
 Teste manual:
 
 ```bash
-sudo set -a; source /etc/fortaleza-monitor.env; set +a
-sudo -E python3 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py alertas
+sudo set -a; source /etc/sentinela-monitor.env; set +a
+sudo -E python3 /opt/sentinela-monitor/sentinela-telegram-monitor.py alertas
 ```
 
 ---
@@ -178,20 +178,20 @@ sudo -E python3 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py alertas
 O [Bot API](https://core.telegram.org/bots/api) permite `getUpdates` com *long polling*. **Não** uses *webhook* em paralelo (ver [FAQ](https://core.telegram.org/bots/faq)).
 
 ```bash
-sudo nano /etc/systemd/system/fortaleza-monitor.service
+sudo nano /etc/systemd/system/sentinela-monitor.service
 ```
 
 ```ini
 [Unit]
-Description=Fortaleza Proxmox — Telegram monitor (polling)
+Description=Sentinela Proxmox — Telegram monitor (polling)
 After=network-online.target crowdsec.service
 Wants=network-online.target
 
 [Service]
 Type=simple
 User=root
-EnvironmentFile=/etc/fortaleza-monitor.env
-ExecStart=/usr/bin/python3 /opt/fortaleza-monitor/fortaleza-telegram-monitor.py polling
+EnvironmentFile=/etc/sentinela-monitor.env
+ExecStart=/usr/bin/python3 /opt/sentinela-monitor/sentinela-telegram-monitor.py polling
 Restart=always
 RestartSec=15
 
@@ -201,8 +201,8 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now fortaleza-monitor.service
-sudo systemctl status fortaleza-monitor.service --no-pager
+sudo systemctl enable --now sentinela-monitor.service
+sudo systemctl status sentinela-monitor.service --no-pager
 ```
 
 No Telegram: `/start` ou `/ajuda` (só o `chat_id` configurado é aceite).
@@ -219,7 +219,7 @@ No Telegram: `/start` ou `/ajuda` (só o `chat_id` configurado é aceite).
 | **Hardware** | `thermal_zone*` (m°C), `zpool list` se ZFS existir | Temperatura é **aproximação** do que o kernel expõe; não substitui IPMI |
 | **SMART** | Não automático no script base | Opcional: `smartctl -H /dev/nvme0` manual ou extensão futura — discos errados destroem contexto |
 
-**Firewall / drops nft:** o script **não** parseia `nft` linha a linha (frágil entre versões). Para ver drops recentes do backend PVE, usa o que o guia Fortaleza já documenta — por exemplo `journalctl` no serviço `proxmox-firewall` — e correlaciona com [wiki Firewall](https://pve.proxmox.com/wiki/Firewall). Podes acrescentar mais tarde um digest de `journalctl` com filtros **muito** específicos se precisar.
+**Firewall / drops nft:** o script **não** parseia `nft` linha a linha (frágil entre versões). Para ver drops recentes do backend PVE, usa o que o guia Sentinela já documenta — por exemplo `journalctl` no serviço `proxmox-firewall` — e correlaciona com [wiki Firewall](https://pve.proxmox.com/wiki/Firewall). Podes acrescentar mais tarde um digest de `journalctl` com filtros **muito** específicos se precisar.
 
 ---
 
@@ -240,17 +240,17 @@ No Telegram: `/start` ou `/ajuda` (só o `chat_id` configurado é aceite).
 
 - **Prós:** não corres código como root no host.  
 - **Contras:** precisa de SSH com chave (ou API só leitura em outro endpoint), latência, e **não** pode usar `pvesh` localmente na VM — teria de usar a **API HTTPS** do PVE com token e ACL restrita ([wiki API](https://pve.proxmox.com/wiki/Proxmox_VE_API))).  
-- Recomendação Fortaleza: **primeiro** o caminho host+root deste documento; a VM como “painel” só quando dominar tokens ACL.
+- Recomendação Sentinela: **primeiro** o caminho host+root deste documento; a VM como “painel” só quando dominar tokens ACL.
 
 ---
 
 ## Checklist final
 
 ```bash
-sudo systemctl is-active fortaleza-monitor.service   # se usares polling
-sudo crontab -l | grep fortaleza
-sudo ls -l /opt/fortaleza-monitor/estado.json
-sudo tail -30 /var/log/fortaleza-monitor.log
+sudo systemctl is-active sentinela-monitor.service   # se usares polling
+sudo crontab -l | grep sentinela
+sudo ls -l /opt/sentinela-monitor/estado.json
+sudo tail -30 /var/log/sentinela-monitor.log
 sudo pvesh get /nodes --output-format json | head -c 200
 sudo cscli decisions list 2>/dev/null | head
 ```
@@ -262,7 +262,7 @@ sudo cscli decisions list 2>/dev/null | head
 | Sintoma | Acção |
 |---------|--------|
 | `pvesh: error ... permission` ao rodar como `renato` | Esperado: use **root** ou API token + HTTPS. |
-| Bot não responde | `systemctl status fortaleza-monitor`; confirma `TELEGRAM_*`; `curl api.telegram.org`. |
+| Bot não responde | `systemctl status sentinela-monitor`; confirma `TELEGRAM_*`; `curl api.telegram.org`. |
 | Lista de VMs vazia | Confirma `pvesh get /nodes` e o nome do nó; define `PVE_NODE=` no `.env`. |
 | `cscli` falha no digest | CrowdSec não instalado ou PATH; define `DIGEST_CROWDSEC=0` temporariamente. |
 | Muitas mensagens CrowdSec | Ajusta intervalo do `cron` ou desliga digest até calibrares listas/whitelists (guia Fase 4). |
@@ -280,4 +280,4 @@ sudo cscli decisions list 2>/dev/null | head
 
 **Ver também:** índice de todos os scripts opcionais (health-check, systemd, sync no PC) em [../scripts/README.md](../scripts/README.md).
 
-*Documento complementar ao repositório Fortaleza Proxmox — operações e observabilidade leve.*
+*Documento complementar ao repositório Sentinela Proxmox — operações e observabilidade leve.*
