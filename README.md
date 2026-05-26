@@ -1,4 +1,4 @@
-# 🛡️ Sentinela Proxmox – VERSÃO 1.0 (canônica)
+﻿# 🛡️ Sentinela Proxmox – VERSÃO 1.0 (canônica)
 
 ![Versão](https://img.shields.io/badge/versão-1.0_(canônica)-blue)
 ![Status](https://img.shields.io/badge/status-publicável-brightgreen)
@@ -46,7 +46,7 @@ flowchart LR
 
 ## Como estudar
 
-Este repositório segue o mesmo modelo do [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core/tree/master): **um arquivo Markdown** com todo o material didático do host.
+Este repositório segue o mesmo modelo do [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core/tree/main): **um arquivo Markdown** com todo o material didático do host.
 
 Abra e estude na ordem:
 

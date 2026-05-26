@@ -1,6 +1,6 @@
-# Manual de uso — Sentinela Proxmox v1.0
+﻿# Manual de uso — Sentinela Proxmox v1.0
 
-**Para quem é:** você abriu o [repositório no GitHub](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9) ou baixou o ZIP e quer **usar o curso sem se perder** — no mesmo espírito do [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core/tree/master) (um guia principal + manual + índice).
+**Para quem é:** você abriu o [repositório no GitHub](https://github.com/VIPs-com/Sentinela-Proxmox-VE-9) ou baixou o ZIP e quer **usar o curso sem se perder** — no mesmo espírito do [Zero Trust Core Expert](https://github.com/VIPs-com/Zero-Trust-Core/tree/main) (um guia principal + manual + índice).
 
 **O que este manual *não* é:** não substitui o [curso canônico](../🛡️ Sentinela-Proxmox - Versão 1.0.md); é o **GPS** até lá.
 
