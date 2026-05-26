@@ -41,6 +41,7 @@ flowchart LR
 | **[docs/manual-usabilidade.md](docs/manual-usabilidade.md)** | Estrutura do repo, estágios A–E, roteiro da primeira hora |
 | **[docs/INDICE-CURSO.md](docs/INDICE-CURSO.md)** | **§1** — links diretos para cada fase e apêndice |
 | **[docs/mapa-do-curso.md](docs/mapa-do-curso.md)** | HOST vs VM vs trilha GPG externa |
+| **[playbooks/](playbooks/)** | **Quero executar agora (zero teoria, copiar e colar)** — 9 guias código-primeiro com fluxograma Mermaid, cobrindo as Fases -1 a 10b |
 
 ---
 
