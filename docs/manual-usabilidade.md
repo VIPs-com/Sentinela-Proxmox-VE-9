@@ -82,8 +82,8 @@ flowchart LR
 |----------|----------|
 | Onde está o passo a passo do **host**? | [../🛡️ Sentinela-Proxmox - Versão 1.0.md](../🛡️ Sentinela-Proxmox - Versão 1.0.md) |
 | Como **pulo** para a Fase 5 ou o Apêndice H? | [INDICE-CURSO.md](INDICE-CURSO.md) |
-| O que é a matriz de auditoria? | [audit-matrix.md](audit-matrix.md) — fontes oficiais; **não** é lista de comandos para copiar |
-| O que é `docs/interno/`? | Manutenção do projeto — **não** é prova de laboratório |
+| O que é a matriz de auditoria? | Material de **mantenedor** (local, `sentinela-equipe-dev/`) — fontes oficiais confrontadas; **não** é lista de comandos para copiar |
+| Onde fica doc de manutenção do projeto? | Camada equipe local (`sentinela-equipe-dev/`) — **não** é prova de laboratório |
 
 ---
 
@@ -154,7 +154,6 @@ Ideal **após** Fases 4–7 (CrowdSec, firewall, rede estável).
 | [INDICE-CURSO.md](INDICE-CURSO.md) | Atalhos para cada fase (§1). |
 | [manual-usabilidade.md](manual-usabilidade.md) | Este GPS. |
 | [mapa-do-curso.md](mapa-do-curso.md) | HOST / VM / GPG. |
-| [audit-matrix.md](audit-matrix.md) | Por que confiar em cada bloco técnico. |
 
 ---
 

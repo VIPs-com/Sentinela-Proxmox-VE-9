@@ -17,7 +17,7 @@
 
 ## O que há dentro de `docs/`
 
-Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operação** e links estáveis: **[README.md desta pasta](README.md)**. Abra esse arquivo sempre que entrar na pasta `docs/` no GitHub ou no disco — evita confundir o guia principal com complementos e operação opcional. **Guia de uso do repo (estágios A–E):** [manual-usabilidade.md](manual-usabilidade.md). Documentação de **manutenção do projeto** (não é exame): [interno/README.md](interno/README.md).
+Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operação** e links estáveis: **[README.md desta pasta](README.md)**. Abra esse arquivo sempre que entrar na pasta `docs/` no GitHub ou no disco — evita confundir o guia principal com complementos e operação opcional. **Guia de uso do repo (estágios A–E):** [manual-usabilidade.md](manual-usabilidade.md). Documentação de **manutenção do projeto** (não é exame) fica na camada local `sentinela-equipe-dev/` (gitignored).
 
 ---
 
@@ -29,7 +29,7 @@ Lista **numerada** (trilhas 0 a 4), categorias **núcleo / complemento / operaç
 - **Perfil:** mini PC (ex.: N5095, 16 GB RAM), homelab — **não** é roadmap de datacenter no dia 1.
 - **Checklist de ferramentas:** Bitwarden, app TOTP, cabo Ethernet, acesso físico ao mini PC — ver **Antes de Começar** e **Apêndice G** no [guia Sentinela](../🛡️ Sentinela-Proxmox - Versão 1.0.md).
 - **Leituras cruzadas:**
-  - [audit-matrix.md](audit-matrix.md) — o que foi confrontado com docs oficiais.
+  - Matriz de auditoria (mantenedor, local) — o que foi confrontado com docs oficiais.
   - [roadmap-hardware.md](roadmap-hardware.md) — evolução N5095 → máquinas mais fortes (opcional).
   - [ProxMenux](https://proxmenux.com/) (opcional) — menu shell; ver aviso de fonte no guia.
 
