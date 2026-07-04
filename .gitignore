@@ -1,3 +1,14 @@
+# --- Repo público = SÓ O CURSO. Interno → sentinela-equipe-dev/ (local). ---
+CLAUDE.md
+
+# --- Doc interna equipe dev ---
+sentinela-equipe-dev/
+MANIFEST.txt
+
+# --- Arquivos compactados (backups locais) ---
+*.zip
+*.7z
+
 # Segredos e artefatos locais — nunca versionar
 .env
 .env.*
@@ -23,8 +34,4 @@ Thumbs.db
 .idea/
 .vscode/
 .claude/
-
-# Documentação de mantenedores (não publicar no GitHub)
-docs/interno/
-CLAUDE.md
 desktop.ini
